@@ -1,17 +1,32 @@
-package com.example.jwtlogin.controller;
-import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.*; import com.example.jwtlogin.security.jwt.JwtUtils; import com.example.jwtlogin.security.services.UserDetailsImpl; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.authentication.*; import org.springframework.security.core.Authentication; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.web.bind.annotation.*; import java.time.LocalDate; import java.util.*;
-@RestController @RequestMapping("/api/auth") @CrossOrigin(origins="*")
+package com.example.jwtlogin.controllers;
+import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.UserRepository; import com.example.jwtlogin.security.jwt.JwtUtils;
+import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.authentication.*; import org.springframework.security.core.Authentication; import org.springframework.security.core.context.SecurityContextHolder; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate; import java.util.*;
+@CrossOrigin(origins="*", maxAge=3600) @RestController @RequestMapping("/api/auth")
 public class AuthController {
-  @Autowired AuthenticationManager auth; @Autowired UserRepository users; @Autowired PasswordEncoder enc; @Autowired JwtUtils jwt;
-  @PostMapping("/signin") public ResponseEntity<?> login(@RequestBody Map<String,String> b){
-    try{ Authentication a=auth.authenticate(new UsernamePasswordAuthenticationToken(b.get("username"), b.get("password"))); UserDetailsImpl d=(UserDetailsImpl)a.getPrincipal(); User u=d.getUser();
-      if(!u.isSubscriptionActive() || (u.getSubscriptionExpiry()!=null && u.getSubscriptionExpiry().isBefore(LocalDate.now()))){ Map<String,Object> m=new HashMap<>(); m.put("message","SUBSCRIPTION_EXPIRED"); m.put("email",u.getUsername()); m.put("plan",u.getPlan()); return ResponseEntity.status(402).body(m); }
-      Map<String,Object> m=new HashMap<>(); m.put("token", jwt.generate(u.getUsername())); m.put("username",u.getUsername()); m.put("fullName",u.getFullName()); m.put("role",u.getRole()); m.put("orgName",u.getOrgName()); m.put("plan",u.getPlan()); m.put("subscriptionExpiry",u.getSubscriptionExpiry().toString()); return ResponseEntity.ok(m);
-    }catch(Exception e){ return ResponseEntity.status(401).body(Map.of("message","Email au Password si sahihi")); }
+  @Autowired AuthenticationManager authManager; @Autowired UserRepository userRepo; @Autowired PasswordEncoder encoder; @Autowired JwtUtils jwtUtils;
+  @PostMapping("/signup")
+  public ResponseEntity<?> signup(@RequestBody Map<String,String> req){
+    String username=req.get("username"); String email=req.get("email"); String password=req.get("password");
+    if(userRepo.findByUsername(username).isPresent()) return ResponseEntity.badRequest().body("Username tayari ipo!");
+    User u=new User(); u.setUsername(username); u.setEmail(email); u.setPassword(encoder.encode(password));
+    u.setRole(req.getOrDefault("role","ROLE_USER")); u.setFullName(req.getOrDefault("fullName","")); u.setUserType(req.getOrDefault("userType","")); u.setOrgName(req.getOrDefault("orgName",""));
+    String planCode=req.getOrDefault("plan","KAWAIDA"); Plan plan=Plan.fromCode(planCode); u.setPlan(plan.name()); u.setPlanPrice(plan.getPrice());
+    if(plan==Plan.DEMO){ u.setDemoExpiry(LocalDate.now().plusDays(3)); u.setSubscriptionExpiry(LocalDate.now().plusDays(3)); u.setSubscriptionActive(true); }
+    else { u.setSubscriptionExpiry(LocalDate.now().plusDays(plan.getDays())); u.setSubscriptionActive(true); }
+    u.setLocked(false); u.setTotalPaid(0); userRepo.save(u);
+    return ResponseEntity.ok("Umejisajili! Plan: "+plan.getDisplayName()+" - Bei: "+plan.getPrice()+" - Mwisho: "+u.getSubscriptionExpiry());
   }
-  @PostMapping("/signup") public ResponseEntity<?> reg(@RequestBody Map<String,String> b){
-    if(users.existsByUsername(b.get("username"))) return ResponseEntity.badRequest().body(Map.of("message","Email tayari inatumika"));
-    User u=new User(); u.setUsername(b.get("username")); u.setPassword(enc.encode(b.get("password"))); u.setFullName(b.get("fullName")); u.setOwnerEmail(b.get("username")); u.setOrgName(b.get("orgName")); u.setUserType(b.get("userType")); u.setPlan("KAWAIDA"); u.setSubscriptionExpiry(LocalDate.now().plusDays(30)); u.setSubscriptionActive(true); users.save(u); return ResponseEntity.ok(Map.of("message","Akaunti imefunguliwa!"));
+  @PostMapping("/signin")
+  public ResponseEntity<?> signin(@RequestBody Map<String,String> req){
+    Authentication auth=authManager.authenticate(new UsernamePasswordAuthenticationToken(req.get("username"), req.get("password")));
+    SecurityContextHolder.getContext().setAuthentication(auth);
+    String jwt=jwtUtils.generateJwtToken(auth);
+    User u=userRepo.findByUsername(req.get("username")).get();
+    if(u.isLocked()) return ResponseEntity.status(403).body("🔒 IMEFUNGWA! Lipa Plan "+u.getPlan()+" ili kuendelea.");
+    if(u.getPlan().equals("DEMO") && u.getDemoExpiry()!=null && LocalDate.now().isAfter(u.getDemoExpiry()) && u.getTotalPaid()==0){ u.setLocked(true); u.setSubscriptionActive(false); userRepo.save(u); return ResponseEntity.status(403).body("DEMO imeisha! Lipa ili kuendelea."); }
+    Map<String,Object> res=new HashMap<>(); res.put("accessToken",jwt); res.put("username",u.getUsername()); res.put("role",u.getRole()); res.put("plan",u.getPlan()); res.put("planPrice",u.getPlanPrice()); res.put("subscriptionExpiry",u.getSubscriptionExpiry().toString()); res.put("locked",u.isLocked()); res.put("orgName",u.getOrgName());
+    return ResponseEntity.ok(res);
   }
-  @GetMapping("/me") public ResponseEntity<?> me(Authentication a){ UserDetailsImpl d=(UserDetailsImpl)a.getPrincipal(); User u=d.getUser(); return ResponseEntity.ok(Map.of("username",u.getUsername(),"fullName",u.getFullName()==null?"":u.getFullName(),"orgName",u.getOrgName()==null?"":u.getOrgName(),"plan",u.getPlan(),"subscriptionExpiry",u.getSubscriptionExpiry().toString())); }
+  @GetMapping("/me") public ResponseEntity<?> me(Authentication auth){ User u=userRepo.findByUsername(auth.getName()).orElse(null); if(u==null) return ResponseEntity.notFound().build(); Map<String,Object> m=new HashMap<>(); m.put("username",u.getUsername()); m.put("plan",u.getPlan()); m.put("expiry",u.getSubscriptionExpiry().toString()); m.put("locked",u.isLocked()); m.put("totalPaid",u.getTotalPaid()); return ResponseEntity.ok(m); }
 }
