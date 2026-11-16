@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ingia - Yatima & Umra</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside>
+<main class="main"><div class="card"><h2>🔑 Ingia / Jisajili na Plan</h2>
+<label>Username</label><input id="aUser" placeholder="Username">
+<label>Email</label><input id="aEmail" placeholder="Email">
+<label>Password</label><input id="aPass" type="password" placeholder="Password">
+<label>Jina la Taasisi / Org</label><input id="aOrg" placeholder="Jina la Taasisi">
+<label>Role</label><select id="aRole"><option value="ROLE_KITUO">Kituo / Taasisi</option><option value="ROLE_MTHAMINI">Mthamini</option><option value="ROLE_USER">Mtu wa Kawaida</option></select>
+<label>Chagua Plan</label><select id="aPlan"><option value="DEMO">DEMO - Siku 3 Bure (10 Mayatima, 5 Umra)</option><option value="KIDOGO">KIDOGO - 50,000 (50 Mayatima, 20 Umra)</option><option value="KAWAIDA">KAWAIDA - 100,000 (200 Mayatima, 100 Umra)</option><option value="KUBWA">KUBWA - 200,000 (Unlimited)</option></select>
+<button onclick="doSignup()">Jisajili na Plan Hii</button> <button class="btn-blue" onclick="doLogin()">Ingia</button>
+</div></main></div><footer id="app-footer"></footer>
+<script src="js/api.js"></script><script src="js/layout.js"></script><script src="js/auth.js"></script>
+<script>renderLayout('login.html');</script></body></html>
