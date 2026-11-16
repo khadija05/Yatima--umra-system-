@@ -1,0 +1,37 @@
+import { useState } from 'react'; import { useNavigate } from 'react-router-dom';
+export default function Pay(){
+  const [paidRef,setPaidRef]=useState(''); const [payerName,setPayerName]=useState('');
+  const [email,setEmail]=useState(localStorage.getItem('expiredEmail')||localStorage.getItem('email')||'');
+  const [selectedPlan,setSelectedPlan]=useState(localStorage.getItem('selectedPlan')||'KUBWA');
+  const [payMethod,setPayMethod]=useState('PBZ'); const [sending,setSending]=useState(false); const [sent,setSent]=useState(false);
+  const nav=useNavigate();
+  const plans = { KIDOGO:{price:50000, name:'KIDOGO - Yatima 50, Umra 20'}, KAWAIDA:{price:100000, name:'KAWAIDA - Yatima 200, Umra 100'}, KUBWA:{price:200000, name:'KUBWA - Unlimited'} };
+  const submit=async()=>{
+    if(!email.trim()||!email.includes('@')) return alert('❌ Weka Email sahihi');
+    if(!payerName.trim()) return alert('Weka jina lililotumika kulipa');
+    if(!paidRef.trim()) return alert('Weka Transaction Ref');
+    setSending(true);
+    try{
+      const res = await fetch('http://localhost:8080/api/subscription/renew-request', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email: email.trim().toLowerCase(), payerName, transactionRef: paidRef, amount: plans[selectedPlan].price, plan: selectedPlan, paymentMethod: payMethod}) });
+      const data = await res.json(); if(!res.ok) throw new Error(data.message||'Imeshindwa');
+      setSent(true); alert('✅ Ombi limetumwa! Namba: '+data.id);
+    }catch(e){ alert('❌ Ombi halikuenda backend. '+e.message); } finally{ setSending(false); }
+  };
+  if(sent) return (<div className="login-container"><div className="login-card" style={{textAlign:'center'}}><div style={{fontSize:60}}>✅</div><h2>Ombi Limetumwa!</h2><p>Ombi lako la <b>{selectedPlan}</b> limemfikia Khadija.</p><button className="btn" onClick={()=>nav('/login')}>Rudi Login</button></div></div>);
+  return(<div className="login-container"><div className="login-card" style={{maxWidth:480}}>
+    <div style={{textAlign:'center', fontSize:40}}>🔒</div><h2 style={{textAlign:'center'}}>Mkodisha / Chagua Kifurushi</h2>
+    <div style={{display:'grid', gap:8, marginTop:12}}>{Object.entries(plans).map(([code, p])=>(<div key={code} onClick={()=>setSelectedPlan(code)} style={{border: selectedPlan===code?'2px solid #0f766e':'1px solid #e2e8f0', background: selectedPlan===code?'#ecfdf5':'#fff', padding:12, borderRadius:12, cursor:'pointer', display:'flex', justifyContent:'space-between'}}><div><b>{code}</b><br/><span style={{fontSize:12}}>{p.name}</span></div><b>TZS {p.price.toLocaleString()}</b></div>))}</div>
+    <div style={{marginTop:12}}><p style={{fontSize:12, fontWeight:700}}>Njia ya Malipo:</p><div style={{display:'flex', gap:8}}>{['PBZ','MPESA','TIGO','NMB'].map(m=>(<button key={m} onClick={()=>setPayMethod(m)} style={{flex:1, padding:'10px', borderRadius:10, border: payMethod===m?'2px solid #0f766e':'1px solid #e2e8f0', background: payMethod===m?'#ecfdf5':'#fff', cursor:'pointer', fontWeight:700}}>{m}</button>))}</div></div>
+    <div style={{background:'#f0fdf4', border:'2px solid #22c55e', padding:14, borderRadius:12, marginTop:12}}>{payMethod==='PBZ' ? <><p style={{margin:0, fontSize:12}}>PBZ BANK - Account</p><b>KHADIJA DENGE - 0887387001</b></> : <><p style={{margin:0, fontSize:12}}>{payMethod} - Simu</p><b>KHADIJA DENGE - 0778709707</b></>}<p style={{margin:'8px 0 0'}}>Kiasi: <b>TZS {plans[selectedPlan].price.toLocaleString()} / Mwezi</b></p></div>
+    <div style={{marginTop:12}}>
+      <label style={{fontSize:13, fontWeight:800, color:'#ef4444'}}>1. Email yako - LAZIMA</label>
+      <input className="input" placeholder="Email yako" value={email} onChange={e=>setEmail(e.target.value)} />
+      <label style={{fontSize:13, fontWeight:800}}>2. Jina lililotumika kulipa</label>
+      <input className="input" placeholder="Jina" value={payerName} onChange={e=>setPayerName(e.target.value)} />
+      <label style={{fontSize:13, fontWeight:800}}>3. Transaction Ref</label>
+      <input className="input" placeholder="Transaction Ref" value={paidRef} onChange={e=>setPaidRef(e.target.value)} />
+      <button className="btn" onClick={submit} disabled={sending}>{sending ? '⏳ Inatuma...' : `Nimelipa TZS ${plans[selectedPlan].price.toLocaleString()} - Tuma`}</button>
+    </div>
+    <button onClick={()=>nav('/login')} style={{background:'none', border:'none', color:'#0f766e', cursor:'pointer', marginTop:6, fontWeight:700}}>Rudi Login</button>
+  </div></div>);
+}
