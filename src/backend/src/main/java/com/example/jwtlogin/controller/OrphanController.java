@@ -1,14 +1,15 @@
-package com.example.jwtlogin.controller;
-import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.*; import com.example.jwtlogin.security.services.UserDetailsImpl; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import java.util.*;
-@RestController @RequestMapping("/api/orphans") @CrossOrigin(origins="*")
-public class OrphanController {
-  @Autowired OrphanRepository repo;
-  private User me(Authentication a){ return ((UserDetailsImpl)a.getPrincipal()).getUser(); }
-  @GetMapping public List<Orphan> list(Authentication a){ return repo.findByOwnerEmail(me(a).getUsername()); }
-  @PostMapping public ResponseEntity<?> add(@RequestBody Orphan o, Authentication a){
-    User u=me(a); Plan p=Plan.fromCode(u.getPlan()); long c=repo.findByOwnerEmail(u.getUsername()).size();
-    if(c>=p.getMaxOrphans()) return ResponseEntity.status(402).body(Map.of("message","Umefikia kikomo cha "+p.getDisplayName()));
-    o.setOwnerEmail(u.getUsername()); o.setOrgName(u.getOrgName()); return ResponseEntity.ok(repo.save(o));
-  }
-  @DeleteMapping("/{id}") public ResponseEntity<?> del(@PathVariable Long id){ repo.deleteById(id); return ResponseEntity.ok(Map.of("message","Imefutwa")); }
+package com.example.jwtlogin.controllers;
+import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.*; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import java.util.List;
+@CrossOrigin(origins="*", maxAge=3600) @RestController @RequestMapping("/api/orphans")
+public class OrphanController { @Autowired OrphanRepository orphanRepo; @Autowired UserRepository userRepo;
+@PostMapping public ResponseEntity<?> create(@RequestBody Orphan o, Authentication auth){
+  User u=userRepo.findByUsername(auth.getName()).orElse(null); if(u==null) return ResponseEntity.status(401).body("Login kwanza");
+  if(u.isLocked()) return ResponseEntity.status(403).body("🔒 Akaunti IMEFUNGWA! Lipa Plan yako "+u.getPlan()+" ili kuendelea.");
+  Plan plan=Plan.fromCode(u.getPlan()); long count=orphanRepo.countByOwnerUsername(auth.getName());
+  if(count >= plan.getMaxOrphans()) return ResponseEntity.status(403).body("Umefika mwisho wa Plan "+plan.getDisplayName()+" - Max Mayatima: "+plan.getMaxOrphans()+". Boresha Plan!");
+  o.setOwnerUsername(auth.getName()); o.setOrgName(u.getOrgName()); return ResponseEntity.ok(orphanRepo.save(o));
+}
+@GetMapping public List<Orphan> my(Authentication auth){ return orphanRepo.findByOwnerUsername(auth.getName()); }
+@GetMapping("/all") public List<Orphan> all(){ return orphanRepo.findAll(); }
+@DeleteMapping("/{id}") public ResponseEntity<?> del(@PathVariable Long id){ orphanRepo.deleteById(id); return ResponseEntity.ok().build(); }
 }
