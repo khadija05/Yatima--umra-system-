@@ -1,0 +1,6 @@
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plans</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside>
+<main class="main"><div class="card"><h2>💳 Chagua Plan Yako</h2><div id="planList"></div></div>
+<div class="card"><h3>Lipa Ili Kufungua</h3><label>Plan</label><select id="payPlan"><option value="DEMO">DEMO - Bure Siku 3</option><option value="KIDOGO">KIDOGO - 50,000</option><option value="KAWAIDA">KAWAIDA - 100,000</option><option value="KUBWA">KUBWA - 200,000</option></select><label>Kiasi</label><input id="payKiasi" type="number" placeholder="100000"><label>Namba ya Muamala</label><input id="payMuamala" placeholder="QJ123ABC"><button onclick="lipaPlan()">LIPA SASA - M-PESA</button></div></main></div><footer id="app-footer"></footer>
+<script src="js/api.js"></script><script src="js/layout.js"></script><script src="js/plans.js"></script>
+<script>renderLayout('plans.html'); checkLockBanner(); loadPlans();</script></body></html>
