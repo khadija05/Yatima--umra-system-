@@ -1,0 +1,6 @@
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Taasisi</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside>
+<main class="main"><div class="card"><h2>🏫 Taasisi</h2><button onclick="loadTasisi()">Zote</button> <button class="btn-orange" onclick="loadTasisiBora()">🏆 Bora Zaidi</button><div id="tasisiList" style="margin-top:12px"></div></div>
+<div class="card"><h3>+ Sajili Taasisi</h3><input id="tJina" placeholder="Jina la Taasisi"><input id="tMkoa" placeholder="Mkoa"><input id="tWilaya" placeholder="Wilaya"><input id="tSimu" placeholder="Simu"><input id="tWatu" type="number" placeholder="Idadi ya Watu"><input id="tMahitaji" placeholder="Mahitaji"><input id="tBajeti" type="number" placeholder="Bajeti"><button onclick="sajiliTasisi()">Sajili Taasisi</button></div></main></div><footer id="app-footer"></footer>
+<script src="js/api.js"></script><script src="js/layout.js"></script><script src="js/tasisi.js"></script>
+<script>renderLayout('tasisi.html'); checkLockBanner(); loadTasisi();</script></body></html>
