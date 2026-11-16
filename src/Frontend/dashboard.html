@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside>
+<main class="main">
+<div class="card"><h2>📊 Dashboard Yangu</h2><p id="dashUser" class="muted"></p><div id="dashLock"></div></div>
+<div class="grid"><div class="card"><div class="stat" id="cOrphans">-</div><div class="muted">Mayatima Wangu</div><a href="orphans.html"><button>Ona</button></a></div>
+<div class="card"><div class="stat" id="cUmra">-</div><div class="muted">Umra Wangu</div><a href="umra.html"><button>Ona</button></a></div>
+<div class="card"><div class="stat" id="cBook">-</div><div class="muted">Booking Zangu</div><a href="bookings.html"><button>Ona</button></a></div></div>
+<div class="card"><h3>Haraka</h3><a href="orphans.html"><button>+ Ongeza Yatima</button></a> <a href="umra.html"><button class="btn-blue">+ Ongeza Umra</button></a> <a href="plans.html"><button class="btn-orange">💳 Lipa / Boresha Plan</button></a></div>
+</main></div><footer id="app-footer"></footer>
+<script src="js/api.js"></script><script src="js/layout.js"></script>
+<script>
+if(!checkLogin()){}
+renderLayout('dashboard.html'); checkLockBanner();
+let u=getUserInfo(); document.getElementById('dashUser').innerText=`${u.username} | Plan: ${u.plan} | Mwisho: ${u.subscriptionExpiry}`;
+fetch(API+'/orphans',{headers:headers()}).then(r=>r.json()).then(d=>document.getElementById('cOrphans').innerText=d.length).catch(()=>{});
+fetch(API+'/umra').then(r=>r.json()).then(d=>document.getElementById('cUmra').innerText=d.length);
+fetch(API+'/bookings/yangu',{headers:headers()}).then(r=>r.json()).then(d=>document.getElementById('cBook').innerText=d.length).catch(()=>{});
+</script></body></html>
