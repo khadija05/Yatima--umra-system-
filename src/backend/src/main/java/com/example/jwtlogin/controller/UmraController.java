@@ -1,14 +1,13 @@
-package com.example.jwtlogin.controller;
-import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.*; import com.example.jwtlogin.security.services.UserDetailsImpl; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import java.util.*;
-@RestController @RequestMapping("/api/umra") @CrossOrigin(origins="*")
-public class UmraController {
-  @Autowired UmraRepository repo;
-  private User me(Authentication a){ return ((UserDetailsImpl)a.getPrincipal()).getUser(); }
-  @GetMapping public List<Umra> list(Authentication a){ return repo.findByOwnerEmail(me(a).getUsername()); }
-  @PostMapping public ResponseEntity<?> add(@RequestBody Umra o, Authentication a){
-    User u=me(a); Plan p=Plan.fromCode(u.getPlan()); long c=repo.findByOwnerEmail(u.getUsername()).size();
-    if(c>=p.getMaxUmra()) return ResponseEntity.status(402).body(Map.of("message","Umefikia kikomo cha Umra"));
-    o.setOwnerEmail(u.getUsername()); o.setOrgName(u.getOrgName()); return ResponseEntity.ok(repo.save(o));
-  }
-  @DeleteMapping("/{id}") public ResponseEntity<?> del(@PathVariable Long id){ repo.deleteById(id); return ResponseEntity.ok(Map.of("message","Imefutwa")); }
+package com.example.jwtlogin.controllers;
+import com.example.jwtlogin.model.*; import com.example.jwtlogin.repository.*; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.ResponseEntity; import org.springframework.security.core.Authentication; import org.springframework.web.bind.annotation.*; import java.util.List;
+@CrossOrigin(origins="*", maxAge=3600) @RestController @RequestMapping("/api/umra")
+public class UmraController { @Autowired UmraRepository repo; @Autowired UserRepository userRepo;
+@PostMapping public ResponseEntity<?> create(@RequestBody Umra u, Authentication a){
+  User user=userRepo.findByUsername(a.getName()).orElse(null); if(user!=null){ Plan plan=Plan.fromCode(user.getPlan()); long c=repo.findByOwnerUsername(a.getName()).size(); if(c>=plan.getMaxUmra()) return ResponseEntity.status(403).body("Umefika mwisho wa Plan "+plan.getDisplayName()+" - Max Umra: "+plan.getMaxUmra()); }
+  u.setOwnerUsername(a.getName()); if(u.getIdadiWatu()==null) u.setIdadiWatu(0); if(u.getUwezoKuchukuaWatu()!=null) u.setNafasiZilizobaki(u.getUwezoKuchukuaWatu()-u.getIdadiWatu()); return ResponseEntity.ok(repo.save(u));
+}
+@GetMapping public List<Umra> all(@RequestParam(required=false) String mkoa){ if(mkoa!=null) return repo.findByMkoa(mkoa); return repo.findAll(); }
+@GetMapping("/{id}") public ResponseEntity<?> one(@PathVariable Long id){ return repo.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()); }
+@GetMapping("/ranking/bora-zaidi") public List<Umra> bora(){ return repo.findTopBoraZaidi(); }
+@GetMapping("/ranking/bei-nafuu") public List<Umra> bei(){ return repo.findTopByBei(); }
 }
