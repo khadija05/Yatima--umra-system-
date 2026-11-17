@@ -1,0 +1,26 @@
+name: Check Build Log
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Show Files
+        run: |
+          echo "=== ROOT ==="
+          ls -la
+          echo "=== POM ==="
+          ls -la pom.xml || echo "POM HAIKO ROOT"
+          echo "=== SRC FILES ==="
+          find src -type f | head -n 100
+          echo "=== BACKEND YA ZAMANI? ==="
+          ls -la src/backend 2>&1 || echo "Hakuna backend - Sawa"
+          echo "=== PACKAGE.JAVA MBAYA? ==="
+          find . -name "Package.java" || echo "Hakuna Package.java - Sawa"
+      - name: Build
+        run: mvn clean package -DskipTests
