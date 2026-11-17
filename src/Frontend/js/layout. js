@@ -1,40 +1,13 @@
-// Hii inatengeneza Header na Sidebar kwenye kila ukurasa - huandiki tena
-function renderLayout(activePage) {
-  let user = getUserInfo();
-  let header = document.getElementById('app-header');
-  if (header) {
-    header.innerHTML = `
-      <div class="topbar">
-        <div class="logo">🕌 Yatima & Umra</div>
-        <div class="user-box">
-          <span>${user.username ? '👤 ' + user.username + ' | Plan: ' + (user.plan || '-') : 'Hujalogin'}</span>
-          <button onclick="logout()" class="btn-small btn-red">Toka</button>
-        </div>
-      </div>
-      <div id="lockBanner"></div>
-    `;
-  }
-  let sidebar = document.getElementById('app-sidebar');
-  if (sidebar) {
-    let pages = [
-      ['index.html','🏠 Nyumbani'], ['dashboard.html','📊 Dashboard'],
-      ['plans.html','💳 Plans'], ['orphans.html','👶 Mayatima'],
-      ['umra.html','🕋 Umra'], ['tasisi.html','🏫 Taasisi'],
-      ['packages.html','📦 Package'], ['bookings.html','🔒 Booking'],
-      ['login.html','🔑 Ingia']
-    ];
-    sidebar.innerHTML = pages.map(p => `<a href="${p[0]}" class="${activePage===p[0] ? 'active' : ''}">${p[1]}</a>`).join('');
-  }
-  let footer = document.getElementById('app-footer');
-  if (footer) footer.innerHTML = `<p>© 2026 Yatima & Umra System | M-PESA • Tigo Pesa • Bank</p>`;
+function renderLayout(activePage){
+  let user=getUserInfo();
+  let header=document.getElementById('app-header');
+  if(header){ header.innerHTML=`<div class="topbar"><button class="hamburger" onclick="toggleMenu()">☰</button><div class="logo">🕌 Yatima <span>& Umra</span></div><div class="user-box"><span>${user.username? '👤 '+user.username+' | '+(user.plan||'') : 'Hujalogin'}</span>${user.username? '<button onclick="logout()">Toka</button>' : '<a href="login.html"><button class="btn-small" style="background:#f59e0b;color:#111">Ingia</button></a>'}</div></div><div id="lockBanner"></div>`; }
+  let sidebar=document.getElementById('app-sidebar');
+  if(sidebar){ let pages=[['index.html','🏠 Nyumbani'],['dashboard.html','📊 Dashboard'],['plans.html','💳 Plans'],['orphans.html','👶 Mayatima'],['umra.html','🕋 Umra'],['tasisi.html','🏫 Taasisi'],['packages.html','📦 Package'],['bookings.html','🔒 Booking'],['login.html','🔑 Ingia']]; sidebar.innerHTML=`<button class="close-btn" onclick="closeMenu()">✕</button>`+pages.map(p=>`<a href="${p[0]}" onclick="closeMenu()" class="${activePage===p[0]?'active':''}">${p[1]}</a>`).join(''); }
+  let footer=document.getElementById('app-footer'); if(footer) footer.innerHTML=`<p>© 2026 Yatima & Umra System | M-PESA • Tigo Pesa • Bank</p>`;
+  let ov=document.getElementById('overlay'); if(ov) ov.onclick=closeMenu;
 }
-async function checkLockBanner() {
-  if (!token) return;
-  try {
-    let r = await fetch(API + '/payments/status', { headers: headers() });
-    let b = document.getElementById('lockBanner');
-    if (!b) return;
-    if (r.status === 403) b.innerHTML = `<div class="alert-lock">🔒 ${await r.text()} <a href="plans.html">LIPA SASA</a></div>`;
-    else b.innerHTML = `<div class="alert-ok">✅ Akaunti Iko Wazi</div>`;
-  } catch(e){}
+async function checkLockBanner(){
+  if(!token) return;
+  try{ let r=await fetch(API+'/payments/status',{headers:headers()}); let b=document.getElementById('lockBanner'); if(!b) return; if(r.status===403) b.innerHTML=`<div class="alert-lock">🔒 ${await r.text()} <a href="plans.html">LIPA SASA</a></div>`; else b.innerHTML=`<div class="alert-ok">✅ Akaunti Iko Wazi</div>`; }catch(e){}
 }
