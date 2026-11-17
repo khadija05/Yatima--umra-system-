@@ -1,17 +1,9 @@
 <!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nyumbani - Yatima & Umra</title><link rel="stylesheet" href="css/style.css"></head><body>
-<div id="app-header"></div>
-<div class="layout"><aside id="app-sidebar" class="sidebar"></aside>
+<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside><div id="overlay" class="overlay"></div>
 <main class="main">
-  <div class="card"><h1>Karibu Yatima & Umra System 🕌</h1><p class="muted">Simamia Mayatima, Taasisi, Umra, Misaada na Package - Mfumo unajifunga wenyewe ukishindwa kulipa.</p>
-  <div style="display:flex;gap:10px;flex-wrap:wrap"><a href="login.html"><button>Jisajili / Ingia</button></a><a href="plans.html"><button class="btn-orange">Ona Plans 💳</button></a><a href="tasisi.html"><button class="btn-blue">Ona Taasisi 🏫</button></a></div></div>
-  <div class="grid"><div class="card"><div class="stat" id="statTasisi">-</div><div class="muted">Taasisi</div></div><div class="card"><div class="stat" id="statUmra">-</div><div class="muted">Vifurushi vya Umra</div></div><div class="card"><div class="stat" id="statPkg">-</div><div class="muted">Package</div></div></div>
-  <div class="card"><h3>🏆 Taasisi Bora Zaidi</h3><div id="homeBora"></div></div>
+<div class="hero"><h1>Karibu Yatima & Umra System 🕌</h1><p>Simamia Mayatima, Taasisi, Umra, Misaada na Package - Mfumo unajifunga wenyewe ukishindwa kulipa.</p><div class="hero-btns"><a href="login.html"><button class="btn-gold" style="width:auto">Jisajili / Ingia →</button></a><a href="plans.html"><button class="btn-orange" style="width:auto">Ona Plans 💳</button></a></div></div>
+<div class="grid"><div class="card"><div class="stat" id="statTasisi">-</div><div class="muted">Taasisi</div></div><div class="card"><div class="stat" id="statUmra">-</div><div class="muted">Vifurushi vya Umra</div></div><div class="card"><div class="stat" id="statPkg">-</div><div class="muted">Package</div></div></div>
+<div class="card"><h3>🏆 Taasisi Bora Zaidi</h3><div id="homeBora" style="margin-top:10px"></div></div>
 </main></div><footer id="app-footer"></footer>
 <script src="js/api.js"></script><script src="js/layout.js"></script>
-<script>
-renderLayout('index.html');
-fetch(API+'/tasisi').then(r=>r.json()).then(d=>{ document.getElementById('statTasisi').innerText=d.length; });
-fetch(API+'/umra').then(r=>r.json()).then(d=>{ document.getElementById('statUmra').innerText=d.length; });
-fetch(API+'/packages').then(r=>r.json()).then(d=>{ document.getElementById('statPkg').innerText=d.length; });
-fetch(API+'/tasisi/ranking/bora-zaidi').then(r=>r.json()).then(d=>{ document.getElementById('homeBora').innerHTML=d.slice(0,3).map((t,i)=>`<div class="card"><b>#${i+1} ${t.jinaTasisi}</b> ⭐ ${t.wastaniRating} | Watu ${t.idadiWatu} | ${t.mkoa}</div>`).join(''); });
-</script></body></html>
+<script>renderLayout('index.html');fetch(API+'/tasisi').then(r=>r.json()).then(d=>{document.getElementById('statTasisi').innerText=d.length}).catch(()=>{document.getElementById('statTasisi').innerText='0'});fetch(API+'/umra').then(r=>r.json()).then(d=>{document.getElementById('statUmra').innerText=d.length}).catch(()=>{});fetch(API+'/packages').then(r=>r.json()).then(d=>{document.getElementById('statPkg').innerText=d.length}).catch(()=>{});fetch(API+'/tasisi/ranking/bora-zaidi').then(r=>r.json()).then(d=>{document.getElementById('homeBora').innerHTML=d.slice(0,3).map((t,i)=>`<div class="card"><b>#${i+1} ${t.jinaTasisi}</b> ⭐ ${t.wastaniRating} | Watu ${t.idadiWatu} | ${t.mkoa}</div>`).join('')}).catch(()=>{document.getElementById('homeBora').innerHTML='<p class="muted">Bado hakuna Taasisi.</p>'});</script></body></html>
