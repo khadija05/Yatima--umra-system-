@@ -8,7 +8,7 @@ import jakarta.servlet.*; import jakarta.servlet.http.*; import org.springframew
 import java.io.IOException; import java.util.List;
 @Configuration public class SecurityConfig {
   @Bean PasswordEncoder encoder(){ return new BCryptPasswordEncoder(); }
-  @Bean UserDetailsService uds(UserRepository r){ return username-> r.findByUsername(username).map(u-> User.builder().username(u.username).password(u.password).roles(u.role.replace("ROLE_","")).build()).orElseThrow(()-> new UsernameNotFoundException("Not found")); }
+  @Bean UserDetailsService uds(UserRepository r){ return username-> r.findByUsername(username).map(u-> org.springframework.security.core.userdetails.User.builder().username(u.username).password(u.password).roles(u.role.replace("ROLE_","")).build()).orElseThrow(()-> new UsernameNotFoundException("Not found")); }
   @Bean AuthenticationManager am(org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration c) throws Exception{ return c.getAuthenticationManager(); }
   @Bean CorsConfigurationSource cors(){ CorsConfiguration cfg=new CorsConfiguration(); cfg.setAllowedOriginPatterns(List.of("*")); cfg.setAllowedMethods(List.of("*")); cfg.setAllowedHeaders(List.of("*")); cfg.setAllowCredentials(true); UrlBasedCorsConfigurationSource s=new UrlBasedCorsConfigurationSource(); s.registerCorsConfiguration("/**",cfg); return s; }
   @Bean SecurityFilterChain chain(HttpSecurity http, JwtUtil jwt, UserDetailsService uds) throws Exception{
