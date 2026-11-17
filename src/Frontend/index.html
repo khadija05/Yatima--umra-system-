@@ -1,9 +1,198 @@
-<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nyumbani - Yatima & Umra</title><link rel="stylesheet" href="css/style.css"></head><body>
-<div id="app-header"></div><div class="layout"><aside id="app-sidebar" class="sidebar"></aside><div id="overlay" class="overlay"></div>
-<main class="main">
-<div class="hero"><h1>Karibu Yatima & Umra System 🕌</h1><p>Simamia Mayatima, Taasisi, Umra, Misaada na Package - Mfumo unajifunga wenyewe ukishindwa kulipa.</p><div class="hero-btns"><a href="login.html"><button class="btn-gold" style="width:auto">Jisajili / Ingia →</button></a><a href="plans.html"><button class="btn-orange" style="width:auto">Ona Plans 💳</button></a></div></div>
-<div class="grid"><div class="card"><div class="stat" id="statTasisi">-</div><div class="muted">Taasisi</div></div><div class="card"><div class="stat" id="statUmra">-</div><div class="muted">Vifurushi vya Umra</div></div><div class="card"><div class="stat" id="statPkg">-</div><div class="muted">Package</div></div></div>
-<div class="card"><h3>🏆 Taasisi Bora Zaidi</h3><div id="homeBora" style="margin-top:10px"></div></div>
-</main></div><footer id="app-footer"></footer>
-<script src="js/api.js"></script><script src="js/layout.js"></script>
-<script>renderLayout('index.html');fetch(API+'/tasisi').then(r=>r.json()).then(d=>{document.getElementById('statTasisi').innerText=d.length}).catch(()=>{document.getElementById('statTasisi').innerText='0'});fetch(API+'/umra').then(r=>r.json()).then(d=>{document.getElementById('statUmra').innerText=d.length}).catch(()=>{});fetch(API+'/packages').then(r=>r.json()).then(d=>{document.getElementById('statPkg').innerText=d.length}).catch(()=>{});fetch(API+'/tasisi/ranking/bora-zaidi').then(r=>r.json()).then(d=>{document.getElementById('homeBora').innerHTML=d.slice(0,3).map((t,i)=>`<div class="card"><b>#${i+1} ${t.jinaTasisi}</b> ⭐ ${t.wastaniRating} | Watu ${t.idadiWatu} | ${t.mkoa}</div>`).join('')}).catch(()=>{document.getElementById('homeBora').innerHTML='<p class="muted">Bado hakuna Taasisi.</p>'});</script></body></html>
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yatima Umra - Tuwasaidie Mayatima Kuhiji Umra</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">🕋 Yatima <span>Umra</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Nyumbani</a></li>
+      <li><a href="#mayatima">Mayatima</a></li>
+      <li><a href="#packages">Vifurushi</a></li>
+      <li><a href="#donation">Changia</a></li>
+      <li><a href="#booking">Booking</a></li>
+    </ul>
+    <div style="display:flex; gap:10px;">
+      <a href="login.html" class="btn btn-white">Ingia</a>
+      <a href="#donation" class="btn btn-green">Changia Sasa</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div>
+      <h1>Tuwasaidie Mayatima<br><span>Kwenda Umra</span></h1>
+      <p>Mfumo wa kisasa wa kuwaunganisha wafadhili, taasisi na mayatima ili kila yatima apate fursa ya kuhiji Umra. Changia leo, badilisha maisha ya kesho.</p>
+      <div class="hero-buttons">
+        <a href="#mayatima" class="btn btn-gold">Tazama Mayatima</a>
+        <a href="#packages" class="btn btn-white">Vifurushi vya Umra</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <span class="badge badge-gold">⭐ OFa Maalum</span>
+      <h3>Umra Package - 2026</h3>
+      <div class="price">TZS 4,500,000 <small>/ mtu</small></div>
+      <p style="color:#6B7280; font-size:14px; margin:10px 0;">Siku 14 • Makka + Madina • Hoteli + Visa + Ndege</p>
+      <a href="#booking" class="btn btn-green" style="width:100%;">Book Sasa</a>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <div class="section">
+    <div class="stats">
+      <div class="stat-card"><b id="statOrphans">120+</b><span>Mayatima Waliosajiliwa</span></div>
+      <div class="stat-card"><b id="statDonors">850+</b><span>Wafadhili</span></div>
+      <div class="stat-card"><b>TZS 45M+</b><span>Michango Iliyokusanywa</span></div>
+      <div class="stat-card"><b>35</b><span>Walioenda Umra</span></div>
+    </div>
+  </div>
+
+  <!-- ===== MAYATIMA ===== -->
+  <section class="section" id="mayatima">
+    <div class="section-title">
+      <h2>🤲 Mayatima Wanaohitaji Msaada</h2>
+      <p>Chagua yatima umsaidie kufikia ndoto yake ya Umra</p>
+    </div>
+    <div class="grid" id="orphanList">
+      <!-- Zinajazwa na JS -->
+      <div class="card">
+        <div class="card-img">👦</div>
+        <div class="card-body">
+          <span class="badge badge-green">Anahitaji Msaada</span>
+          <h3>Ahmed - Miaka 10, Zanzibar</h3>
+          <p>Anapenda kusoma Qur'an, ndoto yake ni kwenda Makka kuomba dua kwa wazazi wake.</p>
+          <div class="price-row"><b>TZS 4.5M</b><a href="#donation" class="btn btn-gold" style="padding:8px 16px;">Mchangie</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img">👧</div>
+        <div class="card-body">
+          <span class="badge badge-green">Anahitaji Msaada</span>
+          <h3>Fatma - Miaka 9, Dar es Salaam</h3>
+          <p>Yatima wa mama, anaishi na bibi yake. Anataka kwenda Umra kabla hajafikisha miaka 12.</p>
+          <div class="price-row"><b>TZS 4.5M</b><a href="#donation" class="btn btn-gold" style="padding:8px 16px;">Mchangie</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img">👦</div>
+        <div class="card-body">
+          <span class="badge badge-gold">Karibu Kufikia Lengo</span>
+          <h3>Yusuf - Miaka 12, Pemba</h3>
+          <p>Amekusanya 80% ya gharama. Bado TZS 900,000 ili akamilishe safari yake.</p>
+          <div class="price-row"><b>TZS 900K Bado</b><a href="#donation" class="btn btn-gold" style="padding:8px 16px;">Mchangie</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PACKAGES ===== -->
+  <section class="section" id="packages" style="background:#fff; border-radius:20px;">
+    <div class="section-title">
+      <h2>🕋 Vifurushi vya Umra</h2>
+      <p>Chagua kifurushi kinachokufaa - Vyote vinajumuisha Visa, Ndege, Hoteli</p>
+    </div>
+    <div class="grid" id="packageList">
+      <div class="card">
+        <div class="card-img">🕌</div>
+        <div class="card-body">
+          <span class="badge badge-gold">MOST POPULAR</span>
+          <h3>Umra Standard - Siku 14</h3>
+          <p>Makka 7 Siku + Madina 7 Siku • Hoteli Karibu na Haram • Chakula Mara 3</p>
+          <div class="price-row"><b>TZS 4,500,000</b><a href="#booking" class="btn btn-green" style="padding:8px 16px;">Book</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img">⭐</div>
+        <div class="card-body">
+          <span class="badge badge-green">VIP</span>
+          <h3>Umra VIP - Siku 14</h3>
+          <p>Hoteli 5 Nyota • Usafiri wa VIP • Mwalimu Binafsi • Zawadi Maalum</p>
+          <div class="price-row"><b>TZS 7,500,000</b><a href="#booking" class="btn btn-green" style="padding:8px 16px;">Book</a></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img">👨‍👩‍👧</div>
+        <div class="card-body">
+          <span class="badge badge-green">FAMILIA</span>
+          <h3>Umra Familia - Siku 14</h3>
+          <p>Familia ya Watu 4 • Chumba Kikubwa • Gharama Nafuu kwa Familia</p>
+          <div class="price-row"><b>TZS 16,000,000</b><a href="#booking" class="btn btn-green" style="padding:8px 16px;">Book</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DONATION + BOOKING ===== -->
+  <section class="section" style="display:grid; grid-template-columns:1fr 1fr; gap:24px;" id="donation">
+    <div class="form-box" id="donationFormBox">
+      <h2>💛 Changia Yatima</h2>
+      <p>Chango chako kinamfikisha yatima Makka</p>
+      <form onsubmit="donate(event)">
+        <div class="form-group"><label>Jina Lako</label><input type="text" id="donorName" placeholder="Mf: Ali Hassan" required></div>
+        <div class="form-group"><label>Kiasi (TZS)</label><input type="number" id="donorAmount" placeholder="50000" required></div>
+        <div class="form-group"><label>Njia ya Malipo</label>
+          <select id="donorMethod"><option>M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>Bank</option></select>
+        </div>
+        <button class="btn btn-gold" type="submit">Changia Sasa</button>
+      </form>
+      <p id="donateMsg" style="text-align:center; margin-top:12px; color:green; font-weight:700;"></p>
+    </div>
+
+    <div class="form-box" id="booking">
+      <h2>🕋 Book Umra</h2>
+      <p>Jaza fomu ili uanze safari yako</p>
+      <form onsubmit="book(event)">
+        <div class="form-group"><label>Jina Kamili</label><input type="text" id="bookName" placeholder="Jina lako" required></div>
+        <div class="form-group"><label>Simu</label><input type="text" id="bookPhone" placeholder="0777 123 456" required></div>
+        <div class="form-group"><label>Chagua Kifurushi</label>
+          <select id="bookPackage"><option>Umra Standard - 4.5M</option><option>Umra VIP - 7.5M</option><option>Umra Familia - 16M</option></select>
+        </div>
+        <button class="btn btn-green" type="submit">Tuma Booking</button>
+      </form>
+      <p id="bookMsg" style="text-align:center; margin-top:12px; color:green; font-weight:700;"></p>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-grid">
+      <div><h3>🕋 Yatima Umra</h3><p>Mfumo wa kuwaunganisha wafadhili na mayatima ili kila yatima apate fursa ya Umra. Kwa pamoja tunaweza.</p></div>
+      <div><h3>Viungo</h3><ul><li><a href="#mayatima">Mayatima</a></li><li><a href="#packages">Vifurushi</a></li><li><a href="#donation">Changia</a></li></ul></div>
+      <div><h3>Wasiliana</h3><ul><li>📍 Zanzibar, Tanzania</li><li>📞 +255 777 123 456</li><li>✉️ info@yatimaumra.or.tz</li></ul></div>
+    </div>
+    <div class="copyright">© 2026 Yatima Umra. Haki zote zimehifadhiwa.</div>
+  </footer>
+
+<script>
+  // Badilisha hii URL ukiwa ume-deploy backend kwenye Render
+  const API = "https://yatima-umra-system.onrender.com/api";
+
+  function donate(e){
+    e.preventDefault();
+    const name = document.getElementById('donorName').value;
+    const amount = document.getElementById('donorAmount').value;
+    document.getElementById('donateMsg').innerText = "Asante " + name + "! Umetuma TZS " + amount + " - Mungu akubariki 🤲";
+    // Tuma kwenda Backend
+    fetch(API + "/donations", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({donorName:name, amount:amount})}).catch(()=>{});
+  }
+  function book(e){
+    e.preventDefault();
+    const name = document.getElementById('bookName').value;
+    document.getElementById('bookMsg').innerText = "Asante " + name + "! Booking yako imepokelewa, tutakuwasiliana.";
+    fetch(API + "/bookings", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({name:name, status:"PENDING"})}).catch(()=>{});
+  }
+  // Jaribu kupata Mayatima halisi kutoka Backend
+  fetch(API + "/orphans").then(r=>r.json()).then(data=>{
+    if(data && data.length > 0){
+      document.getElementById('statOrphans').innerText = data.length + "+";
+    }
+  }).catch(()=>{});
+</script>
+</body>
+</html>
