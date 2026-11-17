@@ -1,0 +1,14 @@
+package com.yatima.controller;
+import com.yatima.repository.PaymentRepository;
+import com.yatima.repository.UserRepository;
+import com.yatima.util.JwtUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+@RestController @RequestMapping("/api/reports") @CrossOrigin("*")
+public class ReportController {
+  private final UserRepository userRepo; private final PaymentRepository payRepo; private final JwtUtil jwt;
+  public ReportController(UserRepository u, PaymentRepository p, JwtUtil j){userRepo=u;payRepo=p;jwt=j;}
+  @GetMapping("/all") public ResponseEntity<?> all(@RequestHeader(value="Authorization",required=false) String auth){try{String role=(String)jwt.parse(auth).get("role"); if(!"SUPER_ADMIN".equals(role)&&!"TENANT_ADMIN".equals(role)) return ResponseEntity.status(403).body(Map.of("message","Hauna ruhusa"));}catch(Exception e){return ResponseEntity.status(401).body(Map.of("message","Ingia kwanza"));} double money=payRepo.findAll().stream().mapToDouble(p->p.getAmount()==null?0:p.getAmount()).sum(); return ResponseEntity.ok(Map.of("users",userRepo.findAll().size(),"payments",payRepo.findAll(),"totalMoney",money,"pbz","0887387001","pbzName","KHADIJA DENGE"));}
+  @GetMapping("/my/{username}") public ResponseEntity<?> mine(@PathVariable String username){return ResponseEntity.ok(payRepo.findByUsername(username));}
+}
