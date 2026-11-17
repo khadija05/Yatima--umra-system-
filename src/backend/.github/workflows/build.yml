@@ -1,0 +1,19 @@
+name: Check Build Log
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Show Files
+        run: |
+          ls -la
+          ls -la pom.xml || echo "POM HAIKO ROOT"
+          find src -type f | head -n 100
+      - name: Build
+        run: mvn clean package -DskipTests
