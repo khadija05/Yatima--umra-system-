@@ -1,0 +1,8 @@
+package com.yatima.controller;
+import com.yatima.model.Package; import com.yatima.repository.PackageRepository; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.web.bind.annotation.*; import java.util.*; import jakarta.annotation.PostConstruct;
+@RestController @RequestMapping("/api/packages") @CrossOrigin("*")
+public class PackageController {
+  @Autowired PackageRepository repo;
+  @PostConstruct public void seed(){ if(repo.count()==0){ Package p1=new Package(); p1.jinaPackage="Umra Economy"; p1.aina="UMRA"; p1.bei=4500000.0; p1.maelezo="Siku 14, Hoteli Makkah"; repo.save(p1); Package p2=new Package(); p2.jinaPackage="Msaada wa Mayatima - Mwezi"; p2.aina="MAYATIMA"; p2.bei=50000.0; p2.maelezo="Chakula + Shule"; repo.save(p2); } }
+  @GetMapping public List<Package> all(@RequestParam(required=false) String aina){ if(aina!=null && !aina.isEmpty()) return repo.findByAina(aina); return repo.findAll(); }
+}
