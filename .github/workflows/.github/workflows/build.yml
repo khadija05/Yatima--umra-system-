@@ -12,15 +12,8 @@ jobs:
           distribution: 'temurin'
       - name: Show Files
         run: |
-          echo "=== ROOT ==="
           ls -la
-          echo "=== POM ==="
           ls -la pom.xml || echo "POM HAIKO ROOT"
-          echo "=== SRC FILES ==="
           find src -type f | head -n 100
-          echo "=== BACKEND YA ZAMANI? ==="
-          ls -la src/backend 2>&1 || echo "Hakuna backend - Sawa"
-          echo "=== PACKAGE.JAVA MBAYA? ==="
-          find . -name "Package.java" || echo "Hakuna Package.java - Sawa"
       - name: Build
         run: mvn clean package -DskipTests
