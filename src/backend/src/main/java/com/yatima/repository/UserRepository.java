@@ -1,3 +1,9 @@
 package com.yatima.repository;
-import com.yatima.model.User; import org.springframework.data.jpa.repository.JpaRepository; import java.util.Optional;
-public interface UserRepository extends JpaRepository<User,Long>{ Optional<User> findByUsername(String u); boolean existsByUsername(String u); boolean existsByEmail(String e); }
+import com.yatima.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List; import java.util.Optional;
+public interface UserRepository extends JpaRepository<User,Long> {
+  Optional<User> findByEmail(String email);
+  Optional<User> findByUsername(String username);
+  List<User> findByTenantId(String tenantId);
+}
