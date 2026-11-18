@@ -71,7 +71,7 @@ function validateRegister(){clearAllErr();let ok=true;const u=document.getElemen
 if(!isValidUsername(u))ok=setErr('regUsername','Username 3-20'); if(!isValidEmail(e))ok=setErr('regEmail','Email sio sahihi'); if(!isValidPhone(ph))ok=setErr('regPhone','Namba 07XX/06XX'); if(pw.length<6)ok=setErr('regPassword','Password 6+'); if(pw!==pw2)ok=setErr('regPassword2','Password hazifanani'); if(org.length<2)ok=setErr('regOrg','Jaza Org');
 if(!ok)showError('Rekebisha sehemu nyekundu'); return ok;}
 function validateLogin(){clearAllErr();let ok=true;if(document.getElementById('loginUsername').value.trim().length<3)ok=setErr('loginUsername','Jaza Username'); if(document.getElementById('loginPassword').value.length<6)ok=setErr('loginPassword','Password 6+'); return ok;}
-async function fetchWithRetry(url,opt,retries=4){ for(let i=0;i<retries;i++){ try{ const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),30000); const res=await fetch(url,{...opt,signal:ctrl.signal}); clearTimeout(t); if(res.ok||res.status===400||res.status===403||res.status===404) return res; throw new Error("Server "+res.status); }catch(e){ document.getElementById('serverBar').style.display='block'; document.getElementById('serverBar').textContent="⏳ Server inawaka... Jaribio "+(i+1)+"/"+retries+" - Subiri sekunde 15..."; if(i===retries-1) throw e; await new Promise(r=>setTimeout(r,15000)); } } }
+async function fetchWithRetry(url,opt,retries=4){ for(let i=0;i<retries;i++){ try{ const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),30000); const res=await fetch(url,{...opt,signal:ctrl.signal}); clearTimeout(t); if(res.ok||res.status===400||res.status===401||res.status===403||res.status===404) return res; throw new Error("Server "+res.status); }catch(e){ document.getElementById('serverBar').style.display='block'; document.getElementById('serverBar').textContent="⏳ Server inawaka... Jaribio "+(i+1)+"/"+retries+" - Subiri sekunde 15..."; if(i===retries-1) throw e; await new Promise(r=>setTimeout(r,15000)); } } }
 function saveSession(data, username){
   if(!data.token) return;
   localStorage.setItem('token',data.token);
@@ -88,7 +88,7 @@ function saveSession(data, username){
   localStorage.setItem('myPbzName',data.user?.myPbzName||'');
 }
 async function doLogin(){if(!validateLogin())return;const username=document.getElementById('loginUsername').value.trim(),password=document.getElementById('loginPassword').value;const btn=document.getElementById('btnLogin');btn.disabled=true;btn.textContent='Inaingia... Subiri server iamke...';
-try{const res=await fetchWithRetry(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});const data=await res.json(); if(!res.ok)return showError(data.message||'Login imeshindwa');
+try{const res=await fetchWithRetry(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});const data=await res.json(); if(!res.ok)return showError(data.message||'Login imeshindwa - Username au Password sio sahihi');
 saveSession(data, username);
 if(data.user?.status==='expired' || (data.user?.expiresAt && new Date(data.user.expiresAt) < new Date())){
   if((data.user?.role||'').toUpperCase() !== 'SUPER_ADMIN'){ showLocked(data.user); return; }
