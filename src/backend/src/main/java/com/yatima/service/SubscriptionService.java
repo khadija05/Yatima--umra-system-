@@ -1,35 +1,32 @@
 package com.yatima.service;
-import com.yatima.model.User;
-import com.yatima.repository.UserRepository;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
+import com.yatima.model.*; import com.yatima.repository.*; import org.springframework.stereotype.Service;
+import java.time.LocalDateTime; import java.util.*;
 @Service
 public class SubscriptionService {
-  public static final String PBZ_ACCOUNT = "0887387001";
-  public static final String PBZ_NAME = "KHADIJA DENGE";
-  private final UserRepository userRepo;
-  public SubscriptionService(UserRepository r) { this.userRepo = r; }
-  @Scheduled(fixedRate = 60000)
-  public void checkExpired() {
-    for (User u : userRepo.findAll()) {
-      if ("active".equals(u.getStatus()) && u.getExpiresAt() != null && u.getExpiresAt().isBefore(LocalDateTime.now())) {
-        u.setStatus("expired"); userRepo.save(u);
-        sendWhatsApp(u.getPhone(), "Habari "+u.getUsername()+"! Plan yako ya "+u.getPlan()+" imeisha. Lipa "+u.getAmount()+" TZS kupitia PBZ "+PBZ_ACCOUNT+" - "+PBZ_NAME+" ili mfumo ufunguke.");
-      }
-    }
+  private final UserRepository userRepo; private final PaymentRepository payRepo; private final PackageRepository pkgRepo;
+  public SubscriptionService(UserRepository u, PaymentRepository p, PackageRepository k){userRepo=u;payRepo=p;pkgRepo=k;}
+  public void activateAfterPayment(User u, String planCode, Payment pay){
+    String code = (planCode==null||planCode.isEmpty()) ? (pay!=null?pay.getPlan():u.getPlan()) : planCode;
+    Package pkg = pkgRepo.findByCode(code).orElse(null);
+    int days = pkg!=null ? pkg.getDays() : 30;
+    Double price = pkg!=null ? pkg.getPrice() : 0.0;
+    LocalDateTime base = (u.getExpiresAt()!=null && u.getExpiresAt().isAfter(LocalDateTime.now())) ? u.getExpiresAt() : LocalDateTime.now();
+    u.setPlan(code); u.setStatus("active"); u.setLocked(false); u.setApprovedByKhadija(true); u.setExpiresAt(base.plusDays(days));
+    if(pay!=null && pay.getAmount()!=null) u.setAmount(pay.getAmount()); else u.setAmount(price);
+    userRepo.save(u);
+    if(pay!=null){ pay.approve("KHADIJA", u.getExpiresAt()); payRepo.save(pay); }
   }
-  public static void sendWhatsApp(String phone, String msg) {
-    String clean = phone == null ? "" : phone.replaceFirst("^0","255");
-    System.out.println("[WHATSAPP] To "+phone+" : "+msg+" | https://wa.me/"+clean);
+  public void changePlan(User u, String planCode){
+    Package pkg = pkgRepo.findByCode(planCode).orElse(null);
+    u.setPlan(planCode); if(pkg!=null) u.setAmount(pkg.getPrice());
+    userRepo.save(u);
   }
-  public static int daysForPlan(String plan) { if (plan != null && plan.startsWith("FREE")) return 3; return 30; }
-  public static double amountForPlan(String plan) {
-    if (plan == null) return 0;
-    if (plan.startsWith("KIDOGO")) return 50000;
-    if (plan.startsWith("KAWAIDA")) return 100000;
-    if (plan.startsWith("KUBWA")) return 200000;
-    if (plan.startsWith("KHADIJA")) return 150000;
-    return 0;
+  public static Map<String,Object> planInfo(String plan){
+    if(plan==null) plan="";
+    if(plan.contains("KIDOGO")) return Map.of("price",50000.0,"days",30);
+    if(plan.contains("KAWAIDA")) return Map.of("price",100000.0,"days",30);
+    if(plan.contains("KUBWA")) return Map.of("price",200000.0,"days",365);
+    if(plan.contains("KHADIJA")) return Map.of("price",150000.0,"days",30);
+    return Map.of("price",0.0,"days",3);
   }
 }
