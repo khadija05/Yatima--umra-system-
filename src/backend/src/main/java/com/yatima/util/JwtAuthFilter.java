@@ -1,0 +1,20 @@
+package com.yatima.util;
+import jakarta.servlet.*; import jakarta.servlet.http.*; import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority; import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component; import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException; import java.util.*;
+@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+  private final JwtUtil jwt; public JwtAuthFilter(JwtUtil j){jwt=j;}
+  @Override protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
+    String h = req.getHeader("Authorization");
+    if(h!=null && h.startsWith("Bearer ")){
+      try{
+        var c = jwt.parse(h);
+        var auth = new UsernamePasswordAuthenticationToken(c.getSubject(), null, List.of(new SimpleGrantedAuthority("ROLE_"+c.get("role"))));
+        SecurityContextHolder.getContext().setAuthentication(auth);
+      }catch(Exception e){ /* token mbovu - acha Security iamue */ }
+    }
+    chain.doFilter(req, res);
+  }
+}
