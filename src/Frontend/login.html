@@ -3,15 +3,28 @@
 <div class="wrap"><div class="box"><h2>Child Charity <span>Love</span></h2><p style="text-align:center;font-size:13px;color:#666">Ingia / Jisajili • Demo Siku 3 Bure</p>
 <div id="msgError" class="error"></div><div id="msgSuccess" class="success"></div>
 <div id="serverBar" style="display:none;background:#FFF8E1;padding:10px;border-radius:10px;font-size:12px;text-align:center">⏳ Server inawaka... Subiri sekunde 20-30...</div>
-<div id="lockedBox" style="display:none;background:#FFF3CD;border:2px solid #FF9A1F;padding:18px;border-radius:14px;text-align:center"><h3>🔒 Akaunti Imefungwa</h3><p id="lockedText"></p><a id="waPayBtn" href="#" target="_blank" style="display:block;background:#25D366;color:#fff;padding:12px;border-radius:50px;text-decoration:none;font-weight:700">📱 Tuma WhatsApp - Nimelipa</a></div>
+<div id="lockedBox" style="display:none;background:#FFF3CD;border:2px solid #FF9A1F;padding:18px;border-radius:14px;text-align:center"><h3>🔒 Akaunti Imefungwa</h3><p id="lockedText"></p><a id="waPayBtn" href="#" target="_blank" style="display:block;background:#25D366;color:#fff;padding:12px;border-radius:50px;text-decoration:none;font-weight:700">📱 Tuma WhatsApp - Nimelipa</a><button onclick="document.getElementById('lockedBox').style.display='none';document.getElementById('mainForm').style.display='block'" style="margin-top:10px;padding:10px 16px;border-radius:50px;border:1px solid #ddd;background:#fff;cursor:pointer">Rudi Kuingia</button></div>
 <div id="mainForm"><div class="tabs"><button id="tabLogin" class="active" onclick="showTab('login')">Ingia</button><button id="tabRegister" onclick="showTab('register')">Jisajili</button></div>
-<div id="formLogin"><input id="loginUsername" placeholder="Username"><small class="err-msg" id="e-loginUsername"></small><input type="password" id="loginPassword" placeholder="Password"><small class="err-msg" id="e-loginPassword"></small><button class="btn-full" id="btnLogin" onclick="doLogin()">Ingia →</button><p style="font-size:12px;text-align:center;color:#888;margin-top:8px">Umesahau password? Wasiliana na timu yetu kupitia WhatsApp.</p></div>
+<div id="formLogin">
+<input id="loginUsername" placeholder="Username" autocomplete="username"><small class="err-msg" id="e-loginUsername"></small>
+<div style="position:relative"><input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" style="padding-right:44px"><button type="button" onclick="togglePw('loginPassword',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px">👁️</button></div><small class="err-msg" id="e-loginPassword"></small>
+<button class="btn-full" id="btnLogin" onclick="doLogin()">Ingia →</button>
+<p style="font-size:12px;text-align:center;margin-top:10px"><a href="#" onclick="showForgot(event)" style="color:#0A7A7C;font-weight:700">Umesahau password? Bofya hapa →</a></p>
+<p style="font-size:12px;text-align:center;color:#888;margin-top:4px">Huna akaunti? <a href="#" onclick="showTab('register');return false" style="color:#FF9A1F;font-weight:700">Jisajili bure siku 3</a></p>
+</div>
+<div id="formForgot" style="display:none">
+<h3 style="text-align:center">🔑 Sahau Password</h3><p style="font-size:12px;color:#666;text-align:center">Andika username yako, tutakutumia link ya kubadilisha password kupitia WhatsApp / Email.</p>
+<input id="forgotUsername" placeholder="Username yako"><small class="err-msg" id="e-forgotUsername"></small>
+<input id="forgotPhone" placeholder="Simu yako (0777123456)"><small class="err-msg" id="e-forgotPhone"></small>
+<button class="btn-full" id="btnForgot" onclick="doForgot()">Tuma Ombi la Password →</button>
+<p style="font-size:12px;text-align:center;margin-top:10px"><a href="#" onclick="showTab('login');return false" style="color:#0A7A7C">← Rudi Kuingia</a></p>
+</div>
 <div id="formRegister" style="display:none">
-<input id="regUsername" placeholder="Username (herufi 3+)"><small class="err-msg" id="e-regUsername"></small>
-<input id="regEmail" placeholder="Email"><small class="err-msg" id="e-regEmail"></small>
-<input id="regPhone" placeholder="Simu / WhatsApp (0777123456)"><small class="err-msg" id="e-regPhone"></small>
-<input type="password" id="regPassword" placeholder="Password (6+)"><small class="err-msg" id="e-regPassword"></small>
-<input type="password" id="regPassword2" placeholder="Rudia Password"><small class="err-msg" id="e-regPassword2"></small>
+<input id="regUsername" placeholder="Username (herufi 3+)" autocomplete="username"><small class="err-msg" id="e-regUsername"></small>
+<input id="regEmail" placeholder="Email" autocomplete="email"><small class="err-msg" id="e-regEmail"></small>
+<input id="regPhone" placeholder="Simu / WhatsApp (0777123456)" inputmode="tel"><small class="err-msg" id="e-regPhone"></small>
+<div style="position:relative"><input type="password" id="regPassword" placeholder="Password (6+)" autocomplete="new-password" style="padding-right:44px"><button type="button" onclick="togglePw('regPassword',this)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px">👁️</button></div><small class="err-msg" id="e-regPassword"></small>
+<input type="password" id="regPassword2" placeholder="Rudia Password" autocomplete="new-password"><small class="err-msg" id="e-regPassword2"></small>
 <input id="regOrg" placeholder="Jina la Taasisi / Org"><small class="err-msg" id="e-regOrg"></small>
 <label><b>Wewe ni nani? 👇</b></label>
 <select id="regRole" onchange="toggleTenantFields()">
@@ -22,48 +35,90 @@
 </select>
 <div id="tenantFields" style="background:#FFF8E1;border:2px solid #FF9A1F;border-radius:14px;padding:14px;margin-top:10px">
 <h4 style="color:#B25E00">🏢 Taarifa za Taasisi Yako (Requirement Zako)</h4>
-<input id="regOrgPhone" placeholder="Simu ya Taasisi Yako"><input id="regOrgLocation" placeholder="Mahali Taasisi Ipo (Zanzibar, Pemba, Dar)"><input id="regMyPbz" placeholder="Namba ya Malipo Yako Mwenyewe"><input id="regMyPbzName" placeholder="Jina la Akaunti Yako">
+<input id="regOrgPhone" placeholder="Simu ya Taasisi Yako" inputmode="tel"><input id="regOrgLocation" placeholder="Mahali Taasisi Ipo (Zanzibar, Pemba, Dar)"><input id="regMyPbz" placeholder="Namba ya Malipo Yako Mwenyewe"><input id="regMyPbzName" placeholder="Jina la Akaunti Yako">
 <textarea id="regRequirements" placeholder="✍️ Andika Requirement Zako..." style="min-height:90px"></textarea></div>
 <div id="mthaminiFields" style="display:none;background:#EAF7F7;border:2px solid #0A7A7C;border-radius:14px;padding:14px;margin-top:10px"><input id="regTenantId" placeholder="Username ya Admin / Taasisi Unayotaka Kujiunga Nayo"><p style="font-size:12px;color:#666">Kama unajiunga na Taasisi fulani, andika username ya Admin wake.</p></div>
-<label><b>Chagua Kifushi 👇 Bonyeza Kadi</b></label>
+<label><b>Chagua Kifurushi 👇 Bonyeza Kadi</b></label>
 <div class="cards">
-<div class="card" id="card-KIDOGO" onclick="selectPlan('KIDOGO-50000')"><h3>🌱 KIDOGO</h3><div class="price">50,000 <span>TZS / Mwezi</span></div><p>Kwa kuanza. Yatima hadi 5, Ripoti ya mwezi, Msaada WhatsApp, Cheti.</p></div>
-<div class="card popular selected" id="card-KAWAIDA" onclick="selectPlan('KAWAIDA-100000')"><span class="badge">🔥 Maarufu</span><h3>⭐ KAWAIDA</h3><div class="price">100,000 <span>TZS / Mwezi</span></div><p>Watu wengi. Yatima hadi 15, Ripoti + Picha, Kipaumbele WhatsApp.</p></div>
-<div class="card" id="card-KUBWA" onclick="selectPlan('KUBWA-200000')"><h3>👑 KUBWA</h3><div class="price">200,000 <span>TZS / Mwezi</span></div><p>Kwa Taasisi. Yatima Bila Kikomo, Ripoti ya Wiki + Ziara.</p></div>
-<div class="card" id="card-FREE" onclick="selectPlan('FREE-0')"><span class="badge" style="background:#0A7A7C">Jaribio</span><h3>🆓 JARIBIO</h3><div class="price">0 <span>TZS / Siku 3</span></div><p>Jaribu siku 3 bure. Yatima 2, Baada ya siku 3 inajifunga.</p></div>
-<div class="card full" id="card-KHADIJA" onclick="selectPlan('KHADIJA-150000')"><span class="badge" style="background:#fff;color:#0A7A7C">✨ Special</span><h3>💚 SPECIAL</h3><div class="price">150,000 <span>TZS / Mwezi</span></div><p>Kifushi maalum. Yatima hadi 20 + Elimu, Afya na Umra.</p></div>
+<div class="card" id="card-KIDOGO" onclick="selectPlan('KIDOGO-50000')"><h3>🌱 KIDOGO</h3><div class="price">50,000 <span>TZS / Mwezi</span></div><p>Kwa kuanza. Yatima hadi 50, Umra hadi 20, Ripoti ya mwezi, Msaada WhatsApp.</p></div>
+<div class="card popular selected" id="card-KAWAIDA" onclick="selectPlan('KAWAIDA-100000')"><span class="badge">🔥 Maarufu</span><h3>⭐ KAWAIDA</h3><div class="price">100,000 <span>TZS / Mwezi</span></div><p>Watu wengi. Yatima hadi 200, Umra hadi 100, Ripoti kamili, Kipaumbele WhatsApp.</p></div>
+<div class="card" id="card-KUBWA" onclick="selectPlan('KUBWA-200000')"><h3>👑 KUBWA</h3><div class="price">200,000 <span>TZS / Mwaka</span></div><p>Kwa Taasisi. Yatima Bila Kikomo, Umra Bila Kikomo, Ripoti ya Wiki + Ziara.</p></div>
+<div class="card" id="card-FREE" onclick="selectPlan('FREE-DEMO')"><span class="badge" style="background:#0A7A7C">Jaribio</span><h3>🆓 JARIBIO</h3><div class="price">0 <span>TZS / Siku 3</span></div><p>Jaribu siku 3 bure. Yatima hadi 10, Umra hadi 5, Baada ya siku 3 inajifunga.</p></div>
+<div class="card full" id="card-KHADIJA" onclick="selectPlan('KHADIJA-150000')"><span class="badge" style="background:#fff;color:#0A7A7C">✨ Special</span><h3>💚 SPECIAL</h3><div class="price">150,000 <span>TZS / Mwezi</span></div><p>Kifurushi maalum. Yatima hadi 20 + Elimu, Afya na Umra.</p></div>
 </div>
 <input type="hidden" id="regPlan" value="KAWAIDA-100000">
 <p style="font-size:12px;background:#EAF7F7;padding:10px;border-radius:10px">🔒 Maelezo ya malipo utayaona <b>baada ya kuingia</b> kwenye Dashboard. Jisajili kwanza, kisha ingia.</p>
-<button class="btn-full" id="btnRegister" onclick="doRegister()">Jisajili na Kifushi Hiki →</button></div></div></div></div>
+<button class="btn-full" id="btnRegister" onclick="doRegister()">Jisajili na Kifurushi Hiki →</button></div></div></div></div>
 <script>
 const API_URL="https://yatima-umra-backend.onrender.com"; const ADMIN_WHATSAPP="255887387001";
 function showError(m){const e=document.getElementById('msgError');e.textContent='❌ '+m;e.style.display='block';setTimeout(()=>e.style.display='none',10000);}
 function showSuccess(m){const e=document.getElementById('msgSuccess');e.textContent='✅ '+m;e.style.display='block';}
 function setErr(id,m){document.getElementById(id)?.classList.add('err');const s=document.getElementById('e-'+id);if(s){s.textContent=m;s.style.display='block';}return false;}
 function clearAllErr(){document.querySelectorAll('input,select').forEach(e=>e.classList.remove('err'));document.querySelectorAll('.err-msg').forEach(e=>e.style.display='none');}
-function showTab(t){document.getElementById('formLogin').style.display=t==='login'?'block':'none';document.getElementById('formRegister').style.display=t==='register'?'block':'none';document.getElementById('tabLogin').classList.toggle('active',t==='login');document.getElementById('tabRegister').classList.toggle('active',t==='register');}
+function togglePw(id,btn){const el=document.getElementById(id); el.type = el.type==='password' ? 'text' : 'password'; btn.textContent = el.type==='password' ? '👁️' : '🙈';}
+function showTab(t){
+  document.getElementById('formLogin').style.display=t==='login'?'block':'none';
+  document.getElementById('formRegister').style.display=t==='register'?'block':'none';
+  document.getElementById('formForgot').style.display='none';
+  document.getElementById('tabLogin').classList.toggle('active',t==='login');
+  document.getElementById('tabRegister').classList.toggle('active',t==='register');
+}
+function showForgot(e){ if(e) e.preventDefault(); document.getElementById('formLogin').style.display='none'; document.getElementById('formRegister').style.display='none'; document.getElementById('formForgot').style.display='block'; }
 function toggleTenantFields(){ const r=document.getElementById('regRole').value; document.getElementById('tenantFields').style.display=(r==='TENANT_ADMIN'||r==='OWNER')?'block':'none'; document.getElementById('mthaminiFields').style.display=(r==='Mthamini'||r==='Mfadhili'||r==='Mlezi')?'block':'none'; }
-function selectPlan(v){document.getElementById('regPlan').value=v;document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));const map={'KIDOGO-50000':'card-KIDOGO','KAWAIDA-100000':'card-KAWAIDA','KUBWA-200000':'card-KUBWA','FREE-0':'card-FREE','KHADIJA-150000':'card-KHADIJA'};if(map[v])document.getElementById(map[v]).classList.add('selected');}
+function selectPlan(v){document.getElementById('regPlan').value=v;document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));const map={'KIDOGO-50000':'card-KIDOGO','KAWAIDA-100000':'card-KAWAIDA','KUBWA-200000':'card-KUBWA','FREE-DEMO':'card-FREE','KHADIJA-150000':'card-KHADIJA'};if(map[v])document.getElementById(map[v]).classList.add('selected');}
 function isValidEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);} function isValidPhone(p){return /^0[67]\d{8}$/.test(p.trim());} function isValidUsername(u){return /^[a-zA-Z0-9_]{3,20}$/.test(u);}
 function validateRegister(){clearAllErr();let ok=true;const u=document.getElementById('regUsername').value.trim(),e=document.getElementById('regEmail').value.trim(),ph=document.getElementById('regPhone').value.trim(),pw=document.getElementById('regPassword').value,pw2=document.getElementById('regPassword2').value,org=document.getElementById('regOrg').value.trim();
 if(!isValidUsername(u))ok=setErr('regUsername','Username 3-20'); if(!isValidEmail(e))ok=setErr('regEmail','Email sio sahihi'); if(!isValidPhone(ph))ok=setErr('regPhone','Namba 07XX/06XX'); if(pw.length<6)ok=setErr('regPassword','Password 6+'); if(pw!==pw2)ok=setErr('regPassword2','Password hazifanani'); if(org.length<2)ok=setErr('regOrg','Jaza Org');
 if(!ok)showError('Rekebisha sehemu nyekundu'); return ok;}
 function validateLogin(){clearAllErr();let ok=true;if(document.getElementById('loginUsername').value.trim().length<3)ok=setErr('loginUsername','Jaza Username'); if(document.getElementById('loginPassword').value.length<6)ok=setErr('loginPassword','Password 6+'); return ok;}
 async function fetchWithRetry(url,opt,retries=4){ for(let i=0;i<retries;i++){ try{ const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),30000); const res=await fetch(url,{...opt,signal:ctrl.signal}); clearTimeout(t); if(res.ok||res.status===400||res.status===403||res.status===404) return res; throw new Error("Server "+res.status); }catch(e){ document.getElementById('serverBar').style.display='block'; document.getElementById('serverBar').textContent="⏳ Server inawaka... Jaribio "+(i+1)+"/"+retries+" - Subiri sekunde 15..."; if(i===retries-1) throw e; await new Promise(r=>setTimeout(r,15000)); } } }
+function saveSession(data, username){
+  if(!data.token) return;
+  localStorage.setItem('token',data.token);
+  localStorage.setItem('username',username);
+  localStorage.setItem('role',data.user?.role||'Mthamini');
+  localStorage.setItem('tenantId',data.user?.tenantId||'');
+  localStorage.setItem('org',data.user?.org||'');
+  localStorage.setItem('plan',data.user?.plan||'');
+  localStorage.setItem('expiresAt',data.user?.expiresAt||'');
+  localStorage.setItem('status',data.user?.status||'active');
+  localStorage.setItem('phone',data.user?.phone||'');
+  localStorage.setItem('requirements',data.user?.requirements||'');
+  localStorage.setItem('myPbzAccount',data.user?.myPbzAccount||'');
+  localStorage.setItem('myPbzName',data.user?.myPbzName||'');
+}
 async function doLogin(){if(!validateLogin())return;const username=document.getElementById('loginUsername').value.trim(),password=document.getElementById('loginPassword').value;const btn=document.getElementById('btnLogin');btn.disabled=true;btn.textContent='Inaingia... Subiri server iamke...';
 try{const res=await fetchWithRetry(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username,password})});const data=await res.json(); if(!res.ok)return showError(data.message||'Login imeshindwa');
-if(data.user?.status==='expired'||(data.user?.expiresAt&&new Date(data.user.expiresAt)<new Date())){showLocked(data.user);return;}
-localStorage.setItem('token',data.token);localStorage.setItem('username',username);localStorage.setItem('role',data.user?.role||'Mthamini');localStorage.setItem('tenantId',data.user?.tenantId||'');localStorage.setItem('org',data.user?.org||'');localStorage.setItem('plan',data.user?.plan||'');localStorage.setItem('expiresAt',data.user?.expiresAt||'');localStorage.setItem('status',data.user?.status||'active');localStorage.setItem('phone',data.user?.phone||'');localStorage.setItem('requirements',data.user?.requirements||'');localStorage.setItem('myPbzAccount',data.user?.myPbzAccount||'');localStorage.setItem('myPbzName',data.user?.myPbzName||'');
+saveSession(data, username);
+if(data.user?.status==='expired' || (data.user?.expiresAt && new Date(data.user.expiresAt) < new Date())){
+  if((data.user?.role||'').toUpperCase() !== 'SUPER_ADMIN'){ showLocked(data.user); return; }
+}
 document.getElementById('serverBar').style.display='none';
 showSuccess('Umeingia!');setTimeout(()=>window.location.href='/dashboard.html',800);}catch(e){showError('⚠️ Server bado haijaamka. Tafadhali subiri dakika 1 kisha jaribu tena. Usifunge ukurasa.');}finally{btn.disabled=false;btn.textContent='Ingia →';}}
 async function doRegister(){if(!validateRegister())return;const payload={username:document.getElementById('regUsername').value.trim(),email:document.getElementById('regEmail').value.trim(),phone:document.getElementById('regPhone').value.trim(),password:document.getElementById('regPassword').value,org:document.getElementById('regOrg').value.trim(),role:document.getElementById('regRole').value,plan:document.getElementById('regPlan').value,requirements:document.getElementById('regRequirements')?.value||'',myPbzAccount:document.getElementById('regMyPbz')?.value||'',myPbzName:document.getElementById('regMyPbzName')?.value||'',tenantId:document.getElementById('regTenantId')?.value||'',orgPhone:document.getElementById('regOrgPhone')?.value||'',orgLocation:document.getElementById('regOrgLocation')?.value||''};
 const btn=document.getElementById('btnRegister');btn.disabled=true;btn.textContent='Inatuma... Subiri server iamke...';
 try{const res=await fetchWithRetry(API_URL+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const data=await res.json();if(!res.ok)return showError(data.message||'Jisajili imeshindwa');
-localStorage.setItem('token',data.token);localStorage.setItem('role',data.user?.role||'');localStorage.setItem('tenantId',data.user?.tenantId||'');localStorage.setItem('org',data.user?.org||'');localStorage.setItem('plan',data.user?.plan||'');localStorage.setItem('username',payload.username);
+saveSession(data, payload.username);
 document.getElementById('serverBar').style.display='none';
 showSuccess('Umejisajili! Sasa ingia Dashboard kuona maelezo ya malipo.');
-const waText=`Habari! Mteja mpya.%0ARole: ${payload.role}%0AUsername: ${payload.username}%0AOrg: ${payload.org}%0APlan: ${payload.plan}%0ARequirement: ${payload.requirements}`;window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${waText}`,'_blank');showTab('login');}catch(e){showError('⚠️ Server bado haijaamka. Subiri dakika 1 kisha jaribu tena.');}finally{btn.disabled=false;btn.textContent='Jisajili na Kifushi Hiki →';}}
+const waText=`Habari! Mteja mpya.\nRole: ${payload.role}\nUsername: ${payload.username}\nOrg: ${payload.org}\nPlan: ${payload.plan}\nRequirement: ${payload.requirements}`;
+window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(waText)}`,'_blank');showTab('login');}catch(e){showError('⚠️ Server bado haijaamka. Subiri dakika 1 kisha jaribu tena.');}finally{btn.disabled=false;btn.textContent='Jisajili na Kifurushi Hiki →';}}
+async function doForgot(){
+  const username=document.getElementById('forgotUsername').value.trim(), phone=document.getElementById('forgotPhone').value.trim();
+  clearAllErr(); let ok=true;
+  if(username.length<3) ok=setErr('forgotUsername','Jaza Username');
+  if(phone && !isValidPhone(phone)) ok=setErr('forgotPhone','Namba 07XX/06XX');
+  if(!ok) return;
+  const btn=document.getElementById('btnForgot'); btn.disabled=true; btn.textContent='Inatuma...';
+  try{
+    const res=await fetchWithRetry(API_URL+'/api/auth/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username, phone})});
+    const data=await res.json();
+    if(!res.ok) return showError(data.message||'Ombi limeshindwa');
+    showSuccess(data.message || 'Ombi limetumwa! Angalia WhatsApp yako.');
+    window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent('Habari! Nimesahau password. Username: '+username+' Simu: '+phone)}`,'_blank');
+  }catch(e){ showError('⚠️ Server bado haijaamka. Tuma WhatsApp moja kwa moja.'); window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent('Habari! Nimesahau password. Username: '+username)}`,'_blank'); }
+  finally{ btn.disabled=false; btn.textContent='Tuma Ombi la Password →'; }
+}
 function showLocked(sub){document.getElementById('mainForm').style.display='none';document.getElementById('lockedBox').style.display='block';document.getElementById('lockedText').textContent=`Mwezi/Demo wa ${sub?.plan||''} umeisha. Ingia Dashboard kuona maelezo ya malipo.`;const u=localStorage.getItem('username')||'';document.getElementById('waPayBtn').href=`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent('Habari! Nimelipa upya. Username: '+u+' Muamala: ')}`;}
 toggleTenantFields();
 </script></body></html>
