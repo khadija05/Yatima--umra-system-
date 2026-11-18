@@ -41,7 +41,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.POST, "/api/donations").permitAll()
         .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
         .requestMatchers(HttpMethod.POST, "/api/payments").permitAll()
-        .requestMatchers("/", "/index.html", "/favicon.ico", "/**/*.html").permitAll()
+        .requestMatchers("/", "/index.html", "/favicon.ico").permitAll()
         .requestMatchers("/actuator/health", "/error").permitAll()
         .requestMatchers("/api/admin/**").authenticated()
         .anyRequest().authenticated()
