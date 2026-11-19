@@ -1,86 +1,96 @@
 <!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Yatima Umra</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
+<title>Yatima Umra • Zanzibar</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--green:#0b6b3a;--green2:#0e9a55;--gold:#e9b32a;--gold2:#f5d36b;--bg:#f4f8f4}
-body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:#12211a}
-.topbar{background:rgba(11,107,58,.96);backdrop-filter:blur(12px);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:30}
-.logo{font-size:19px;font-weight:800}.logo em{color:var(--gold2);font-style:normal}
-.menu-btn{background:#ffffff22;border:0;color:#fff;font-size:22px;padding:6px 10px;border-radius:10px;cursor:pointer}
-.layout{display:flex;min-height:calc(100vh - 58px)}
-#app-sidebar{width:260px;background:#fff;padding:18px;box-shadow:2px 0 20px #0001;flex-shrink:0}
-#app-sidebar a{display:block;padding:12px 14px;border-radius:12px;font-weight:700;margin-bottom:6px;cursor:pointer}
-#app-sidebar a:hover,#app-sidebar a.active{background:#e6f4ea;color:var(--green)}
-.side-user{background:#f1f5f1;padding:14px;border-radius:14px;margin-bottom:14px}
-#overlay{display:none;position:fixed;inset:0;background:#0006;z-index:25}
-.main{flex:1;padding:18px;max-width:900px;margin:auto;width:100%}
-.hero{background:linear-gradient(135deg,#062e1a,#0b6b3a 55%,#0e9a55);color:#fff;padding:36px 22px;border-radius:26px;text-align:center;position:relative;overflow:hidden}
-.hero:before{content:"🕋";position:absolute;right:16px;top:8px;font-size:80px;opacity:.12}
-.hero h1{font-family:'Amiri',serif;font-size:38px;line-height:1.1}.gold-text{color:var(--gold2)}.hero p{opacity:.92;margin:10px auto;max-width:520px}
-.hero-badge{background:#ffffff22;border:1px solid #ffffff33;display:inline-block;padding:7px 14px;border-radius:30px;font-size:12px;font-weight:800;letter-spacing:1px}
-.card{background:#fff;border-radius:22px;padding:20px;box-shadow:0 8px 28px #0000000d;margin-bottom:14px;border:1px solid #eef3ee}
-input,select{width:100%;padding:14px;margin:8px 0;border:2px solid #e8eee8;border-radius:14px;font-size:15px;background:#fbfdfb;outline:none}
-input:focus,select:focus{border-color:var(--green2);background:#fff}
-.btn{background:var(--green);color:#fff;border:0;padding:14px 18px;border-radius:14px;font-weight:800;cursor:pointer;width:100%;font-size:15px;box-shadow:0 6px 16px #0b6b3a33}
-.btn.gold{background:linear-gradient(135deg,#e9b32a,#f5d36b);color:#1a1a1a}.btn.small{width:auto;padding:9px 13px;font-size:13px}.btn:hover{transform:translateY(-1px)}
+:root{--green:#0b6b3a;--green2:#12a35c;--gold:#e9b32a;--gold2:#ffe27a;--bg:#f0f5f0;--card:#fff;--muted:#6b7a6e}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:#101f16}
+.topbar{background:rgba(6,46,26,.95);backdrop-filter:blur(10px);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:40;box-shadow:0 4px 20px #0003}
+.logo{font-size:19px;font-weight:800;letter-spacing:.3px}.logo em{color:var(--gold2);font-style:normal}
+.menu-btn{background:#ffffff1f;border:1px solid #ffffff2a;color:#fff;font-size:20px;padding:7px 11px;border-radius:12px;cursor:pointer}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+#app-sidebar{width:270px;background:#fff;padding:18px;flex-shrink:0;border-right:1px solid #e8eee8}
+#app-sidebar a{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;font-weight:700;margin-bottom:6px;cursor:pointer;color:#223}
+#app-sidebar a:hover,#app-sidebar a.active{background:#e7f5eb;color:var(--green)}
+.side-user{background:linear-gradient(135deg,#062e1a,#0b6b3a);color:#fff;padding:16px;border-radius:18px;margin-bottom:14px}
+.side-user small{opacity:.8}
+#overlay{display:none;position:fixed;inset:0;background:#0007;z-index:25}
+.main{flex:1;padding:20px;max-width:960px;margin:auto;width:100%}
+.hero{background:linear-gradient(135deg,#062e1a 0%,#0b6b3a 55%,#12a35c 100%);color:#fff;padding:42px 24px;border-radius:28px;text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 40px #0b6b3a33}
+.hero:after{content:"🕋";position:absolute;right:18px;bottom:0;font-size:110px;opacity:.12}
+.hero h1{font-family:'Amiri',serif;font-size:42px;line-height:1.05}.gold-text{color:var(--gold2)}
+.hero p{opacity:.92;margin:12px auto;max-width:540px;line-height:1.6}
+.hero-badge{background:#ffffff22;border:1px solid #ffffff33;display:inline-block;padding:8px 16px;border-radius:30px;font-size:12px;font-weight:800;letter-spacing:1.2px}
+.card{background:var(--card);border-radius:24px;padding:22px;box-shadow:0 10px 30px #0000000a;margin-bottom:16px;border:1px solid #eef3ee}
+input,select{width:100%;padding:15px;margin:8px 0;border:2px solid #e8eee8;border-radius:16px;font-size:15px;background:#fbfdfb;outline:none;transition:.2s}
+input:focus,select:focus{border-color:var(--green2);background:#fff;box-shadow:0 0 0 4px #12a35c15}
+.btn{background:var(--green);color:#fff;border:0;padding:15px 18px;border-radius:16px;font-weight:800;cursor:pointer;width:100%;font-size:15px;box-shadow:0 8px 18px #0b6b3a2e;transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 22px #0b6b3a35}
+.btn.gold{background:linear-gradient(135deg,#e9b32a,#ffe27a);color:#1a1a1a}.btn.small{width:auto;padding:9px 13px;font-size:13px;border-radius:12px}
+.btn.outline{background:#fff;color:var(--green);border:2px solid #d9eadf;box-shadow:none}
 .row{display:flex;gap:10px}.row .btn{flex:1}
-.stats{display:flex;gap:12px;margin:14px 0;flex-wrap:wrap}.stat{flex:1;min-width:140px;background:#fff;padding:16px;border-radius:18px;text-align:center;box-shadow:0 6px 18px #00000008}.stat b{display:block;font-size:26px;color:var(--green)}.stat span{font-size:13px;color:#666}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.pkg{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 10px 26px #00000010}.pkg img{width:100%;height:170px;object-fit:cover}.pkg-body{padding:14px}.price{color:var(--green);font-weight:800;font-size:20px;margin:6px 0}
-.tabs{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap;background:#f1f5f1;padding:6px;border-radius:16px}.tab{background:transparent;border:0;padding:11px 16px;border-radius:12px;cursor:pointer;font-weight:800}.tab.on{background:#fff;box-shadow:0 4px 12px #00000012;color:var(--green)}
+.stats{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}.stat{flex:1;min-width:140px;background:#fff;padding:18px;border-radius:20px;text-align:center;box-shadow:0 8px 20px #00000008;border:1px solid #eef3ee}.stat b{display:block;font-size:28px;color:var(--green)}.stat span{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.pkg{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 28px #00000010;border:1px solid #eef3ee;transition:.2s}.pkg:hover{transform:translateY(-4px)}
+.pkg-top{height:160px;display:flex;align-items:center;justify-content:center;font-size:72px;color:#fff}.pkg-body{padding:16px}.price{color:var(--green);font-weight:800;font-size:21px;margin:8px 0}.badge{display:inline-block;padding:5px 10px;border-radius:20px;font-size:11px;font-weight:800;background:#fef3c7;color:#92400e}
+.tabs{display:flex;gap:8px;margin:14px 0;background:#eef3ee;padding:6px;border-radius:16px}.tab{flex:1;background:transparent;border:0;padding:12px;border-radius:12px;cursor:pointer;font-weight:800}.tab.on{background:#fff;box-shadow:0 4px 12px #00000012;color:var(--green)}
 .item{border:1px solid #eef3ee;border-radius:16px;padding:14px;margin:9px 0;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;background:#fbfdfb}
-#msgBox{display:none;padding:12px;border-radius:12px;margin:10px 0;font-weight:600}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#12211a;color:#fff;padding:12px 20px;border-radius:30px;display:none;z-index:99;font-weight:700}
-.auth-wrap{max-width:440px;margin:26px auto}.auth-icon{font-size:52px;text-align:center}.center{text-align:center}.small{font-size:13px;color:#666}.hidden{display:none}
-.badge{background:#e6f4ea;color:var(--green);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:800}
+.pill{padding:6px 11px;border-radius:20px;font-size:12px;font-weight:800}.pill.active{background:#dcfce7;color:#166534}.pill.pending{background:#fef9c3;color:#854d0e}.pill.waiting{background:#ffedd5;color:#9a3412}.pill.expired,.pill.locked{background:#fee2e2;color:#991b1b}
+#msgBox,#msgBox2{display:none;padding:13px;border-radius:14px;margin:10px 0;font-weight:600}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#101f16;color:#fff;padding:13px 22px;border-radius:30px;display:none;z-index:99;font-weight:700;box-shadow:0 10px 30px #0005}
+.auth-wrap{max-width:460px;margin:28px auto}.auth-icon{font-size:58px;text-align:center}.center{text-align:center}.small{font-size:13px;color:var(--muted)}.hidden{display:none}
+.pricing{display:grid;grid-template-columns:1fr 1fr;gap:16px}.price-card{border-radius:22px;padding:22px;text-align:center;border:2px solid #eef3ee;background:#fff}.price-card.featured{border-color:var(--gold);background:linear-gradient(180deg,#fffbeb,#fff);box-shadow:0 16px 30px #e9b32a22;transform:scale(1.02)}
 @media(max-width:768px){
-#app-sidebar{position:fixed;left:-280px;top:58px;bottom:0;z-index:30;transition:.25s}
-#app-sidebar.open{left:0}#overlay.show{display:block}
-.grid{grid-template-columns:1fr}.hero h1{font-size:28px}.row{flex-direction:column}.main{padding:12px}.stats{flex-direction:column}
+#app-sidebar{position:fixed;left:-290px;top:60px;bottom:0;z-index:30;transition:.25s;box-shadow:10px 0 30px #0002}
+#app-sidebar.open{left:0}#overlay.show{display:block}.grid,.pricing{grid-template-columns:1fr}.hero h1{font-size:30px}.row{flex-direction:column}.main{padding:12px}.stats{flex-direction:column}
 }
 </style></head><body>
-
 <header class="topbar"><button class="menu-btn" onclick="toggleMenu()">☰</button><div class="logo">🕋 YATIMA <em>UMRA</em></div><button class="btn small" style="width:auto" onclick="logout()">Toka</button></header>
 <div id="overlay" onclick="closeMenu()"></div>
 <div class="layout">
-<aside id="app-sidebar"><div class="side-user"><b class="user-name">Karibu</b><br><span class="small user-role"></span></div>
+<aside id="app-sidebar"><div class="side-user"><b class="user-name">Karibu</b><br><small class="user-role"></small><br><small id="user-phone"></small><br><small id="user-exp"></small></div>
 <a onclick="go('home')" id="m-home">🏠 Nyumbani</a><a onclick="go('dashboard')" id="m-dash">📊 Dashboard</a><a onclick="go('bookings')" id="m-book">📋 Bookings</a><a onclick="go('payments')" id="m-pay">💰 Malipo</a><a onclick="go('admin')" id="m-admin">👑 Admin</a><a onclick="go('login')" id="m-login">🔑 Ingia</a><a onclick="logout()">🚪 Toka</a></aside>
-
 <main class="main">
 
-<!-- HOME -->
-<div id="v-home"><div class="hero"><div class="hero-badge">✨ ZANZIBAR • 2026</div><h1>Safari ya Imani<br><span class="gold-text">Kwa Yatima</span></h1><p>Changia, Book na Fuatilia safari ya Umra kwa uwazi, heshima na upendo.</p><br><button class="btn gold" onclick="go('dashboard')">📊 Dashboard Yangu →</button></div>
+<div id="v-home">
+<div class="hero"><div class="hero-badge">✨ ZANZIBAR • 2026 • 100% HALAL</div><h1>Safari ya Imani<br><span class="gold-text">Kwa Yatima</span></h1><p>Changia, Book na Fuatilia safari ya Umra kwa uwazi, heshima na upendo. Mfumo unaofanya kazi popote.</p><br><div class="row" style="max-width:520px;margin:auto"><button class="btn gold" onclick="go('dashboard')">📊 Dashboard Yangu →</button><button class="btn outline" style="background:#fff" onclick="go('register')">🎁 Jaribu Bure Siku 3</button></div></div>
 <div class="stats"><div class="stat"><b id="sTotal">-</b><span>Watumiaji</span></div><div class="stat"><b id="sActive">-</b><span>Active</span></div><div class="stat"><b id="sMoney">-</b><span>Malipo TZS</span></div></div>
-<h2>Vifurushi Maarufu</h2><br><div class="grid" id="pkgGrid"></div></div>
 
-<!-- LOGIN -->
-<div id="v-login" class="hidden"><div class="card auth-wrap"><div class="auth-icon">🕋</div><h2 class="center">Karibu Tena</h2><p class="small center">Ingia kuendelea</p><div id="msgBox"></div>
-<input id="username" placeholder="👤 Username"><input id="password" type="password" placeholder="🔒 Password"><input id="tenantId" placeholder="📍 Tenant ID - ZANZIBAR">
-<button class="btn" onclick="doLogin()">INGIA →</button><br><br><p class="center small">Huna akaunti? <a href="#" onclick="go('register')" style="color:#0b6b3a;font-weight:800">Jisajili</a></p></div></div>
+<div class="card"><h2>💰 Kodi Mfumo — Bei za Demo</h2><p class="small">Jaribu bure siku 3, kisha lipa kuendelea. Khadija atathibitisha malipo yako.</p><br>
+<div class="pricing">
+<div class="price-card"><div style="font-size:48px">🎁</div><h3>FREE-DEMO</h3><div class="price">0 TZS</div><p class="small">✅ Siku 3 • Mfumo wote<br>✅ Bookings • Malipo<br>✅ Dashboard</p><br><button class="btn outline" onclick="choosePlan('FREE-DEMO')">Jisajili Bure →</button></div>
+<div class="price-card featured"><span class="badge">🔥 MARUFU SANA</span><div style="font-size:48px">👑</div><h3>MONTHLY</h3><div class="price">50,000 TZS <span class="small">/ mwezi</span></div><p class="small">✅ Siku 30 • Mfumo wote<br>✅ Support ya Khadija<br>✅ Bila kikomo</p><br><button class="btn gold" onclick="choosePlan('MONTHLY')">Lipa Mwezi →</button></div>
+</div>
+<div id="payBox" class="hidden" style="margin-top:16px;background:#f8faf8;padding:16px;border-radius:18px"><h3>💳 Lipa Kuwezesha Mfumo</h3><input id="payPhone" placeholder="📱 Namba yako - 0712345678"><select id="payPlan"><option value="MONTHLY">MONTHLY - 50,000 TZS</option><option value="FREE-DEMO">FREE-DEMO - 0 TZS</option></select><input id="payRef2" placeholder="Namba ya Muamala M-Pesa"><button class="btn gold" onclick="payForSystem()">TUMA MALIPO →</button><p class="small center">Baada ya kutuma, Khadija atathibitisha ndani ya dakika chache.</p></div>
+</div>
 
-<!-- REGISTER -->
-<div id="v-register" class="hidden"><div class="card auth-wrap"><div class="auth-icon">🤲</div><h2 class="center">Jisajili</h2><div id="msgBox2"></div>
-<input id="regName" placeholder="✍️ Jina Kamili"><input id="regUser" placeholder="👤 Username"><input id="regPass" type="password" placeholder="🔒 Password"><input id="regTenant" placeholder="📍 Tenant ID - ZANZIBAR">
+<h2>✈️ Vifurushi Maarufu vya Umra</h2><br><div class="grid" id="pkgGrid">
+<div class="pkg"><div class="pkg-top" style="background:linear-gradient(135deg,#062e1a,#12a35c)">🕋</div><div class="pkg-body"><h3>Umra Standard</h3><p class="small">Siku 14 • Hoteli 3* • Visa + Tiketi</p><div class="price">3,500,000 TZS</div><button class="btn" onclick="choosePkg('Umra Standard')">Book Hiki →</button></div></div>
+<div class="pkg"><div class="pkg-top" style="background:linear-gradient(135deg,#7a5a00,#e9b32a)">⭐</div><div class="pkg-body"><h3>Umra VIP</h3><p class="small">Siku 14 • Hoteli 5* • Karibu na Haram</p><div class="price">5,500,000 TZS</div><button class="btn" onclick="choosePkg('Umra VIP')">Book Hiki →</button></div></div>
+<div class="pkg"><div class="pkg-top" style="background:linear-gradient(135deg,#1a3a5a,#2a9ad6)">🌙</div><div class="pkg-body"><h3>Umra Ramadhan</h3><p class="small">Ramadhan • Iftar • Hoteli 5*</p><div class="price">6,500,000 TZS</div><button class="btn" onclick="choosePkg('Umra Ramadhan')">Book Hiki →</button></div></div>
+</div></div>
+
+<div id="v-login" class="hidden"><div class="card auth-wrap"><div class="auth-icon">🕋</div><h2 class="center">Karibu Tena</h2><p class="small center">Ingia kwa Username au Namba ya Simu</p><div id="msgBox"></div>
+<input id="username" placeholder="👤 Username au 0712345678"><input id="password" type="password" placeholder="🔒 Password">
+<button class="btn" onclick="doLogin()">INGIA →</button><br><br><p class="center small">Huna akaunti? <a href="#" onclick="go('register')" style="color:#0b6b3a;font-weight:800">Jisajili Bure Siku 3</a></p></div></div>
+
+<div id="v-register" class="hidden"><div class="card auth-wrap"><div class="auth-icon">🤲</div><h2 class="center">Jisajili — FREE-DEMO</h2><p class="small center">Pata siku 3 bure. Khadija atakuthibitisha.</p><div id="msgBox2"></div>
+<input id="regName" placeholder="✍️ Jina Kamili"><input id="regUser" placeholder="👤 Username"><input id="regPhone" placeholder="📱 Namba ya Simu - 0712345678"><input id="regPass" type="password" placeholder="🔒 Password">
+<select id="regPlan"><option value="FREE-DEMO">🎁 FREE-DEMO - 0 TZS (Siku 3)</option><option value="MONTHLY">👑 MONTHLY - 50,000 TZS (Siku 30)</option></select>
 <button class="btn gold" onclick="doRegister()">JISAJILI →</button><br><br><p class="center small"><a href="#" onclick="go('login')" style="color:#0b6b3a;font-weight:800">Una akaunti? Ingia</a></p></div></div>
 
-<!-- DASHBOARD -->
-<div id="v-dashboard" class="hidden"><div class="card"><h2>Karibu, <span class="user-name">-</span> 👋</h2><p class="small user-role"></p>
+<div id="v-dashboard" class="hidden"><div class="card"><h2>Karibu, <span class="user-name">-</span> 👋</h2><p class="small user-role"></p><p class="small" id="dash-exp"></p>
 <div class="tabs"><button class="tab on" onclick="tab('book',this)">✈️ Book</button><button class="tab" onclick="tab('my',this)">📋 Zangu</button><button class="tab" onclick="tab('pay',this)">💰 Lipa</button></div>
-<div id="t-book"><select id="pkgSelect"><option>Umra Standard - 3,500,000 TZS</option><option>Umra VIP - 5,500,000 TZS</option><option>Umra Ramadhan - 6,500,000 TZS</option></select><input id="orphanName" placeholder="👶 Jina la Yatima"><button class="btn" onclick="bookNow()">BOOK SASA →</button></div>
+<div id="t-book"><select id="pkgSelect"></select><input id="orphanName" placeholder="👶 Jina la Yatima"><button class="btn" onclick="bookNow()">BOOK SASA →</button></div>
 <div id="t-my" class="hidden"><div id="myList"></div></div>
 <div id="t-pay" class="hidden"><input id="payAmount" type="number" placeholder="Kiasi - 3500000"><select id="payMethod"><option>M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option><option>Bank</option></select><input id="payRef" placeholder="Namba ya Muamala"><button class="btn gold" onclick="payNow()">TUMA MALIPO →</button></div>
 </div></div>
 
-<!-- BOOKINGS -->
 <div id="v-bookings" class="hidden"><div class="card"><h2>📋 Bookings Zangu</h2><div id="myList2"></div></div></div>
-
-<!-- PAYMENTS -->
 <div id="v-payments" class="hidden"><div class="card"><h2>🧾 Malipo Yangu</h2><div id="myPayList"></div></div></div>
 
-<!-- ADMIN -->
-<div id="v-admin" class="hidden"><div class="card"><h2>👑 Admin - Khadija</h2><div class="row"><button class="btn" onclick="loadUsers()">👥 Watumiaji</button><button class="btn gold" onclick="loadPayments()">💰 Malipo</button></div><br><div id="userList"></div><div id="payList"></div></div></div>
+<div id="v-admin" class="hidden"><div class="card"><h2>👑 Admin - Khadija</h2><p class="small">Thibitisha wateja, funga wale ambao hawajalipa, fungua waliolipa.</p><div class="tabs"><button class="tab on" onclick="adminTab('users',this)">👥 Watumiaji</button><button class="tab" onclick="adminTab('pays',this)">💰 Malipo</button></div>
+<div id="a-users"><div id="userList"></div></div><div id="a-pays" class="hidden"><div id="payList"></div></div></div></div>
 
-</main></div>
-<div id="toast"></div>
+</main></div><div id="toast"></div>
 <script src="js/app.js"></script>
 </body></html>
