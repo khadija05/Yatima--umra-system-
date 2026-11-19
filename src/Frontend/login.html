@@ -9,6 +9,7 @@ label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
 .btn{width:100%;padding:14px;border:none;border-radius:50px;font-weight:700;margin-top:14px;cursor:pointer;font-size:15px}
 .btn-teal{background:#0A7A7C;color:#fff}.btn-teal:disabled{background:#999;cursor:wait}
 .btn-orange{background:#FF9A1F;color:#fff}.btn-orange:disabled{background:#ccc;cursor:not-allowed}
+.btn-grey{background:#F3F4F6;color:#333}
 .info{background:#EAF7F7;padding:12px;border-radius:12px;font-size:13px;margin-top:15px;text-align:center;color:#065E60;line-height:1.6}
 .warn{background:#FFE6E6;padding:14px;border-radius:12px;text-align:center;font-weight:700;color:#991b1b;font-size:14px;display:none}
 .success{background:#DCFCE7;padding:14px;border-radius:12px;text-align:center;font-weight:700;color:#166534;font-size:14px;display:none}
@@ -35,11 +36,11 @@ label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
 <label>📦 Plan (kama Taasisi)</label>
 <select id="plan"><option value="FREE-DEMO">🆓 FREE-DEMO - Siku 3 Bure</option><option value="KIDOGO">🌱 KIDOGO - 50,000 / Mwezi</option><option value="KAWAIDA">⭐ KAWAIDA - 100,000 / Mwezi</option><option value="SPECIAL">💚 SPECIAL - 150,000 / Mwezi</option></select>
 
-<!-- BUTTON MBILI HALISI - SIO LINK -->
 <button type="button" id="loginBtn" class="btn btn-teal">Ingia →</button>
 <button type="button" id="registerBtn" class="btn btn-orange">Jisajili Bure →</button>
+<button type="button" id="clearBtn" class="btn btn-grey" style="display:none;">🧹 Tumia Namba Nyingine / Futa Iliyohifadhiwa</button>
 
-<div class="info">Huna akaunti? Bonyeza <b>Jisajili Bure</b> hapo juu.<br><small>Baada ya kujisajili, fomu itafutwa na utaambiwa uingie.</small></div>
+<div class="info">Huna akaunti? Bonyeza <b>Jisajili Bure</b>.<br><small>Baada ya kujisajili, fomu itafutwa na utaambiwa uingie.</small></div>
 <div id="debug"></div>
 <div style="text-align:center;margin-top:14px;"><a href="index.html" style="color:#888;font-size:13px;">← Rudi bila Kuingia</a></div>
 </div>
@@ -52,51 +53,68 @@ const orgEl=document.getElementById('org');
 const planEl=document.getElementById('plan');
 const loginBtn=document.getElementById('loginBtn');
 const registerBtn=document.getElementById('registerBtn');
+const clearBtn=document.getElementById('clearBtn');
 const alreadyBox=document.getElementById('alreadyBox');
 const successBox=document.getElementById('successBox');
 const debugEl=document.getElementById('debug');
 
 function log(m){ debugEl.textContent=m; console.log(m); }
-
-// Futa field zote - hii ndiyo uliyoitaka
 function clearAllFields(){
-  phoneEl.value="";
-  passEl.value="";
-  orgEl.value="";
-  planEl.selectedIndex=0;
-  // Futa pia autocomplete ya browser
-  phoneEl.setAttribute('autocomplete','off');
-  passEl.setAttribute('autocomplete','off');
+  phoneEl.value=""; passEl.value=""; orgEl.value=""; planEl.selectedIndex=0;
 }
 
-// 1. Kama ameshajisajili kwenye hii simu, zuia kujisajili tena
-try{
-  const saved=localStorage.getItem("yatima_user");
-  if(saved){
-    const u=JSON.parse(saved);
-    alreadyBox.style.display='block';
-    alreadyBox.innerHTML='✅ Umesajisajili tayari.<br><small>Huwezi kujisajili tena. Bonyeza Ingia.</small>';
-    registerBtn.disabled=true;
-    registerBtn.textContent='⛔ Umesajisajili Tayari';
-    if(u.phone) phoneEl.value=u.phone;
-  }
-}catch(e){}
+// === FIX KUBWA: Usizuie Login kwa sababu ya localStorage ===
+// Zamani: kama yatima_user ipo, register inazimwa milele na simu inajazwa 0778709707
+// Sasa: tunaonyesha tu ujumbe, lakini Login na Register zinaendelea kufanya kazi.
+// Na kuna button ya kufuta iliyohifadhiwa.
+function checkSaved(){
+  try{
+    const saved=localStorage.getItem("yatima_user");
+    if(saved){
+      const u=JSON.parse(saved);
+      // Onyesha ujumbe lakini USIZIME button
+      alreadyBox.style.display='block';
+      alreadyBox.innerHTML='ℹ️ Kwenye hii simu kuna akaunti iliyohifadhiwa.<br><small>Unaweza kuingia moja kwa moja au kubonyeza "Tumia Namba Nyingine" chini.</small>';
+      clearBtn.style.display='block';
+      // Jaza simu tu ili kuingia iwe rahisi, lakini mtu anaweza kuibadilisha
+      if(u.phone && !phoneEl.value) phoneEl.value=u.phone;
+      // USIZIME registerBtn hapa - ndiyo ilikuwa inakuletea "⛔ Umesajisajili Tayari" kila wakati
+    }
+  }catch(e){}
+}
+checkSaved();
 
-// 2. LOGIN
+// Button mpya: Futa akaunti iliyohifadhiwa - inatatua tatizo lako la 0778709707 kukwama
+clearBtn.addEventListener('click', function(){
+  localStorage.removeItem("yatima_user");
+  localStorage.removeItem("yatima_logged_in");
+  localStorage.removeItem("yatima_registered");
+  clearAllFields();
+  alreadyBox.style.display='none';
+  successBox.style.display='block';
+  successBox.innerHTML='✅ Imefutwa! Sasa andika namba mpya na ujisajili / uingie.';
+  clearBtn.style.display='none';
+  registerBtn.disabled=false;
+  registerBtn.textContent='Jisajili Bure →';
+  phoneEl.focus();
+  log("Imefutwa - sasa unaweza kuingiza namba mpya");
+});
+
+// LOGIN - haijazuiwa tena
 loginBtn.addEventListener('click', async function(){
   const phone=phoneEl.value.trim();
   const password=passEl.value.trim();
   if(!phone||!password){ alert("Jaza simu na password kwanza"); return; }
   loginBtn.disabled=true; loginBtn.textContent='⏳ Ina-ingia...';
-  log("Inajaribu kuingia...");
+  log("Inajaribu kuingia kama "+phone+"...");
   try{
     const res=await fetch(API+"/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,username:phone,password})});
     const u=await res.json();
+    console.log("Login:",u);
     if(u.error==="EXPIRED"){ alert(u.message||"Jaribio limeisha"); loginBtn.disabled=false; loginBtn.textContent='Ingia →'; return; }
     if(res.ok && !u.error){
       const safe={id:u.id,username:u.username,name:u.name,phone:u.phone,role:u.role,plan:u.plan,status:u.status,org:u.org};
       try{ localStorage.setItem("yatima_user",JSON.stringify(safe)); localStorage.setItem("yatima_logged_in","true"); }catch(e){}
-      // Futa password baada ya kuingia pia
       passEl.value="";
       log("✅ Umefanikiwa kuingia!");
       if(u.role==="OWNER") window.location.href="owner.html";
@@ -112,74 +130,52 @@ loginBtn.addEventListener('click', async function(){
   }
 });
 
-// 3. REGISTER - SASA INAFANYA KAZI + INAFUTA FIELD BAADA YA KUJISAJILI
+// REGISTER - inafanya kazi + inafuta field baada ya kujisajili
 registerBtn.addEventListener('click', async function(){
-  if(localStorage.getItem("yatima_user")){ alert("⛔ Umesajisajili tayari! Huwezi kujisajili tena. Bonyeza INGIA."); return; }
   const phone=phoneEl.value.trim();
   const password=passEl.value.trim();
   const org=orgEl.value.trim();
   const plan=planEl.value;
   if(!phone||!password){ alert("Jaza simu na password kwanza"); return; }
-
+  // Kama namba hii ndiyo ile iliyohifadhiwa, mwambie aingie badala ya kujisajili tena
+  try{
+    const saved=localStorage.getItem("yatima_user");
+    if(saved){
+      const u=JSON.parse(saved);
+      if(u.phone===phone){ alert("⛔ Namba hii imeshajisajiliwa kwenye hii simu. Bonyeza INGIA badala ya kujisajili tena. Kama ni namba nyingine, bonyeza 'Tumia Namba Nyingine' kwanza."); return; }
+    }
+  }catch(e){}
   registerBtn.disabled=true; registerBtn.textContent='⏳ Inajisajili...';
   log("Inajaribu kujisajili...");
   try{
-    // Angalia kama namba imeshajisajili
     try{
       const c=await fetch(API+"/api/auth/check/"+encodeURIComponent(phone));
       const cj=await c.json();
-      if(cj.exists){
-        alert("⛔ Namba hii imeshajisajiliwa. Tafadhali INGIA tu.");
-        // Futa field hata kama ameshajisajili ili mtu mwingine asiione
-        clearAllFields();
-        registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
-        return;
-      }
+      if(cj.exists){ alert("⛔ Namba hii imeshajisajiliwa. Tafadhali INGIA tu."); clearAllFields(); registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →'; return; }
     }catch(e){}
-
     const r=await fetch(API+"/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:phone,name:phone,phone,password,role:org?"ADMIN":"Mthamini",org:org,plan:plan})});
     const j=await r.json();
-    console.log("Register:", j);
-
-    if(j.error==="ALREADY_REGISTERED"){
-      alert("⛔ "+j.message);
-      clearAllFields(); // Futa field
-      registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
-      return;
-    }
-
+    console.log("Register:",j);
+    if(j.error==="ALREADY_REGISTERED"){ alert("⛔ "+j.message); clearAllFields(); registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →'; return; }
     if(r.ok){
-      // ✅ MAFANIKIO - Futa field zote mara moja
       clearAllFields();
       try{ localStorage.setItem("yatima_registered","true"); }catch(e){}
-
       successBox.style.display='block';
       successBox.innerHTML='✅ Umejisajili! Sasa INGIA kwa namba na password yako.<br><small>Fomu imefutwa kwa usalama.</small>';
       alreadyBox.style.display='none';
       log("✅ Umejisajili! Fomu imefutwa. Sasa Ingia.");
       alert("✅ Umejisajili! Sasa INGIA. Fomu imefutwa.");
-
-      // Zuia kujisajili tena kwenye hii simu - lakini bado mtu anaweza kuingia
-      // Hatuzuii kabisa hapa ili aweze kuingia, tunamwambia tu aingie
       registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
-      // Weka focus kwenye simu ili aingize tena kwa kuingia
       phoneEl.focus();
-    }else{
-      alert("Kujisajili kumefeli, jaribu tena");
-      registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
-    }
+    }else{ alert("Kujisajili kumefeli, jaribu tena"); registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →'; }
   }catch(e){
-    console.log(e);
-    // Hata kama backend haijibu vizuri, kama alishajaza, futa password kwa usalama
     passEl.value="";
     alert("Backend haijibu. Fungua https://yatima-umra-backend.onrender.com/api/orphans kwanza, subiri 30s, ujaribu tena.");
     registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
   }
 });
 
-// Enter key inafanya kazi
 passEl.addEventListener('keydown', function(e){ if(e.key==="Enter"){ e.preventDefault(); loginBtn.click(); } });
 phoneEl.addEventListener('keydown', function(e){ if(e.key==="Enter"){ e.preventDefault(); loginBtn.click(); } });
-
 log("Ukurasa umeandaliwa - bonyeza Ingia / Jisajili");
 </script></body></html>
