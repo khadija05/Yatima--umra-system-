@@ -7,9 +7,11 @@
 input,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;margin:6px 0;font-size:14px}
 label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
 .btn{width:100%;padding:14px;border:none;border-radius:50px;font-weight:700;margin-top:20px;cursor:pointer;font-size:15px}
-.btn-teal{background:#0A7A7C;color:#fff}.btn-orange{background:#FF9A1F;color:#fff}
+.btn-teal{background:#0A7A7C;color:#fff}.btn-teal:disabled{background:#999;cursor:wait}
+.btn-orange{background:#FF9A1F;color:#fff}.btn-orange:disabled{background:#ccc;cursor:not-allowed}
 .info{background:#EAF7F7;padding:12px;border-radius:12px;font-size:13px;margin-top:15px;text-align:center;color:#065E60;line-height:1.6}
 .warn{background:#FFE6E6;padding:14px;border-radius:12px;text-align:center;font-weight:700;color:#991b1b;font-size:14px;display:none}
+#debug{font-size:12px;color:#888;text-align:center;margin-top:10px}
 @media(max-width:600px){.card{padding:18px}}
 </style></head>
 <body>
@@ -20,19 +22,119 @@ label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
 <div id="alreadyBox" class="warn"></div>
 
 <label>👤 Username / 📱 Simu</label>
-<input id="phone" placeholder="Mf: 077... au username" autocomplete="username" onblur="checkIfRegistered()">
+<input id="phone" type="text" placeholder="Mf: 077... au username" autocomplete="username">
 
 <label>🔒 Password</label>
 <input id="password" type="password" placeholder="Weka password yako" autocomplete="current-password">
 
 <label>🏢 Taasisi (kama unajisajili kama Taasisi - hiari)</label>
-<input id="org" placeholder="Mf: Taasisi ya Mayatima Unguja">
+<input id="org" type="text" placeholder="Mf: Taasisi ya Mayatima Unguja">
 
 <label>📦 Plan (kama Taasisi)</label>
 <select id="plan"><option value="FREE-DEMO">🆓 FREE-DEMO - Siku 3 Bure</option><option value="KIDOGO">🌱 KIDOGO - 50,000 / Mwezi</option><option value="KAWAIDA">⭐ KAWAIDA - 100,000 / Mwezi</option><option value="SPECIAL">💚 SPECIAL - 150,000 / Mwezi</option></select>
 
-<button class="btn btn-teal" onclick="doLogin()">Ingia →</button>
+<!-- BUTTON ZINA ID, SIO ONCLICK TU -->
+<button type="button" id="loginBtn" class="btn btn-teal">Ingia →</button>
+<button type="button" id="registerBtn" class="btn btn-orange">Jisajili Bure →</button>
 
-<div class="info">Huna akaunti? Jisajili hapa chini, utapata siku 3 za kujaribu bure.<br><small>Kama umeshajisajili tayari, huwezi kujisajili tena — Ingia tu.</small></div>
+<div class="info">Huna akaunti? Bonyeza <b>Jisajili Bure</b> hapo juu.<br><small>Kama umeshajisajili tayari, huwezi kujisajili tena — Ingia tu.</small></div>
+<div id="debug"></div>
+<div style="text-align:center;margin-top:14px;"><a href="index.html" style="color:#888;font-size:13px;">← Rudi bila Kuingia</a></div>
+</div>
 
-<div style="text-align:center;margin-top:16px;font-size:14px;">
+<script>
+// HAKUNA PASSWORD ILIYOANDIKWA HAPA
+const API="https://yatima-umra-backend.onrender.com";
+const phoneEl=document.getElementById('phone');
+const passEl=document.getElementById('password');
+const orgEl=document.getElementById('org');
+const planEl=document.getElementById('plan');
+const loginBtn=document.getElementById('loginBtn');
+const registerBtn=document.getElementById('registerBtn');
+const debugEl=document.getElementById('debug');
+const alreadyBox=document.getElementById('alreadyBox');
+
+function log(msg){ debugEl.textContent=msg; console.log(msg); }
+
+// 1. Angalia kama ameshajisajili - bila kuzuia button
+try{
+  const saved=localStorage.getItem("yatima_user");
+  if(saved){
+    const u=JSON.parse(saved);
+    alreadyBox.style.display='block';
+    alreadyBox.innerHTML='✅ Umesajisajili tayari.<br><small>Huwezi kujisajili tena. Bonyeza Ingia.</small>';
+    registerBtn.disabled=true;
+    registerBtn.textContent='⛔ Umesajisajili Tayari';
+    if(u.phone) phoneEl.value=u.phone;
+  }
+}catch(e){ log("LocalStorage haijafunguka, endelea tu"); }
+
+// 2. LOGIN - inafanya kazi sasa
+loginBtn.addEventListener('click', async function(){
+  const phone=phoneEl.value.trim();
+  const password=passEl.value.trim();
+  if(!phone||!password){ alert("Jaza simu na password kwanza"); return; }
+  loginBtn.disabled=true; loginBtn.textContent='⏳ Ina-ingia...';
+  log("Inajaribu kuingia...");
+  try{
+    const res=await fetch(API+"/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,username:phone,password})});
+    const u=await res.json();
+    console.log("Login result:", u);
+    if(u.error==="EXPIRED"){ alert(u.message||"Jaribio limeisha"); loginBtn.disabled=false; loginBtn.textContent='Ingia →'; return; }
+    if(res.ok && !u.error){
+      const safe={id:u.id,username:u.username,name:u.name,phone:u.phone,role:u.role,plan:u.plan,status:u.status,org:u.org};
+      try{ localStorage.setItem("yatima_user",JSON.stringify(safe)); localStorage.setItem("yatima_logged_in","true"); }catch(e){}
+      log("✅ Umefanikiwa kuingia!");
+      if(u.role==="OWNER") window.location.href="owner.html";
+      else if(u.role==="ADMIN") window.location.href="admin.html";
+      else window.location.href="index.html";
+    } else {
+      alert("Login imefeli - angalia namba / password. Kama hujajisajili, bonyeza Jisajili Bure.");
+      loginBtn.disabled=false; loginBtn.textContent='Ingia →';
+    }
+  }catch(e){
+    console.log("Login error", e);
+    alert("Backend haijibu. Jaribu: 1) Fungua https://yatima-umra-backend.onrender.com/api/orphans kwanza, subiri 30s, kisha rudi hapa ujaribu tena.");
+    loginBtn.disabled=false; loginBtn.textContent='Ingia →';
+  }
+});
+
+// 3. REGISTER - inafanya kazi sasa
+registerBtn.addEventListener('click', async function(){
+  if(localStorage.getItem("yatima_user")){ alert("⛔ Umesajisajili tayari! Huwezi kujisajili tena. Bonyeza INGIA."); return; }
+  const phone=phoneEl.value.trim();
+  const password=passEl.value.trim();
+  const org=orgEl.value.trim();
+  const plan=planEl.value;
+  if(!phone||!password){ alert("Jaza simu na password kwanza"); return; }
+  registerBtn.disabled=true; registerBtn.textContent='⏳ Inajisajili...';
+  log("Inajaribu kujisajili...");
+  try{
+    // Angalia kama ameshajisajili
+    try{
+      const c=await fetch(API+"/api/auth/check/"+encodeURIComponent(phone));
+      const cj=await c.json();
+      if(cj.exists){ alert("⛔ Namba hii imeshajisajiliwa. Tafadhali INGIA tu."); registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →'; return; }
+    }catch(e){}
+    const r=await fetch(API+"/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:phone,name:phone,phone,password,role:org?"ADMIN":"Mthamini",org:org,plan:plan})});
+    const j=await r.json();
+    console.log("Register result:", j);
+    if(j.error==="ALREADY_REGISTERED"){ alert("⛔ "+j.message); registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →'; return; }
+    alert("✅ Umejisajili! Sasa bonyeza INGIA. Usijisajili tena.");
+    try{ localStorage.setItem("yatima_registered","true"); }catch(e){}
+    passEl.value="";
+    registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
+    log("✅ Umejisajili! Sasa Ingia.");
+  }catch(e){
+    console.log("Register error", e);
+    alert("Backend haijibu. Fungua https://yatima-umra-backend.onrender.com/api/orphans kwanza, subiri 30s, ujaribu tena.");
+    registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
+  }
+});
+
+// Enter key pia inafanya kazi
+passEl.addEventListener('keydown', function(e){ if(e.key==="Enter") loginBtn.click(); });
+phoneEl.addEventListener('keydown', function(e){ if(e.key==="Enter") loginBtn.click(); });
+
+log("Ukurasa umeandaliwa - bonyeza Ingia / Jisajili");
+</script></body></html>
