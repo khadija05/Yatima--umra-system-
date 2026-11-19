@@ -1,33 +1,5 @@
-package com.yatima.model;
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-@Entity @Table(name="orphans")
-public class Orphan {
-  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
-  private String name=""; private Integer age=7; private String gender="Msichana";
-  private String location="Zanzibar"; private String story=""; private String dream="";
-  private String needs="Umra, Elimu, Chakula"; private String status="Anahitaji Msaada";
-  @Column(length=1000000) private String photoBase64=""; private String photoUrl="";
-  private Boolean featured=true; private String tenantId=""; private Double target=4500000.0;
-  private Double received=0.0; private Integer progress=0; private Double remaining=4500000.0;
-  private LocalDateTime createdAt=LocalDateTime.now();
-  public Long getId(){return id;} public void setId(Long v){id=v;}
-  public String getName(){return name;} public void setName(String v){name=v;}
-  public Integer getAge(){return age;} public void setAge(Integer v){age=v;}
-  public String getGender(){return gender;} public void setGender(String v){gender=v;}
-  public String getLocation(){return location;} public void setLocation(String v){location=v;}
-  public String getStory(){return story;} public void setStory(String v){story=v;}
-  public String getDream(){return dream;} public void setDream(String v){dream=v;}
-  public String getNeeds(){return needs;} public void setNeeds(String v){needs=v;}
-  public String getStatus(){return status;} public void setStatus(String v){status=v;}
-  public String getPhotoBase64(){return photoBase64;} public void setPhotoBase64(String v){photoBase64=v;}
-  public String getPhotoUrl(){return photoUrl;} public void setPhotoUrl(String v){photoUrl=v;}
-  public Boolean getFeatured(){return featured;} public void setFeatured(Boolean v){featured=v;}
-  public String getTenantId(){return tenantId;} public void setTenantId(String v){tenantId=v;}
-  public Double getTarget(){return target;} public void setTarget(Double v){target=v;}
-  public Double getReceived(){return received;} public void setReceived(Double v){received=v;}
-  public Integer getProgress(){return progress;} public void setProgress(Integer v){progress=v;}
-  public Double getRemaining(){return remaining;} public void setRemaining(Double v){remaining=v;}
-  public LocalDateTime getCreatedAt(){return createdAt;} public void setCreatedAt(LocalDateTime v){createdAt=v;}
-  public void recalc(){ if(target==null||target==0) target=4500000.0; if(received==null) received=0.0; progress=(int)Math.min(100, Math.round(received/target*100)); remaining=Math.max(0, target-received); }
-}
+// Institution.java
+// Orphan.java - FULL na Zamini + Picha
+package com.yatima.model; import jakarta.persistence.*;
+@Entity public class Orphan { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; private String name,gender,location,story,status,photoUrl,birthCertificate,school,healthStatus,institutionName,institutionPbzAccount,institutionPbzName,guardianName,guardianPhone,guardianRelation,guardianIdNumber,guardianAddress,guardianPhotoUrl,guardianOccupation,guardianNotes; private int age; private Long collectedAmount=0L,targetAmount=4500000L; private Long institutionId;
+public Long getId(){return id;} public void setId(Long id){this.id=id;} public String getName(){return name;} public void setName(String n){this.name=n;} public int getAge(){return age;} public void setAge(int a){this.age=a;} public String getGender(){return gender;} public void setGender(String g){this.gender=g;} public String getLocation(){return location;} public void setLocation(String l){this.location=l;} public String getStory(){return story;} public void setStory(String s){this.story=s;} public String getStatus(){return status;} public void setStatus(String s){this.status=s;} public Long getCollectedAmount(){return collectedAmount;} public void setCollectedAmount(Long c){this.collectedAmount=c;} public Long getTargetAmount(){return targetAmount;} public void setTargetAmount(Long t){this.targetAmount=t;} public String getPhotoUrl(){return photoUrl;} public void setPhotoUrl(String p){this.photoUrl=p;} public String getBirthCertificate(){return birthCertificate;} public void setBirthCertificate(String b){this.birthCertificate=b;} public String getSchool(){return school;} public void setSchool(String s){this.school=s;} public String getHealthStatus(){return healthStatus;} public void setHealthStatus(String h){this.healthStatus=h;} public String getInstitutionName(){return institutionName;} public void setInstitutionName(String n){this.institutionName=n;} public Long getInstitutionId(){return institutionId;} public void setInstitutionId(Long id){this.institutionId=id;} public String getInstitutionPbzAccount(){return institutionPbzAccount;} public void setInstitutionPbzAccount(String a){this.institutionPbzAccount=a;} public String getInstitutionPbzName(){return institutionPbzName;} public void setInstitutionPbzName(String n){this.institutionPbzName=n;} public String getGuardianName(){return guardianName;} public void setGuardianName(String n){this.guardianName=n;} public String getGuardianPhone(){return guardianPhone;} public void setGuardianPhone(String p){this.guardianPhone=p;} public String getGuardianRelation(){return guardianRelation;} public void setGuardianRelation(String r){this.guardianRelation=r;} public String getGuardianIdNumber(){return guardianIdNumber;} public void setGuardianIdNumber(String n){this.guardianIdNumber=n;} public String getGuardianAddress(){return guardianAddress;} public void setGuardianAddress(String a){this.guardianAddress=a;} public String getGuardianPhotoUrl(){return guardianPhotoUrl;} public void setGuardianPhotoUrl(String p){this.guardianPhotoUrl=p;} public String getGuardianOccupation(){return guardianOccupation;} public void setGuardianOccupation(String o){this.guardianOccupation=o;} public String getGuardianNotes(){return guardianNotes;} public void setGuardianNotes(String n){this.guardianNotes=n;} }
