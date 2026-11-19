@@ -1,0 +1,5 @@
+// Institution.java
+package com.yatima.model; import jakarta.persistence.*;
+@Entity public class Institution { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; private String name,location,pbzAccount,pbzName,phone,adminPhone,plan="TRIAL",status="ACTIVE";
+public Long getId(){return id;} public void setId(Long id){this.id=id;} public String getName(){return name;} public void setName(String n){this.name=n;} public String getLocation(){return location;} public void setLocation(String l){this.location=l;} public String getPbzAccount(){return pbzAccount;} public void setPbzAccount(String a){this.pbzAccount=a;} public String getPbzName(){return pbzName;} public void setPbzName(String n){this.pbzName=n;} public String getPhone(){return phone;} public void setPhone(String p){this.phone=p;} public String getAdminPhone(){return adminPhone;} public void setAdminPhone(String p){this.adminPhone=p;} public String getPlan(){return plan;} public void setPlan(String p){this.plan=p;} public String getStatus(){return status;} public void setStatus(String s){this.status=s;} }
+
