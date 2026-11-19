@@ -11,6 +11,11 @@ private String role;
 private String tenantId;
 private String phone;
 private String name;
+private String email;
+private Boolean locked = false;
+private String plan;
+private String status;
+private Boolean approvedByKhadija = false;
 public Long getId(){ return id; }
 public void setId(Long id){ this.id = id; }
 public String getUsername(){ return username; }
@@ -25,4 +30,16 @@ public String getPhone(){ return phone; }
 public void setPhone(String v){ this.phone = v; }
 public String getName(){ return name; }
 public void setName(String v){ this.name = v; }
+public String getEmail(){ return email; }
+public void setEmail(String v){ this.email = v; }
+public Boolean getLocked(){ return locked; }
+public void setLocked(Boolean v){ this.locked = v; }
+public boolean isLocked(){ return locked != null && locked; }
+public String getPlan(){ return plan; }
+public void setPlan(String v){ this.plan = v; }
+public String getStatus(){ return status; }
+public void setStatus(String v){ this.status = v; }
+public Boolean getApprovedByKhadija(){ return approvedByKhadija; }
+public void setApprovedByKhadija(Boolean v){ this.approvedByKhadija = v; }
+public boolean isApprovedByKhadija(){ return approvedByKhadija != null && approvedByKhadija; }
 }
