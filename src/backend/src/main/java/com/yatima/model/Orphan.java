@@ -1,5 +1,34 @@
-// Institution.java
-// Orphan.java - FULL na Zamini + Picha
-package com.yatima.model; import jakarta.persistence.*;
-@Entity public class Orphan { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; private String name,gender,location,story,status,photoUrl,birthCertificate,school,healthStatus,institutionName,institutionPbzAccount,institutionPbzName,guardianName,guardianPhone,guardianRelation,guardianIdNumber,guardianAddress,guardianPhotoUrl,guardianOccupation,guardianNotes; private int age; private Long collectedAmount=0L,targetAmount=4500000L; private Long institutionId;
-public Long getId(){return id;} public void setId(Long id){this.id=id;} public String getName(){return name;} public void setName(String n){this.name=n;} public int getAge(){return age;} public void setAge(int a){this.age=a;} public String getGender(){return gender;} public void setGender(String g){this.gender=g;} public String getLocation(){return location;} public void setLocation(String l){this.location=l;} public String getStory(){return story;} public void setStory(String s){this.story=s;} public String getStatus(){return status;} public void setStatus(String s){this.status=s;} public Long getCollectedAmount(){return collectedAmount;} public void setCollectedAmount(Long c){this.collectedAmount=c;} public Long getTargetAmount(){return targetAmount;} public void setTargetAmount(Long t){this.targetAmount=t;} public String getPhotoUrl(){return photoUrl;} public void setPhotoUrl(String p){this.photoUrl=p;} public String getBirthCertificate(){return birthCertificate;} public void setBirthCertificate(String b){this.birthCertificate=b;} public String getSchool(){return school;} public void setSchool(String s){this.school=s;} public String getHealthStatus(){return healthStatus;} public void setHealthStatus(String h){this.healthStatus=h;} public String getInstitutionName(){return institutionName;} public void setInstitutionName(String n){this.institutionName=n;} public Long getInstitutionId(){return institutionId;} public void setInstitutionId(Long id){this.institutionId=id;} public String getInstitutionPbzAccount(){return institutionPbzAccount;} public void setInstitutionPbzAccount(String a){this.institutionPbzAccount=a;} public String getInstitutionPbzName(){return institutionPbzName;} public void setInstitutionPbzName(String n){this.institutionPbzName=n;} public String getGuardianName(){return guardianName;} public void setGuardianName(String n){this.guardianName=n;} public String getGuardianPhone(){return guardianPhone;} public void setGuardianPhone(String p){this.guardianPhone=p;} public String getGuardianRelation(){return guardianRelation;} public void setGuardianRelation(String r){this.guardianRelation=r;} public String getGuardianIdNumber(){return guardianIdNumber;} public void setGuardianIdNumber(String n){this.guardianIdNumber=n;} public String getGuardianAddress(){return guardianAddress;} public void setGuardianAddress(String a){this.guardianAddress=a;} public String getGuardianPhotoUrl(){return guardianPhotoUrl;} public void setGuardianPhotoUrl(String p){this.guardianPhotoUrl=p;} public String getGuardianOccupation(){return guardianOccupation;} public void setGuardianOccupation(String o){this.guardianOccupation=o;} public String getGuardianNotes(){return guardianNotes;} public void setGuardianNotes(String n){this.guardianNotes=n;} }
+package com.yatima.model;
+import jakarta.persistence.*;
+@Entity public class Orphan {
+  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
+  private String name,gender,location,story,status,photoUrl,birthCertificate,school,healthStatus;
+  private String institutionName,institutionPbzAccount,institutionPbzName;
+  private String guardianName,guardianPhone,guardianRelation,guardianIdNumber,guardianAddress,guardianPhotoUrl,guardianOccupation,guardianNotes;
+  private int age; private Long collectedAmount=0L,targetAmount=4500000L; private Long institutionId;
+  public Long getId(){return id;} public void setId(Long id){this.id=id;}
+  public String getName(){return name;} public void setName(String n){this.name=n;}
+  public int getAge(){return age;} public void setAge(int a){this.age=a;}
+  public String getGender(){return gender;} public void setGender(String g){this.gender=g;}
+  public String getLocation(){return location;} public void setLocation(String l){this.location=l;}
+  public String getStory(){return story;} public void setStory(String s){this.story=s;}
+  public String getStatus(){return status;} public void setStatus(String s){this.status=s;}
+  public Long getCollectedAmount(){return collectedAmount;} public void setCollectedAmount(Long c){this.collectedAmount=c;}
+  public Long getTargetAmount(){return targetAmount;} public void setTargetAmount(Long t){this.targetAmount=t;}
+  public String getPhotoUrl(){return photoUrl;} public void setPhotoUrl(String p){this.photoUrl=p;}
+  public String getBirthCertificate(){return birthCertificate;} public void setBirthCertificate(String b){this.birthCertificate=b;}
+  public String getSchool(){return school;} public void setSchool(String s){this.school=s;}
+  public String getHealthStatus(){return healthStatus;} public void setHealthStatus(String h){this.healthStatus=h;}
+  public String getInstitutionName(){return institutionName;} public void setInstitutionName(String n){this.institutionName=n;}
+  public Long getInstitutionId(){return institutionId;} public void setInstitutionId(Long id){this.institutionId=id;}
+  public String getInstitutionPbzAccount(){return institutionPbzAccount;} public void setInstitutionPbzAccount(String a){this.institutionPbzAccount=a;}
+  public String getInstitutionPbzName(){return institutionPbzName;} public void setInstitutionPbzName(String n){this.institutionPbzName=n;}
+  public String getGuardianName(){return guardianName;} public void setGuardianName(String n){this.guardianName=n;}
+  public String getGuardianPhone(){return guardianPhone;} public void setGuardianPhone(String p){this.guardianPhone=p;}
+  public String getGuardianRelation(){return guardianRelation;} public void setGuardianRelation(String r){this.guardianRelation=r;}
+  public String getGuardianIdNumber(){return guardianIdNumber;} public void setGuardianIdNumber(String n){this.guardianIdNumber=n;}
+  public String getGuardianAddress(){return guardianAddress;} public void setGuardianAddress(String a){this.guardianAddress=a;}
+  public String getGuardianPhotoUrl(){return guardianPhotoUrl;} public void setGuardianPhotoUrl(String p){this.guardianPhotoUrl=p;}
+  public String getGuardianOccupation(){return guardianOccupation;} public void setGuardianOccupation(String o){this.guardianOccupation=o;}
+  public String getGuardianNotes(){return guardianNotes;} public void setGuardianNotes(String n){this.guardianNotes=n;}
+}
