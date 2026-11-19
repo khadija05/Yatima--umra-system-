@@ -14,6 +14,11 @@ private String institutionPbzName;
 private Double amount;
 private Long institutionId;
 private String status;
+private String location;
+private String story;
+private String school;
+private String healthStatus;
+private String birthCertificate;
 private String guardianName;
 private String guardianPhone;
 private String guardianEmail;
@@ -25,6 +30,7 @@ private String guardianAddress;
 private String guardianPhotoUrl;
 private String guardianOccupation;
 private String guardianNotes;
+private String guardianRelation;
 private String photoUrl;
 private Long yatimaPackageId;
 private String yatimaPackageName;
@@ -58,6 +64,16 @@ public Long getInstitutionId(){ return institutionId; }
 public void setInstitutionId(Long v){ this.institutionId = v; }
 public String getStatus(){ return status; }
 public void setStatus(String v){ this.status = v; }
+public String getLocation(){ return location; }
+public void setLocation(String v){ this.location = v; }
+public String getStory(){ return story; }
+public void setStory(String v){ this.story = v; }
+public String getSchool(){ return school; }
+public void setSchool(String v){ this.school = v; }
+public String getHealthStatus(){ return healthStatus; }
+public void setHealthStatus(String v){ this.healthStatus = v; }
+public String getBirthCertificate(){ return birthCertificate; }
+public void setBirthCertificate(String v){ this.birthCertificate = v; }
 public String getGuardianName(){ return guardianName; }
 public void setGuardianName(String v){ this.guardianName = v; }
 public String getGuardianPhone(){ return guardianPhone; }
@@ -80,6 +96,8 @@ public String getGuardianOccupation(){ return guardianOccupation; }
 public void setGuardianOccupation(String v){ this.guardianOccupation = v; }
 public String getGuardianNotes(){ return guardianNotes; }
 public void setGuardianNotes(String v){ this.guardianNotes = v; }
+public String getGuardianRelation(){ return guardianRelation; }
+public void setGuardianRelation(String v){ this.guardianRelation = v; }
 public String getPhotoUrl(){ return photoUrl; }
 public void setPhotoUrl(String v){ this.photoUrl = v; }
 public Long getYatimaPackageId(){ return yatimaPackageId; }
