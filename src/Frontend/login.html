@@ -18,30 +18,21 @@ label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
 <div class="card">
 <a href="index.html" class="back">← 🏠 Rudi Nyumbani</a>
 <div class="logo"><b>🤲 MAYATIMA ZANZIBAR</b><p>Ingia ili uone malipo na kuchangia</p></div>
-
-<!-- HAKUNA UJUMBE WA "Umesajisajili Tayari" TENA - IMEONDOLEWA KABISA -->
 <div id="successBox"></div>
-
 <label>👤 Username / 📱 Simu</label>
 <input id="phone" type="text" placeholder="Mf: 077... au username" autocomplete="off" value="">
-
 <label>🔒 Password</label>
 <input id="password" type="password" placeholder="Weka password yako" autocomplete="off" value="">
-
 <label>🏢 Taasisi (kama unajisajili kama Taasisi - hiari)</label>
 <input id="org" type="text" placeholder="Mf: Taasisi ya Mayatima Unguja" autocomplete="off" value="">
-
 <label>📦 Plan (kama Taasisi)</label>
 <select id="plan"><option value="FREE-DEMO">🆓 FREE-DEMO - Siku 3 Bure</option><option value="KIDOGO">🌱 KIDOGO - 50,000 / Mwezi</option><option value="KAWAIDA">⭐ KAWAIDA - 100,000 / Mwezi</option><option value="SPECIAL">💚 SPECIAL - 150,000 / Mwezi</option></select>
-
 <button type="button" id="loginBtn" class="btn btn-teal">Ingia →</button>
 <button type="button" id="registerBtn" class="btn btn-orange">Jisajili Bure →</button>
-
 <div class="info">Huna akaunti? Bonyeza <b>Jisajili Bure</b>.<br><small>Baada ya kujisajili, fomu itafutwa.</small></div>
 <div id="debug"></div>
 <div style="text-align:center;margin-top:14px;"><a href="index.html" style="color:#888;font-size:13px;">← Rudi bila Kuingia</a></div>
 </div>
-
 <script>
 const API="https://yatima-umra-backend.onrender.com";
 const phoneEl=document.getElementById('phone');
@@ -52,31 +43,19 @@ const loginBtn=document.getElementById('loginBtn');
 const registerBtn=document.getElementById('registerBtn');
 const successBox=document.getElementById('successBox');
 const debugEl=document.getElementById('debug');
+function log(m){ debugEl.textContent=m; console.log(m); }
+function clearAllFields(){ phoneEl.value=""; passEl.value=""; orgEl.value=""; planEl.selectedIndex=0; }
 
-function log(m){ debugEl.textContent=m; }
-
-// === FIX: ONDOSHA KABISA KUMBUKUMBU YA ZAMANI ===
-// Ukifungua ukurasa huu, futa kila kitu kilichohifadhiwa kwenye hii browser
-// Hii ndiyo inaondoa 0778709707 na ujumbe "Umesajisajili tayari" unaokwama
+// FIX 1: USIFUTE localStorage KILA UKIFUNGUA UKURASA
+// Zamani tulikuwa na window.load inafuta yatima_user - ndiyo ilikuwa inakurudisha index
+// Sasa: ukifungua login, fomu tu inakuwa tupu, lakini kama ume-login tayari hatukufuti
 window.addEventListener('load', function(){
-  try{
-    localStorage.removeItem("yatima_user");
-    localStorage.removeItem("yatima_logged_in");
-    localStorage.removeItem("yatima_registered");
-  }catch(e){}
-  phoneEl.value="";
-  passEl.value="";
-  orgEl.value="";
-  planEl.selectedIndex=0;
+  phoneEl.value=""; passEl.value=""; orgEl.value=""; planEl.selectedIndex=0;
   successBox.style.display='none';
   log("Fomu iko tupu - andika namba na password");
 });
 
-function clearAllFields(){
-  phoneEl.value=""; passEl.value=""; orgEl.value=""; planEl.selectedIndex=0;
-}
-
-// LOGIN
+// FIX 2: LOGIN - REDIRECT SAHIHI KWA ROLE
 loginBtn.addEventListener('click', async function(){
   const phone=phoneEl.value.trim();
   const password=passEl.value.trim();
@@ -86,14 +65,21 @@ loginBtn.addEventListener('click', async function(){
   try{
     const res=await fetch(API+"/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,username:phone,password})});
     const u=await res.json();
+    console.log("LOGIN RESPONSE:", u);
     if(u.error==="EXPIRED"){ alert(u.message||"Jaribio limeisha"); loginBtn.disabled=false; loginBtn.textContent='Ingia →'; return; }
     if(res.ok && !u.error){
-      const safe={id:u.id,username:u.username,name:u.name,phone:u.phone,role:u.role,plan:u.plan,status:u.status,org:u.org};
+      // Safisha role - iwe kubwa, bila space
+      const role = String(u.role || "").trim().toUpperCase();
+      log("✅ Role iliyorudi: " + role + " - inaelekeza...");
+      const safe={id:u.id,username:u.username,name:u.name,phone:u.phone,role:role,plan:u.plan,status:u.status,org:u.org};
       try{ localStorage.setItem("yatima_user",JSON.stringify(safe)); localStorage.setItem("yatima_logged_in","true"); }catch(e){}
       passEl.value="";
-      if(u.role==="OWNER") window.location.href="owner.html";
-      else if(u.role==="ADMIN") window.location.href="admin.html";
-      else window.location.href="index.html";
+      // Subiri kidogo ili localStorage ihifadhiwe kabla ya kwenda ukurasa mwingine
+      setTimeout(()=>{
+        if(role==="OWNER"){ window.location.href="owner.html"; }
+        else if(role==="ADMIN"){ window.location.href="admin.html"; }
+        else { window.location.href="index.html"; }
+      }, 300);
     }else{
       alert("Login imefeli - angalia namba / password. Kama hujajisajili, bonyeza Jisajili Bure.");
       loginBtn.disabled=false; loginBtn.textContent='Ingia →';
@@ -104,7 +90,7 @@ loginBtn.addEventListener('click', async function(){
   }
 });
 
-// REGISTER - inafanya kazi + inafuta field baada ya kujisajili
+// REGISTER
 registerBtn.addEventListener('click', async function(){
   const phone=phoneEl.value.trim();
   const password=passEl.value.trim();
@@ -137,7 +123,6 @@ registerBtn.addEventListener('click', async function(){
     registerBtn.disabled=false; registerBtn.textContent='Jisajili Bure →';
   }
 });
-
 passEl.addEventListener('keydown', function(e){ if(e.key==="Enter"){ e.preventDefault(); loginBtn.click(); } });
 phoneEl.addEventListener('keydown', function(e){ if(e.key==="Enter"){ e.preventDefault(); loginBtn.click(); } });
 </script></body></html>
