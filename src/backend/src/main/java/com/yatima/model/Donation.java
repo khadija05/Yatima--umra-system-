@@ -1,12 +1,12 @@
-package com.yatima.model;
-import jakarta.persistence.*;
+// Donation.java - Malipo ya Yatima TU
+package com.yatima.model; import jakarta.persistence.*;
 @Entity public class Donation {
   @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
-  private String donorName,donorPhone,orphanName,orphanPhotoUrl;
-  private Long orphanId,amount;
+  private String donorName,donorPhone,orphanName,orphanPhotoUrl; private Long orphanId,amount;
   private String paymentMethod="PBZ",paymentStatus="PENDING",status="PENDING";
   private String transactionId,paymentPhone,paymentProofUrl,paymentDate,receiptNumber,notes;
   private String institutionName,institutionPbzAccount,institutionPbzName,institutionMpesa,institutionTigo,institutionAirtel;
+  private String yatimaPackageName;
   public Long getId(){return id;} public void setId(Long id){this.id=id;}
   public String getDonorName(){return donorName;} public void setDonorName(String n){this.donorName=n;}
   public String getDonorPhone(){return donorPhone;} public void setDonorPhone(String p){this.donorPhone=p;}
@@ -29,4 +29,4 @@ import jakarta.persistence.*;
   public String getInstitutionMpesa(){return institutionMpesa;} public void setInstitutionMpesa(String m){this.institutionMpesa=m;}
   public String getInstitutionTigo(){return institutionTigo;} public void setInstitutionTigo(String t){this.institutionTigo=t;}
   public String getInstitutionAirtel(){return institutionAirtel;} public void setInstitutionAirtel(String a){this.institutionAirtel=a;}
-}
+  public String getYatimaPackageName(){return yatimaPackageName;} public void setYatimaPackageName(String n){this.yatimaPackageName=n;}
