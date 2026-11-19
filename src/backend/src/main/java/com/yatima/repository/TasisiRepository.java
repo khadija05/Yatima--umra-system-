@@ -1,4 +1,1 @@
-package com.yatima.repository;
-import com.yatima.model.Tasisi;
-import org.springframework.data.jpa.repository.JpaRepository;
-public interface TasisiRepository extends JpaRepository<Tasisi,Long> {}
+package com.yatima.repository; import com.yatima.model.Institution; import org.springframework.data.jpa.repository.JpaRepository; public interface InstitutionRepository extends JpaRepository<Institution,Long>{}
