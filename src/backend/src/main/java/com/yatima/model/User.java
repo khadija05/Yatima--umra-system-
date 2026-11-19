@@ -20,6 +20,8 @@ private Boolean approvedByKhadija = false;
 private LocalDateTime expiresAt;
 private LocalDateTime createdAt;
 private LocalDateTime trialEndsAt;
+private String resetToken;
+private LocalDateTime resetTokenExpiry;
 public Long getId(){ return id; }
 public void setId(Long id){ this.id = id; }
 public String getUsername(){ return username; }
@@ -52,4 +54,8 @@ public LocalDateTime getCreatedAt(){ return createdAt; }
 public void setCreatedAt(LocalDateTime v){ this.createdAt = v; }
 public LocalDateTime getTrialEndsAt(){ return trialEndsAt; }
 public void setTrialEndsAt(LocalDateTime v){ this.trialEndsAt = v; }
+public String getResetToken(){ return resetToken; }
+public void setResetToken(String v){ this.resetToken = v; }
+public LocalDateTime getResetTokenExpiry(){ return resetTokenExpiry; }
+public void setResetTokenExpiry(LocalDateTime v){ this.resetTokenExpiry = v; }
 }
