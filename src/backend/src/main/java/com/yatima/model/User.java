@@ -1,5 +1,6 @@
 package com.yatima.model;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 @Entity
 @Table(name="users")
 public class User {
@@ -16,6 +17,9 @@ private Boolean locked = false;
 private String plan;
 private String status;
 private Boolean approvedByKhadija = false;
+private LocalDateTime expiresAt;
+private LocalDateTime createdAt;
+private LocalDateTime trialEndsAt;
 public Long getId(){ return id; }
 public void setId(Long id){ this.id = id; }
 public String getUsername(){ return username; }
@@ -42,4 +46,10 @@ public void setStatus(String v){ this.status = v; }
 public Boolean getApprovedByKhadija(){ return approvedByKhadija; }
 public void setApprovedByKhadija(Boolean v){ this.approvedByKhadija = v; }
 public boolean isApprovedByKhadija(){ return approvedByKhadija != null && approvedByKhadija; }
+public LocalDateTime getExpiresAt(){ return expiresAt; }
+public void setExpiresAt(LocalDateTime v){ this.expiresAt = v; }
+public LocalDateTime getCreatedAt(){ return createdAt; }
+public void setCreatedAt(LocalDateTime v){ this.createdAt = v; }
+public LocalDateTime getTrialEndsAt(){ return trialEndsAt; }
+public void setTrialEndsAt(LocalDateTime v){ this.trialEndsAt = v; }
 }
