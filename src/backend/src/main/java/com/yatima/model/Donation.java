@@ -1,6 +1,7 @@
-// Donation.java - Malipo ya Yatima TU
-package com.yatima.model; import jakarta.persistence.*;
-@Entity public class Donation {
+package com.yatima.model;
+import jakarta.persistence.*;
+@Entity
+public class Donation {
   @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
   private String donorName,donorPhone,orphanName,orphanPhotoUrl; private Long orphanId,amount;
   private String paymentMethod="PBZ",paymentStatus="PENDING",status="PENDING";
@@ -30,3 +31,4 @@ package com.yatima.model; import jakarta.persistence.*;
   public String getInstitutionTigo(){return institutionTigo;} public void setInstitutionTigo(String t){this.institutionTigo=t;}
   public String getInstitutionAirtel(){return institutionAirtel;} public void setInstitutionAirtel(String a){this.institutionAirtel=a;}
   public String getYatimaPackageName(){return yatimaPackageName;} public void setYatimaPackageName(String n){this.yatimaPackageName=n;}
+}
