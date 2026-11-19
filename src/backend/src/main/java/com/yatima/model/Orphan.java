@@ -17,6 +17,9 @@ private String photoUrl;
 private Long yatimaPackageId;
 private String yatimaPackageName;
 private Double yatimaPackagePrice;
+private String yatimaPackageStatus;
+private Double targetAmount;
+private Double collectedAmount;
 public Long getId(){ return id; }
 public void setId(Long id){ this.id = id; }
 public String getName(){ return name; }
@@ -47,4 +50,14 @@ public String getYatimaPackageName(){ return yatimaPackageName; }
 public void setYatimaPackageName(String v){ this.yatimaPackageName = v; }
 public Double getYatimaPackagePrice(){ return yatimaPackagePrice; }
 public void setYatimaPackagePrice(Double v){ this.yatimaPackagePrice = v; }
+public String getYatimaPackageStatus(){ return yatimaPackageStatus; }
+public void setYatimaPackageStatus(String v){ this.yatimaPackageStatus = v; }
+public Double getTargetAmount(){ return targetAmount; }
+public void setTargetAmount(Double v){ this.targetAmount = v; }
+public void setTargetAmount(Long v){ this.targetAmount = v.doubleValue(); }
+public void setTargetAmount(long v){ this.targetAmount = (double) v; }
+public Double getCollectedAmount(){ return collectedAmount; }
+public void setCollectedAmount(Double v){ this.collectedAmount = v; }
+public void setCollectedAmount(Long v){ this.collectedAmount = v.doubleValue(); }
+public void setCollectedAmount(long v){ this.collectedAmount = (double) v; }
 }
