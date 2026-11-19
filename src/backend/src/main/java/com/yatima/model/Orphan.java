@@ -16,6 +16,10 @@ private Long institutionId;
 private String status;
 private String guardianName;
 private String guardianPhone;
+private String guardianEmail;
+private String guardianGender;
+private String guardianDob;
+private String guardianNationality;
 private String photoUrl;
 private Long yatimaPackageId;
 private String yatimaPackageName;
@@ -53,6 +57,14 @@ public String getGuardianName(){ return guardianName; }
 public void setGuardianName(String v){ this.guardianName = v; }
 public String getGuardianPhone(){ return guardianPhone; }
 public void setGuardianPhone(String v){ this.guardianPhone = v; }
+public String getGuardianEmail(){ return guardianEmail; }
+public void setGuardianEmail(String v){ this.guardianEmail = v; }
+public String getGuardianGender(){ return guardianGender; }
+public void setGuardianGender(String v){ this.guardianGender = v; }
+public String getGuardianDob(){ return guardianDob; }
+public void setGuardianDob(String v){ this.guardianDob = v; }
+public String getGuardianNationality(){ return guardianNationality; }
+public void setGuardianNationality(String v){ this.guardianNationality = v; }
 public String getPhotoUrl(){ return photoUrl; }
 public void setPhotoUrl(String v){ this.photoUrl = v; }
 public Long getYatimaPackageId(){ return yatimaPackageId; }
