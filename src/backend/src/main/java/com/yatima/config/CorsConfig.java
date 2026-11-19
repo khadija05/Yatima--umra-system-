@@ -1,3 +1,8 @@
-// CorsConfig.java
-package com.yatima.config; import org.springframework.context.annotation.*; import org.springframework.web.servlet.config.annotation.*;
-@Configuration public class CorsConfig implements WebMvcConfigurer { @Override public void addCorsMappings(CorsRegistry r){ r.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowedHeaders("*").allowCredentials(false); } }
+package com.yatima.config;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+@Configuration
+public class CorsConfig implements WebMvcConfigurer {
+  @Override public void addCorsMappings(CorsRegistry r){ r.addMapping("/**").allowedOriginPatterns("*").allowedMethods("*").allowedHeaders("*").allowCredentials(false); }
+}
