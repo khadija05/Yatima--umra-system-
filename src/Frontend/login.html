@@ -1,18 +1,38 @@
-<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ingia - Mayatima</title>
-<style>*{box-sizing:border-box;font-family:system-ui}body{margin:0;background:#fefce8;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.card{background:white;width:100%;max-width:460px;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.1)}.back{display:inline-block;margin-bottom:20px;text-decoration:none;color:#333;font-weight:600;background:#f3f4f6;padding:8px 16px;border-radius:20px}input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-top:5px}button{width:100%;padding:14px;background:#facc15;border:none;border-radius:10px;font-weight:bold;margin-top:20px;cursor:pointer}label{font-weight:600;font-size:14px;display:block;margin-top:15px}</style></head>
-<body><div class="card"><a href="index.html" class="back">← 🏠 Rudi Nyumbani</a><h2 style="text-align:center;">🤲 Mayatima</h2><p style="text-align:center;color:#666;font-size:14px;">Owner: KHADIJA DENGE • 0778709707<br>Ingia ili uone malipo na kuchangia</p>
-<div id="alreadyBox" style="display:none;background:#fee2e2;padding:15px;border-radius:12px;text-align:center;font-weight:bold;color:#991b1b;"></div>
-<label>👤 Username / 📱 Simu</label><input id="phone" placeholder="0778709707 au username" value="0778709707" onblur="checkIfRegistered()">
-<label>🔒 Password</label><input id="password" type="password" value="admin123">
-<label>🏢 Taasisi (kama unajisajili kama Taasisi - hiari)</label><input id="org" placeholder="Mf: Taasisi ya Mayatima Unguja">
-<label>📦 Plan (kama Taasisi)</label><select id="plan"><option value="FREE-DEMO">🆓 FREE-DEMO - Siku 3 Bure</option><option value="KIDOGO">🌱 KIDOGO - 50,000 / Mwezi</option><option value="KAWAIDA">⭐ KAWAIDA - 100,000 / Mwezi</option><option value="SPECIAL">💚 SPECIAL - 150,000 / Mwezi</option></select>
-<button onclick="doLogin()">Ingia →</button>
-<div style="background:#fef9c3;padding:12px;border-radius:10px;font-size:13px;margin-top:15px;text-align:center;"><b>OWNER:</b> 0778709707 / owner123<br><b>ADMIN:</b> 0778709707 / admin123</div>
-<div style="text-align:center;margin-top:15px;font-size:14px;">Huna akaunti? <a href="#" id="registerLink" onclick="doRegister()">Jisajili Bure →</a></div></div>
-<script>
-const API="https://yatima-umra-backend.onrender.com";
-window.onload=function(){ const saved=localStorage.getItem("yatima_user"); if(saved){ try{ const u=JSON.parse(saved); document.getElementById('alreadyBox').style.display='block'; document.getElementById('alreadyBox').innerHTML='✅ Umesajisajili tayari kama <b>'+(u.username||u.name)+'</b> ('+u.role+')<br><small>Huwezi kujisajili tena. Bonyeza Ingia.</small>'; document.getElementById('registerLink').style.opacity='0.3'; document.getElementById('registerLink').style.pointerEvents='none'; document.getElementById('registerLink').textContent='⛔ Umesajisajili Tayari'; }catch(e){} } };
-async function checkIfRegistered(){ const phone=document.getElementById('phone').value.trim(); if(!phone||phone.length<10) return; try{ const r=await fetch(API+"/api/auth/check/"+phone); const j=await r.json(); if(j.exists){ document.getElementById('alreadyBox').style.display='block'; document.getElementById('alreadyBox').innerHTML='⛔ '+j.message+'<br>Ingia tu.'; document.getElementById('registerLink').style.opacity='0.3'; document.getElementById('registerLink').style.pointerEvents='none'; } }catch(e){} }
-async function doLogin(){ const phone=document.getElementById('phone').value.trim(), password=document.getElementById('password').value.trim(); if(phone==="0778709707"&&password==="owner123"){ try{ localStorage.setItem("yatima_user",JSON.stringify({name:"KHADIJA DENGE",username:"owner",phone,role:"OWNER"})); localStorage.setItem("yatima_logged_in","true"); }catch(e){} window.location.href="owner.html"; return; } if(phone==="0778709707"&&password==="admin123"){ try{ localStorage.setItem("yatima_user",JSON.stringify({name:"Admin Khadija",username:"khadija",phone,role:"ADMIN"})); localStorage.setItem("yatima_logged_in","true"); }catch(e){} window.location.href="admin.html"; return; } try{ const res=await fetch(API+"/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({phone,username:phone,password})}); const u=await res.json(); if(u.error==="EXPIRED"){ alert(u.message); return; } if(res.ok&&!u.error){ localStorage.setItem("yatima_user",JSON.stringify(u)); localStorage.setItem("yatima_logged_in","true"); window.location.href="index.html"; } else alert("Login imefeli"); }catch(e){ alert("Backend haijibu"); } }
-async function doRegister(){ if(localStorage.getItem("yatima_user")){ alert("⛔ Umesajisajili tayari! Huwezi kujisajili tena. Bonyeza INGIA."); return; } const phone=document.getElementById('phone').value.trim(), password=document.getElementById('password').value.trim(), org=document.getElementById('org').value.trim(), plan=document.getElementById('plan').value; if(!phone||!password){ alert("Jaza simu na password"); return; } try{ const c=await fetch(API+"/api/auth/check/"+phone); const cj=await c.json(); if(cj.exists){ alert("⛔ "+cj.message); return; } }catch(e){} try{ const r=await fetch(API+"/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:phone,name:phone,phone,password,role:org?"ADMIN":"Mthamini",org:org,plan:plan})}); const j=await r.json(); if(j.error==="ALREADY_REGISTERED"){ alert("⛔ "+j.message); return; } alert("✅ Umejisajili! Plan: "+plan+" - Sasa INGIA. Usijisajili tena."); localStorage.setItem("yatima_registered","true"); }catch(e){ alert("Umejisajili! Sasa Ingia ✅"); } }
-</script></body></html>
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ingia - Mayatima Zanzibar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}body{background:#F2F7F7;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:12px}
+.card{background:#fff;width:100%;max-width:460px;padding:24px;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.back{display:inline-block;margin-bottom:16px;text-decoration:none;color:#065E60;font-weight:700;background:#EAF7F7;padding:8px 16px;border-radius:50px;font-size:14px}
+.logo{text-align:center;margin-bottom:6px}.logo b{font-size:22px;color:#065E60}.logo p{font-size:13px;color:#777;margin-top:4px}
+input,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;margin:6px 0;font-size:14px}
+label{font-weight:700;font-size:14px;display:block;margin-top:14px;color:#333}
+.btn{width:100%;padding:14px;border:none;border-radius:50px;font-weight:700;margin-top:20px;cursor:pointer;font-size:15px}
+.btn-teal{background:#0A7A7C;color:#fff}.btn-orange{background:#FF9A1F;color:#fff}
+.info{background:#EAF7F7;padding:12px;border-radius:12px;font-size:13px;margin-top:15px;text-align:center;color:#065E60;line-height:1.6}
+.warn{background:#FFE6E6;padding:14px;border-radius:12px;text-align:center;font-weight:700;color:#991b1b;font-size:14px;display:none}
+@media(max-width:600px){.card{padding:18px}}
+</style></head>
+<body>
+<div class="card">
+<a href="index.html" class="back">← 🏠 Rudi Nyumbani</a>
+<div class="logo"><b>🤲 MAYATIMA ZANZIBAR</b><p>Ingia ili uone malipo na kuchangia</p></div>
+
+<div id="alreadyBox" class="warn"></div>
+
+<label>👤 Username / 📱 Simu</label>
+<input id="phone" placeholder="Mf: 077... au username" autocomplete="username" onblur="checkIfRegistered()">
+
+<label>🔒 Password</label>
+<input id="password" type="password" placeholder="Weka password yako" autocomplete="current-password">
+
+<label>🏢 Taasisi (kama unajisajili kama Taasisi - hiari)</label>
+<input id="org" placeholder="Mf: Taasisi ya Mayatima Unguja">
+
+<label>📦 Plan (kama Taasisi)</label>
+<select id="plan"><option value="FREE-DEMO">🆓 FREE-DEMO - Siku 3 Bure</option><option value="KIDOGO">🌱 KIDOGO - 50,000 / Mwezi</option><option value="KAWAIDA">⭐ KAWAIDA - 100,000 / Mwezi</option><option value="SPECIAL">💚 SPECIAL - 150,000 / Mwezi</option></select>
+
+<button class="btn btn-teal" onclick="doLogin()">Ingia →</button>
+
+<div class="info">Huna akaunti? Jisajili hapa chini, utapata siku 3 za kujaribu bure.<br><small>Kama umeshajisajili tayari, huwezi kujisajili tena — Ingia tu.</small></div>
+
+<div style="text-align:center;margin-top:16px;font-size:14px;">
