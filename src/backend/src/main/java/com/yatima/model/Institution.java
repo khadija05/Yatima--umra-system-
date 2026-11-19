@@ -1,10 +1,11 @@
-Institution.java - Taasisi za Mayatima TU
-package com.yatima.model; import jakarta.persistence.*;
-@Entity public class Institution {
+package com.yatima.model;
+import jakarta.persistence.*;
+@Entity
+public class Institution {
   @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
   private String name,location,pbzAccount,pbzName,phone,adminPhone,adminName,plan="TRIAL",status="ACTIVE";
-  private String mpesaNumber="0778709707",mpesaName="KHADIJA DENGE",tigoNumber="0715709707",tigoName="KHADIJA DENGE",airtelNumber="0788709707",airtelName="KHADIJA DENGE",lipaNamba="0887387001";
-  private String ownerName="KHADIJA DENGE",ownerPhone="0778709707",ownerWhatsapp="255778709707";
+  private String mpesaNumber="",mpesaName="",tigoNumber="",tigoName="",airtelNumber="",airtelName="",lipaNamba="";
+  private String ownerName="",ownerPhone="",ownerWhatsapp="";
   public Long getId(){return id;} public void setId(Long id){this.id=id;}
   public String getName(){return name;} public void setName(String n){this.name=n;}
   public String getLocation(){return location;} public void setLocation(String l){this.location=l;}
@@ -26,5 +27,3 @@ package com.yatima.model; import jakarta.persistence.*;
   public String getOwnerPhone(){return ownerPhone;} public void setOwnerPhone(String p){this.ownerPhone=p;}
   public String getOwnerWhatsapp(){return ownerWhatsapp;} public void setOwnerWhatsapp(String w){this.ownerWhatsapp=w;}
 }
-
-// 
