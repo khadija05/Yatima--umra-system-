@@ -1,17 +1,15 @@
-Orphan.java - Yatima + ZAMINI Taarifa Zote + Package
-package com.yatima.model; import jakarta.persistence.*;
-@Entity public class Orphan {
+package com.yatima.model;
+import jakarta.persistence.*;
+@Entity
+public class Orphan {
   @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
-  // Yatima
   private String name,gender,location,story,status,photoUrl,birthCertificate,school,healthStatus;
   private String dateOfBirth, nationality="Tanzania", orphanIdNumber;
   private int age; private Long collectedAmount=0L,targetAmount=4500000L; private Long institutionId;
   private String institutionName,institutionPbzAccount,institutionPbzName;
-  // ZAMINI - Taarifa Zote
   private String guardianName,guardianPhone,guardianRelation,guardianIdNumber,guardianAddress,guardianPhotoUrl,guardianOccupation,guardianNotes;
   private String guardianEmail,guardianGender,guardianDob,guardianNationality="Tanzania",guardianWhatsapp,guardianWorkplace,guardianIncome;
   private String guardianEmergencyName,guardianEmergencyPhone;
-  // Package ya Yatima
   private String yatimaPackageName=""; private Long yatimaPackageId; private Long yatimaPackagePrice=0L; private String yatimaPackageStatus="HAJACHAGULIWA";
   public Long getId(){return id;} public void setId(Long id){this.id=id;}
   public String getName(){return name;} public void setName(String n){this.name=n;}
@@ -55,5 +53,3 @@ package com.yatima.model; import jakarta.persistence.*;
   public Long getYatimaPackagePrice(){return yatimaPackagePrice;} public void setYatimaPackagePrice(Long p){this.yatimaPackagePrice=p;}
   public String getYatimaPackageStatus(){return yatimaPackageStatus;} public void setYatimaPackageStatus(String s){this.yatimaPackageStatus=s;}
 }
-
-// 
