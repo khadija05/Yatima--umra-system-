@@ -1,170 +1,41 @@
-<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Yatima Umra - Tuwasaidie Mayatima Kwenda Umra</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}html{overflow-x:hidden}body{font-family:'Poppins',sans-serif;background:#F6FBFB;color:#1A1A1A;line-height:1.6;overflow-x:hidden}
-a{text-decoration:none}img{max-width:100%;display:block}
-nav{position:sticky;top:0;z-index:100;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.nav{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-.logo{font-weight:900;font-size:18px;color:#0A7A7C;white-space:nowrap}.logo span{color:#FF9A1F}
-.nav-links{display:flex;align-items:center;gap:16px}.nav-links a{color:#333;font-size:13px;font-weight:700;white-space:nowrap}.nav-links a.active{color:#FF9A1F}
-.hamburger{display:none;font-size:26px;background:none;border:none;cursor:pointer}
-.btn{border:none;border-radius:50px;padding:12px 22px;font-weight:800;font-size:14px;display:inline-block;cursor:pointer;text-align:center;white-space:nowrap}
-.btn-orange{background:#FF9A1F;color:#fff}.btn-teal{background:#0A7A7C;color:#fff}.btn-white{background:#fff;color:#065E60}.btn-outline{background:transparent;color:#fff;border:2px solid #fff}
-.hero{background:linear-gradient(135deg,#065E60,#0A7A7C);color:#fff;padding:32px 0}
-.hero-grid{max-width:1100px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center}
-.hero h1{font-size:44px;line-height:1.1;font-weight:900}.hero h1 span{color:#FFD27A}.hero p{color:#D9F0F0;margin:14px 0;font-size:14px}
-.hero-card{background:#fff;color:#1A1A1A;border-radius:18px;padding:18px;box-shadow:0 12px 30px rgba(0,0,0,.2)}
-.hero-card .badge{display:inline-block;background:#FFF1DC;color:#B25E00;font-size:11px;font-weight:800;padding:5px 10px;border-radius:50px}
-.hero-card h3{font-size:18px;margin:8px 0}.hero-card .price{font-size:24px;font-weight:900;color:#0A7A7C}
-.stats{max-width:1100px;margin:0 auto;padding:18px 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.stat{background:#fff;border-radius:16px;padding:16px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.06)}
-.stat b{font-size:24px;color:#0A7A7C;display:block}.stat span{font-size:12px;color:#666}
-.section{max-width:1100px;margin:0 auto;padding:28px 16px}.section h2{font-size:26px;font-weight:900;line-height:1.2}.section h2 span{color:#0A7A7C}.sub{color:#666;font-size:13px;margin:6px 0 16px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.07);position:relative}
-.card img{width:100%;height:200px;object-fit:cover}.card .pad{padding:14px}.card h3{font-size:15px;line-height:1.4}.card .story{font-size:12px;color:#555;margin:8px 0;line-height:1.6}
-.badge-age{position:absolute;top:10px;left:10px;background:#FF9A1F;color:#fff;font-size:11px;font-weight:800;padding:4px 9px;border-radius:50px}
-.badge-status{position:absolute;top:10px;right:10px;background:#0A7A7C;color:#fff;font-size:10px;padding:4px 9px;border-radius:50px;max-width:110px;text-align:center}
-.progress{height:9px;background:#EEE;border-radius:50px;overflow:hidden;margin:10px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,#0A7A7C,#FF9A1F)}
-.pkg{padding:18px}.pkg .icon{font-size:30px}.pkg .price{font-size:22px;font-weight:900;color:#0A7A7C;margin:8px 0}.pkg.pop{border:2px solid #FF9A1F}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-box{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,.06)}
-input,select{width:100%;padding:12px;margin:7px 0;border:1.5px solid #E5E5E5;border-radius:11px;font-size:14px;font-family:'Poppins',sans-serif;outline:none;min-width:0}
-.btn-full{width:100%;padding:13px;border:none;border-radius:50px;background:#FF9A1F;color:#fff;font-weight:800;font-size:15px;cursor:pointer}
-.footer{background:#111;color:#fff;padding:28px 0 16px}.footer-grid{max-width:1100px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:1.2fr .8fr 1fr 1fr;gap:16px}.footer a{display:block;color:#CCC;font-size:13px;margin:5px 0}.footer h4{margin-bottom:8px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:200;padding:14px}.modal.open{display:flex}.modal-box{background:#fff;border-radius:18px;max-width:500px;width:100%;overflow:hidden;max-height:90vh;overflow-y:auto}.modal-box img{width:100%;height:220px;object-fit:cover}
-.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.filter-bar button{padding:8px 14px;border-radius:50px;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:12px}.filter-bar button.on{background:#0A7A7C;color:#fff;border-color:#0A7A7C}
-.server-bar{background:#FFF8E1;border:1px solid #FFD27A;padding:10px 14px;border-radius:12px;font-size:12px;text-align:center;margin:10px 16px;display:none}
-.server-bar.show{display:block}
-@media(max-width:820px){
-  .hamburger{display:block}
-  .nav-links{display:none;position:absolute;top:56px;left:0;right:0;background:#fff;flex-direction:column;padding:14px;box-shadow:0 10px 20px rgba(0,0,0,.1);gap:12px}
-  .nav-links.open{display:flex}
-  .nav-links a{font-size:15px;padding:6px 0}
-  .hero{padding:22px 0}.hero-grid{grid-template-columns:1fr;gap:16px}.hero h1{font-size:30px}.hero p{font-size:13px}
-  .stats{grid-template-columns:1fr 1fr;gap:10px;padding:14px}.stat{padding:12px}.stat b{font-size:20px}
-  .grid3,.form-grid,.footer-grid{grid-template-columns:1fr}
-  .section{padding:22px 14px}.section h2{font-size:22px}
-  .card img{height:200px}
-  .btn{padding:11px 18px;font-size:13px}
-}
-@media(max-width:380px){
-  .logo{font-size:15px}.hero h1{font-size:26px}.stats{grid-template-columns:1fr 1fr}.stat b{font-size:18px}.stat span{font-size:11px}
-}
-</style></head>
+<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mayatima - Zanzibar</title>
+<style>*{box-sizing:border-box;font-family:system-ui}body{margin:0;background:#fefce8}nav{display:flex;justify-content:space-between;align-items:center;padding:15px;background:white;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,.1)}a{color:#111;text-decoration:none}.hero{background:linear-gradient(135deg,#facc15,#f59e0b);padding:40px 20px;text-align:center}.card{background:white;margin:12px;padding:18px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,.05)}button{padding:12px 18px;background:#facc15;border:none;border-radius:20px;font-weight:bold;cursor:pointer}input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin-top:5px}label{font-weight:600;font-size:14px;display:block;margin-top:12px}</style></head>
 <body>
-<nav><div class="nav"><div class="logo">🕋 Yatima <span>Umra</span></div><button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button><div class="nav-links"><a href="/" class="active">Nyumbani</a><a href="#mayatima">Mayatima</a><a href="#vifurushi">Vifurushi</a><a href="#changia">Changia</a><a href="#booking">Booking</a><a href="/login.html">Ingia</a><a href="#changia" class="btn btn-orange" style="padding:9px 16px;font-size:12px">Changia Sasa</a></div></div></nav>
-<div class="server-bar" id="serverBar">⏳ Server inawaka... Tafadhali subiri sekunde 20-30, usifunge ukurasa huu.</div>
-<div class="hero"><div class="hero-grid"><div><p style="color:#FFD27A;font-weight:700;font-size:12px">✦ ZANZIBAR • TANZANIA</p><h1>Tuwasaidie Mayatima<br>Kwenda <span>Umra</span></h1><p>Mfumo wa kisasa wa kuwaunganisha wafadhili, taasisi na mayatima ili kila yatima apate fursa ya kuhiji Umra. Changia leo, badilisha maisha ya kesho.</p><div style="display:flex;gap:10px;flex-wrap:wrap"><a href="#mayatima" class="btn btn-orange">Tazama Mayatima</a><a href="#vifurushi" class="btn btn-outline">Vifurushi vya Umra</a></div><p style="font-size:12px;margin-top:12px">🔒 Maelezo ya malipo yanaonekana baada ya kuingia tu.</p></div>
-<div class="hero-card"><span class="badge">⭐ OFA Maalum</span><h3>🕋 Umra Package - 2026</h3><div class="price">TZS 4,500,000 <span style="font-size:12px;color:#888">/ mtu</span></div><p style="font-size:13px;color:#666">Siku 14 • Makka + Madina • Hoteli + Visa + Ndege</p><div class="progress"><i style="width:72%"></i></div><p style="font-size:12px;color:#888">72% Imekusanywa • <span id="heroOrphans">120+</span> Yatima • <span id="heroDonors">850+</span> Wafadhili</p><a href="#booking" class="btn btn-orange" style="width:100%;text-align:center;margin-top:12px">Book Sasa →</a></div></div></div>
-<div class="stats"><div class="stat"><b id="statOrphans">120+</b><span>Mayatima Waliosajiliwa</span></div><div class="stat"><b id="statDonors">850+</b><span>Wafadhili</span></div><div class="stat"><b id="statMoney">TZS 45M+</b><span>Michango Iliyokusanywa</span></div><div class="stat"><b>35</b><span>Walioenda Umra</span></div></div>
-<div class="section" id="mayatima"><h2>🤲 Mayatima <span>Wanaohitaji Msaada</span></h2><p class="sub">Chagua yatima umsaidie kufikia ndoto yake ya Umra.</p>
-<div class="filter-bar" id="filterBar"><button data-f="all" class="on" onclick="filterOrphans('all',this)">Wote</button><button data-f="Msichana" onclick="filterOrphans('Msichana',this)">👧 Wasichana</button><button data-f="Mvulana" onclick="filterOrphans('Mvulana',this)">👦 Wavulana</button><button data-f="Zanzibar" onclick="filterOrphans('Zanzibar',this)">📍 Zanzibar</button><button data-f="Pemba" onclick="filterOrphans('Pemba',this)">📍 Pemba</button></div>
-<div class="grid3" id="orphanGrid"><p style="grid-column:1/4;text-align:center">⏳ Inapakia mayatima...</p></div></div>
-<div class="section" id="vifurushi" style="background:#fff;border-radius:20px"><h2>🕋 Vifurushi <span>vya Umra</span></h2><p class="sub">Chagua kifurushi kinachokufaa - Vyote vinajumuisha Visa, Ndege, Hoteli</p><div class="grid3" id="packageGrid">
-<div class="card pop"><div class="pkg"><span style="background:#FF9A1F;color:#fff;font-size:11px;padding:4px 10px;border-radius:50px">MOST POPULAR</span><div class="icon">🕌</div><h3>Umra Standard - Siku 14</h3><p style="font-size:13px;color:#666">Makka 7 Siku + Madina 7 Siku • Hoteli Karibu na Haram • Chakula Mara 3</p><div class="price">TZS 4,500,000</div><button class="btn btn-orange" onclick="bookPackage('Umra Standard - 4.5M')">Book →</button></div></div>
-<div class="card"><div class="pkg"><div class="icon">⭐</div><h3>Umra VIP - Siku 14</h3><p style="font-size:13px;color:#666">Hoteli 5 Nyota • Usafiri wa VIP • Mwalimu Binafsi • Zawadi Maalum</p><div class="price">TZS 7,500,000</div><button class="btn btn-teal" onclick="bookPackage('Umra VIP - 7.5M')">Book →</button></div></div>
-<div class="card"><div class="pkg"><div class="icon">👨‍👩‍👧</div><h3>Umra Familia - Siku 14</h3><p style="font-size:13px;color:#666">Familia ya Watu 4 • Chumba Kikubwa • Gharama Nafuu kwa Familia</p><div class="price">TZS 16,000,000</div><button class="btn btn-teal" onclick="bookPackage('Umra Familia - 16M')">Book →</button></div></div>
+<nav><div>🤲 <b>Mayatima</b> • ZANZIBAR • Owner: KHADIJA DENGE</div><div><a href="#orphans">Mayatima</a> | <a href="#packages">Package</a> | <a href="#donate">Changia</a> | <a href="login.html" style="background:#facc15;padding:8px 16px;border-radius:20px;font-weight:bold;">🔒 Ingia</a></div></nav>
+<div class="hero"><h1>🤲 Tusaidie Mayatima</h1><p>Kila Yatima ana ndoto. Changia, Mungu akubariki.<br><small>Owner wa Mfumo: <b>KHADIJA DENGE</b> • 0778709707 • PBZ 0887387001</small></p><a href="#orphans"><button style="background:white;">💛 Changia Sasa →</button></a></div>
+<h2 style="padding:0 15px;">📦 Package za Yatima</h2><div id="yatimaPackagesList"></div>
+<h2 style="padding:0 15px;" id="orphans">🤲 Mayatima - Chagua Umchangie</h2><div id="orphansList"></div>
+<div class="card" id="donate" style="border:2px solid #facc15;"><h3>💰 Lipa Sasa - Chagua Njia ya Malipo</h3>
+<div id="paymentBox" style="background:#fef9c3;padding:15px;border-radius:12px;text-align:center;"><p>🔒 Chagua Yatima kwanza hapo juu, kisha Ingia ili uone namba za malipo.</p><a href="login.html"><button>Ingia Kuona Malipo →</button></a></div>
+<div id="paymentMethods" style="display:none;">
+<label>💳 Chagua Njia ya Malipo</label>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;">
+<button type="button" onclick="selectPay('PBZ')" id="btn-PBZ" style="background:#fee2e2;">🏦 PBZ Bank</button>
+<button type="button" onclick="selectPay('M-PESA')" id="btn-M-PESA" style="background:#fee2e2;">📱 M-Pesa</button>
+<button type="button" onclick="selectPay('TIGO PESA')" id="btn-TIGO PESA" style="background:#fee2e2;">📱 Tigo Pesa</button>
+<button type="button" onclick="selectPay('AIRTEL MONEY')" id="btn-AIRTEL MONEY" style="background:#fee2e2;">📱 Airtel Money</button>
 </div>
-<div style="margin-top:18px;background:#EAF7F7;border-radius:14px;padding:16px"><h3 style="font-size:16px">🏢 Wewe ni Mmiliki wa Taasisi? Kodisha Mfumo Huu!</h3><p style="font-size:13px;color:#555">Wewe kama Admin / Owner unanunua Package, unaingiza Requirement zako, Yatima wako na Picha zao.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px" id="planGrid"><a href="/login.html" class="btn btn-teal" style="font-size:12px;padding:9px 16px">🌱 KIDOGO 50,000 / Mwezi</a><a href="/login.html" class="btn btn-orange" style="font-size:12px;padding:9px 16px">⭐ KAWAIDA 100,000 / Mwezi</a><a href="/login.html" class="btn btn-teal" style="font-size:12px;padding:9px 16px">💚 SPECIAL 150,000 / Mwezi</a><a href="/login.html" class="btn btn-white" style="font-size:12px;padding:9px 16px;border:1px solid #ddd">🆓 Jaribio Siku 3 Bure</a></div></div></div>
-<div class="section"><div class="form-grid">
-<div class="form-box" id="changia"><h3>💛 Changia Yatima</h3><p style="font-size:13px;color:#666">Chango chako kinamfikisha yatima Makka</p>
-<label>Jina Lako</label><input id="donorName" placeholder="Mf: Ali Hassan" autocomplete="name">
-<label>Simu (hiari)</label><input id="donorPhone" placeholder="0777 123 456" inputmode="tel">
-<label>Yatima Unayemchangia</label><select id="donorOrphan"><option value="">-- Chagua Yatima --</option></select>
-<label>Kiasi (TZS)</label><input type="number" id="donorAmount" placeholder="50000" value="50000" min="1000">
-<label>Njia ya Malipo</label><select id="donorMethod"><option value="PBZ">PBZ (Inaonekana baada ya kuingia)</option><option value="M-Pesa">M-Pesa</option><option value="Tigo Pesa">Tigo Pesa</option><option value="Airtel Money">Airtel Money</option></select>
-<p style="font-size:12px;color:#0A7A7C;background:#EAF7F7;padding:10px;border-radius:10px">🔒 Maelezo ya malipo yanaonekana baada ya kuingia. <a href="/login.html">Ingia kuona →</a></p>
-<button class="btn-full" onclick="doDonate()">Changia Sasa 💛</button><p id="donateMsg" style="font-size:13px;margin-top:10px"></p></div>
-<div class="form-box" id="booking"><h3>🕋 Book Umra</h3><p style="font-size:13px;color:#666">Jaza fomu ili uanze safari yako</p>
-<label>Jina Kamili</label><input id="bookName" placeholder="Jina lako" autocomplete="name">
-<label>Simu</label><input id="bookPhone" placeholder="0777 123 456" inputmode="tel">
-<label>Chagua Kifurushi</label><select id="bookPackage"><option value="Umra Standard - 4.5M">Umra Standard - 4.5M</option><option value="Umra VIP - 7.5M">Umra VIP - 7.5M</option><option value="Umra Familia - 16M">Umra Familia - 16M</option></select>
-<label>Maelezo</label><input id="bookDesc" placeholder="Mf: Nataka kwenda na familia">
-<button class="btn-full" style="background:#0A7A7C" onclick="doBooking()">Tuma Booking 🕋</button><p id="bookMsg" style="font-size:13px;margin-top:10px"></p>
-<p style="font-size:12px;color:#888">Baada ya kutuma, utapata WhatsApp kutoka kwa timu yetu.</p></div>
-</div></div>
-<div class="footer"><div class="footer-grid"><div><h3>🕋 Yatima Umra</h3><p style="font-size:13px;color:#CCC">Mfumo wa kuwaunganisha wafadhili na mayatima ili kila yatima apate fursa ya Umra. Kwa pamoja tunaweza.</p></div><div><h4>Viungo</h4><a href="#mayatima">Mayatima</a><a href="#vifurushi">Vifurushi</a><a href="#changia">Changia</a><a href="/login.html">Ingia / Jisajili</a><a href="/dashboard.html">Dashboard</a></div><div><h4>Wasiliana</h4><p style="font-size:13px;color:#CCC">📍 Zanzibar, Tanzania</p><p style="font-size:13px;color:#CCC">📞 +255 777 123 456</p><p style="font-size:13px;color:#CCC">✉️ info@yatimaumra.or.tz</p></div><div><h4>Changia Haraka</h4><a href="#changia" class="btn btn-orange" style="font-size:13px">💛 Changia Sasa</a><a href="#booking" class="btn btn-teal" style="font-size:13px;margin-top:10px">🕋 Book Umra</a></div></div><p style="text-align:center;font-size:12px;color:#888;margin-top:18px;border-top:1px solid #333;padding-top:12px">© 2026 Yatima Umra. Haki zote zimehifadhiwa.</p></div>
-<div class="modal" id="orphanModal" onclick="if(event.target===this) closeModal()"><div class="modal-box"><img id="mPhoto" src="" alt=""><div style="padding:16px"><h3 id="mName"></h3><p id="mMeta" style="font-size:12px;color:#888"></p><div class="progress"><i id="mProgress" style="width:60%"></i></div><p id="mStory" style="font-size:13px;color:#555;margin:10px 0"></p><div id="mNeeds"></div><div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-orange" style="flex:1" onclick="donateToCurrent()">💛 Mchangie</button><button onclick="closeModal()" style="padding:11px 16px;border-radius:50px;border:1px solid #ddd;background:#fff;cursor:pointer">Funga</button></div><p style="font-size:12px;text-align:center;margin-top:10px;color:#0A7A7C">🔒 Maelezo ya malipo yanaonekana baada ya kuingia.</p></div></div></div>
+<div id="payInstructions" style="background:#f0fdf4;padding:15px;border-radius:12px;margin-top:15px;font-size:14px;line-height:1.7;"></div>
+<label>Jina Lako (Mfadhili)</label><input id="donorName" placeholder="Mf: Juma Ali">
+<label>Simu Yako</label><input id="donorPhone" placeholder="0778709707">
+<label>Simu Uliyotumia Kulipa</label><input id="payPhone" placeholder="Namba uliyotumia kutuma">
+<label>Kiasi (TZS)</label><input id="amount" type="number" value="50000">
+<label>🧾 Namba ya Muamala / Transaction ID</label><input id="transactionId" placeholder="Mf: PBZ123456 / QK7X123ABC">
+<label>Link ya Screenshot (Hiari)</label><input id="proofUrl" placeholder="https://...">
+<label>Maelezo (Hiari)</label><input id="payNotes" placeholder="Mf: Kwa ajili ya Ahmed">
+<button style="width:100%;margin-top:15px;padding:16px;font-size:16px;" onclick="sendDonation()">✅ Nimemaliza Kulipa - Tuma kwa Admin Kuthibitisha</button></div></div>
+<footer style="background:#111827;color:white;padding:20px;text-align:center;">👑 Owner wa Mfumo: <b>KHADIJA DENGE</b><br>📍 Zanzibar, Tanzania • 📞 0778709707 • WhatsApp +255 778 709 707<br>🏦 PBZ: 0887387001 (KHADIJA DENGE) • ✉️ info@yatima.or.tz<br><a href="login.html" style="color:#facc15;">🔒 Ingia</a> • <a href="owner.html" style="color:#666;font-size:12px;">Owner</a><br><br>© 2026 Mayatima Zanzibar</footer>
 <script>
-const API_URL="https://yatima-umra-backend.onrender.com";
-const WA_NUMBER="255887387001";
-const AFRICAN_FALLBACK="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop";
-let allOrphans=[
-  {id:1,name:"Ahmed",age:10,gender:"Mvulana",location:"Zanzibar",story:"Anapenda kusoma Qur'an, ndoto yake ni kwenda Makka kuomba dua kwa wazazi wake.",dream:"Kwenda Makka",needs:"Umra, Elimu, Chakula",status:"Anahitaji Msaada",progress:45,remaining:2475000,photoBase64:"https://images.unsplash.com/photo-1509099836639-18ba1795216d?q=80&w=800&auto=format&fit=crop"},
-  {id:2,name:"Fatma",age:9,gender:"Msichana",location:"Zanzibar",story:"Yatima wa mama, anaishi na bibi yake. Anataka kwenda Umra kabla hajafikisha miaka 12.",dream:"Umra kabla ya 12",needs:"Umra, Afya",status:"Anahitaji Msaada",progress:30,remaining:3150000,photoBase64:"https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?q=80&w=800&auto=format&fit=crop"},
-  {id:3,name:"Yusuf",age:12,gender:"Mvulana",location:"Pemba",story:"Amekusanya 80% ya gharama. Bado TZS 900,000 ili akamilishe safari yake.",dream:"Umra 2026",needs:"Umra",status:"Karibu Kufikia Lengo",progress:80,remaining:900000,photoBase64:"https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=800&auto=format&fit=crop"},
-  {id:4,name:"Zainab",age:8,gender:"Msichana",location:"Pemba",story:"Anapenda kuchora na kusoma. Anaishi na shangazi yake.",dream:"Mwalimu",needs:"Elimu, Umra",status:"Anahitaji Msaada",progress:25,remaining:3375000,photoBase64:"https://images.unsplash.com/photo-1594708767771-a7502209ff51?q=80&w=800&auto=format&fit=crop"},
-  {id:5,name:"Hassan",age:11,gender:"Mvulana",location:"Zanzibar",story:"Anapenda mpira na Qur'an. Ndoto yake ni kuwa Sheikh.",dream:"Sheikh",needs:"Elimu, Umra",status:"Anahitaji Msaada",progress:55,remaining:2025000,photoBase64:"https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?q=80&w=800&auto=format&fit=crop"},
-  {id:6,name:"Aisha",age:7,gender:"Msichana",location:"Zanzibar",story:"Mdogo lakini mwenye akili sana. Anapenda kuimba kaswida.",dream:"Muuguzi",needs:"Chakula, Elimu, Umra",status:"Anahitaji Msaada",progress:20,remaining:3600000,photoBase64:"https://images.unsplash.com/photo-1609220136736-443140cffec6?q=80&w=800&auto=format&fit=crop"}
-];
-let currentOrphan=null, currentFilter='all';
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function fetchWithRetry(url, options={}, retries=4){
-  for(let i=0;i<retries;i++){
-    try{
-      const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(), 30000);
-      const res=await fetch(url,{...options, signal:ctrl.signal}); clearTimeout(t);
-      if(res.ok || res.status===400 || res.status===404) return res;
-      throw new Error("Server "+res.status);
-    }catch(e){
-      document.getElementById('serverBar').classList.add('show');
-      document.getElementById('serverBar').textContent="⏳ Server inawaka... Jaribio "+(i+1)+"/"+retries+" - Subiri sekunde 15...";
-      if(i===retries-1) throw e;
-      await new Promise(r=>setTimeout(r,15000));
-    }
-  }
-}
-async function loadOrphans(){
-  try{
-    const r=await fetchWithRetry(API_URL+'/api/orphans/featured');
-    if(r.ok){ const d=await r.json(); if(d&&d.length>0) allOrphans=d; }
-    document.getElementById('serverBar').classList.remove('show');
-  }catch(e){ document.getElementById('serverBar').textContent="⚠️ Server bado haijaamka. Mayatima wa mfano wanaonekana. Jaribu tena baada ya dakika 1."; }
-  document.getElementById('statOrphans').textContent = allOrphans.length + "+";
-  document.getElementById('heroOrphans').textContent = allOrphans.length + "+";
-  renderOrphans(currentFilter);
-  document.getElementById('donorOrphan').innerHTML='<option value="">-- Chagua Yatima --</option>'+allOrphans.map(o=>`<option value="${o.id}">${esc(o.name)} - ${esc(o.location||'')}</option>`).join('');
-}
-function renderOrphans(f){
-  let list=allOrphans; if(f!=='all') list=list.filter(o=>o.gender===f||o.location===f);
-  if(!list.length){ document.getElementById('orphanGrid').innerHTML='<p style="grid-column:1/4;text-align:center">Hakuna yatima kwa chaguo hili.</p>'; return; }
-  document.getElementById('orphanGrid').innerHTML=list.map(o=>{
-    const prog=o.progress??50, rem=o.remaining??(4500000*(100-prog)/100);
-    const emoji=o.gender==='Msichana'?'👧':'👦';
-    const photo = (o.photoBase64 && (o.photoBase64.startsWith('http') || o.photoBase64.startsWith('data:'))) ? o.photoBase64 : (o.photoUrl || AFRICAN_FALLBACK);
-    return `<div class="card"><span class="badge-age">${emoji} Miaka ${esc(o.age||'')}</span><span class="badge-status">${esc(o.status||'Anahitaji Msaada')}</span><img src="${esc(photo)}" onclick="openModal(${o.id})" style="cursor:pointer" loading="lazy" alt="${esc(o.name)}" onerror="this.onerror=null;this.src='${AFRICAN_FALLBACK}'"><div class="pad"><h3>${esc(o.name)} - Miaka ${esc(o.age)}, ${esc(o.location)}</h3><p class="story">${esc(o.story||'')}</p><div class="progress"><i style="width:${prog}%"></i></div><p style="font-size:12px;color:#888">${prog}% Imekusanywa • Bado TZS ${Math.round(rem).toLocaleString()}</p><div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-orange" style="flex:1;font-size:12px;padding:10px" onclick="donateTo(${o.id})">💛 TZS ${rem>=1000000?(rem/1000000).toFixed(1)+'M':Math.round(rem/1000)+'K'} Mchangie</button><button class="btn btn-teal" style="font-size:12px;padding:10px 14px" onclick="openModal(${o.id})">👀</button></div></div></div>`;
-  }).join('');
-}
-function filterOrphans(f,btn){ currentFilter=f; document.querySelectorAll('#filterBar button').forEach(b=>b.classList.remove('on')); if(btn) btn.classList.add('on'); renderOrphans(f); }
-function openModal(id){ const o=allOrphans.find(x=>x.id==id); if(!o) return; currentOrphan=o; const photo=(o.photoBase64&&(o.photoBase64.startsWith('http')||o.photoBase64.startsWith('data:')))?o.photoBase64:(o.photoUrl||AFRICAN_FALLBACK); document.getElementById('mPhoto').src=photo; document.getElementById('mPhoto').onerror=function(){this.onerror=null;this.src=AFRICAN_FALLBACK}; document.getElementById('mName').textContent=o.name+" - Miaka "+(o.age||'')+", "+(o.location||''); document.getElementById('mMeta').textContent=o.gender+" • "+(o.status||'')+" • Ndoto: "+(o.dream||'Kwenda Umra'); document.getElementById('mStory').textContent=o.story||""; document.getElementById('mProgress').style.width=(o.progress||50)+"%"; document.getElementById('mNeeds').innerHTML=`<div style="background:#FFF1DC;padding:10px;border-radius:10px;font-size:13px"><b>Anahitaji:</b> ${esc(o.needs||'')}<br><b>Bado:</b> TZS ${(o.remaining||900000).toLocaleString()}</div>`; document.getElementById('orphanModal').classList.add('open'); }
-function closeModal(){ document.getElementById('orphanModal').classList.remove('open'); }
-function donateTo(id){ const o=allOrphans.find(x=>x.id==id); if(o){ document.getElementById('donorOrphan').value=String(o.id); document.getElementById('donorAmount').value=o.remaining||50000; document.getElementById('changia').scrollIntoView({behavior:'smooth'}); } }
-function donateToCurrent(){ if(currentOrphan) donateTo(currentOrphan.id); closeModal(); }
-function bookPackage(pkg){ document.getElementById('bookPackage').value=pkg; document.getElementById('booking').scrollIntoView({behavior:'smooth'}); }
-async function doDonate(){
-  const name=document.getElementById('donorName').value.trim(), phone=document.getElementById('donorPhone').value.trim(), amount=Number(document.getElementById('donorAmount').value), method=document.getElementById('donorMethod').value, orphanId=document.getElementById('donorOrphan').value;
-  const msg=document.getElementById('donateMsg');
-  if(name.length<2){ msg.textContent='❌ Jaza jina lako'; msg.style.color='red'; return; }
-  if(!amount||amount<1000){ msg.textContent='❌ Kiasi lazima kiwe 1000+'; msg.style.color='red'; return; }
-  const orphan = allOrphans.find(o=>String(o.id)===String(orphanId));
-  msg.textContent='⏳ Inatuma... Subiri server iamke (sekunde 20)...'; msg.style.color='#0A7A7C';
-  try{
-    await fetchWithRetry(API_URL+'/api/donations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({donorName:name, jinaMthamini:name, donorPhone:phone, amount:amount, kiasi:amount, method:method, paymentMethod:method, orphanId: orphanId ? Number(orphanId) : null, tenantId:"", pbzName:"KHADIJA DENGE", status:"pending"})});
-    msg.innerHTML=`✅ Asante ${esc(name)}! Ombi lako la kuchangia TZS ${amount.toLocaleString()} ${orphan?('kwa ajili ya <b>'+esc(orphan.name)+'</b>'):''} limetumwa. <a href="/login.html">Ingia kuona maelezo ya malipo →</a>`;
-  }catch(e){ msg.innerHTML=`⚠️ Server bado haijaamka, lakini ombi lako limehifadhiwa hapa. <a href="/login.html">Ingia kuona maelezo ya malipo →</a> Jaribu tena baada ya dakika 1.`; }
-  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Habari! Nimechangia. Jina: ${name}, Simu: ${phone}, Kiasi: ${amount}, Yatima: ${orphan?orphan.name+' (ID '+orphan.id+')':'Mfumo'}, Njia: ${method}`)}`,'_blank');
-}
-async function doBooking(){
-  const name=document.getElementById('bookName').value.trim(), phone=document.getElementById('bookPhone').value.trim(), pkg=document.getElementById('bookPackage').value, desc=document.getElementById('bookDesc').value;
-  const msg=document.getElementById('bookMsg');
-  if(name.length<2){ msg.textContent='❌ Jaza jina lako'; msg.style.color='red'; return; }
-  if(!/^0[67]\d{8}$/.test(phone)){ msg.textContent='❌ Namba sio sahihi 07XX/06XX'; msg.style.color='red'; return; }
-  msg.textContent='⏳ Inatuma Booking... Subiri server iamke...'; msg.style.color='#0A7A7C';
-  try{
-    await fetchWithRetry(API_URL+'/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:name, phone:phone, jinaPackage:pkg, jinaKifurushi:pkg, description:`Booking: ${pkg} - Jina: ${name} - Simu: ${phone} - ${desc}`, maelezo:desc, status:"PENDING", tenantId:""})});
-    msg.innerHTML=`✅ Asante ${esc(name)}! Booking yako ya <b>${esc(pkg)}</b> imetumwa. Timu yetu itakuwasiliana kupitia ${esc(phone)}.`;
-  }catch(e){ msg.innerHTML=`⚠️ Server bado haijaamka. Booking yako imehifadhiwa hapa, jaribu tena baada ya dakika 1.`; }
-  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Habari! Booking Mpya Umra.\nJina: ${name}\nSimu: ${phone}\nKifurushi: ${pkg}\nMaelezo: ${desc}`)}`,'_blank');
-}
-loadOrphans();
+const API="https://yatima-umra-backend.onrender.com"; let selectedOrphan=null; let selectedPay="PBZ";
+async function loadAll(){ try{
+  const pkgs=await (await fetch(API+"/api/yatima-packages")).json();
+  document.getElementById("yatimaPackagesList").innerHTML=pkgs.map(p=>`<div class="card" style="border-left:5px solid #facc15;"><b>${p.badge} ${p.name}</b> - TZS ${Number(p.price).toLocaleString()}<br>${p.description}<br><small>Inajumuisha: ${p.includes} • Muda: ${p.duration}</small></div>`).join('');
+  const orphans=await (await fetch(API+"/api/orphans")).json();
+  document.getElementById("orphansList").innerHTML=orphans.map(o=>`<div class="card"><img src="${o.photoUrl||'https://via.placeholder.com/300'}" style="width:100%;height:200px;object-fit:cover;border-radius:12px;" onerror="this.src='https://via.placeholder.com/300'"><br><b>${o.gender==='GIRL'?'👧':'👦'} ${o.name} - Miaka ${o.age}, ${o.location}</b><br>${o.story}<br>🏫 ${o.school||''} • Taasisi: <b>${o.institutionName}</b><br>📦 Package: <b>${o.yatimaPackageName||'HAJACHAGULIWA'}</b> - TZS ${Number(o.yatimaPackagePrice||0).toLocaleString()}<br><b>${Math.round(o.collectedAmount/o.targetAmount*100)}%</b> - TZS ${Number(o.collectedAmount).toLocaleString()} / ${Number(o.targetAmount).toLocaleString()}<br><br><button onclick="selectOrphan(${o.id},'${o.name}','${o.institutionName}','${o.institutionPbzAccount}','${o.institutionPbzName}')">💛 Mchangie</button></div>`).join('');
+}catch(e){ document.getElementById("orphansList").innerHTML='<div class="card">Backend inawaka, subiri 30s na refresh</div>'; } }
+function selectPay(m){ selectedPay=m; ["PBZ","M-PESA","TIGO PESA","AIRTEL MONEY"].forEach(x=>{ document.getElementById("btn-"+x).style.background=(x===m?"#22c55e":"#fee2e2"); document.getElementById("btn-"+x).style.color=(x===m?"white":"black"); }); updatePayInstructions(); }
+function updatePayInstructions(){ const o=selectedOrphan||{inst:"Taasisi ya Mayatima Zanzibar",acc:"0887387001",accName:"KHADIJA DENGE"}; let h=""; if(selectedPay==="PBZ") h=`<b>🏦 PBZ BANK</b><br>Account: <b style="font-size:18px;">0887387001</b><br>Jina: <b>KHADIJA DENGE</b><br>Taasisi: <b>${o.inst}</b> • Owner: KHADIJA DENGE`; if(selectedPay==="M-PESA") h=`<b>📱 M-PESA</b><br>Lipa Namba: <b style="font-size:18px;">0778709707</b><br>Jina: <b>KHADIJA DENGE</b>`; if(selectedPay==="TIGO PESA") h=`<b>📱 TIGO PESA</b><br>Namba: <b style="font-size:18px;">0715709707</b><br>Jina: <b>KHADIJA DENGE</b>`; if(selectedPay==="AIRTEL MONEY") h=`<b>📱 AIRTEL MONEY</b><br>Namba: <b style="font-size:18px;">0788709707</b><br>Jina: <b>KHADIJA DENGE</b>`; document.getElementById("payInstructions").innerHTML=h; }
+function selectOrphan(id,name,inst,acc,accName){ selectedOrphan={id,name,inst,acc,accName}; if(localStorage.getItem("yatima_logged_in")!=="true"){ alert("Ingia kwanza ili uone maelezo ya malipo"); window.location.href="login.html"; return; } document.getElementById("paymentBox").innerHTML=`<b>✅ Umemchagua ${name}</b><br>Taasisi: <b>${inst}</b><br>Owner: KHADIJA DENGE<br>Chagua njia ya malipo hapa chini 👇`; document.getElementById("paymentMethods").style.display="block"; updatePayInstructions(); document.getElementById("donate").scrollIntoView({behavior:"smooth"}); }
+async function sendDonation(){ if(!selectedOrphan){ alert("Chagua Yatima kwanza"); return; } const amount=Number(document.getElementById("amount").value); const tx=document.getElementById("transactionId").value.trim(); if(!tx){ if(!confirm("Hujaweka Namba ya Muamala. Una uhakika umeshatuma pesa?")) return; } const body={donorName:document.getElementById("donorName").value,donorPhone:document.getElementById("donorPhone").value,orphanId:selectedOrphan.id,orphanName:selectedOrphan.name,amount:amount,paymentMethod:selectedPay,transactionId:tx,paymentPhone:document.getElementById("payPhone").value,paymentProofUrl:document.getElementById("proofUrl").value,notes:document.getElementById("payNotes").value}; const res=await fetch(API+"/api/donations",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}); const saved=await res.json(); alert("✅ Asante! Risiti: "+saved.receiptNumber+" • "+selectedPay+" • TZS "+amount.toLocaleString()+" • ⏳ INASUBIRI KUTHIBITISHWA"); document.getElementById("paymentBox").innerHTML=`<b>⏳ Malipo Yametumwa!</b><br>Risiti: <b>${saved.receiptNumber}</b>`; document.getElementById("paymentMethods").style.display="none"; }
+loadAll(); selectPay("PBZ");
 </script></body></html>
