@@ -8,6 +8,9 @@ private String name;
 private Long age;
 private String gender;
 private String institution;
+private String institutionName;
+private String institutionPbzAccount;
+private String institutionPbzName;
 private Double amount;
 private Long institutionId;
 private String status;
@@ -27,13 +30,21 @@ public void setName(String v){ this.name = v; }
 public Long getAge(){ return age; }
 public void setAge(Long v){ this.age = v; }
 public void setAge(Double v){ this.age = v.longValue(); }
+public void setAge(long v){ this.age = v; }
 public String getGender(){ return gender; }
 public void setGender(String v){ this.gender = v; }
 public String getInstitution(){ return institution; }
 public void setInstitution(String v){ this.institution = v; }
+public String getInstitutionName(){ return institutionName != null ? institutionName : institution; }
+public void setInstitutionName(String v){ this.institutionName = v; }
+public String getInstitutionPbzAccount(){ return institutionPbzAccount; }
+public void setInstitutionPbzAccount(String v){ this.institutionPbzAccount = v; }
+public String getInstitutionPbzName(){ return institutionPbzName; }
+public void setInstitutionPbzName(String v){ this.institutionPbzName = v; }
 public Double getAmount(){ return amount; }
 public void setAmount(Double v){ this.amount = v; }
 public void setAmount(Long v){ this.amount = v.doubleValue(); }
+public void setAmount(long v){ this.amount = (double) v; }
 public Long getInstitutionId(){ return institutionId; }
 public void setInstitutionId(Long v){ this.institutionId = v; }
 public String getStatus(){ return status; }
@@ -50,6 +61,8 @@ public String getYatimaPackageName(){ return yatimaPackageName; }
 public void setYatimaPackageName(String v){ this.yatimaPackageName = v; }
 public Double getYatimaPackagePrice(){ return yatimaPackagePrice; }
 public void setYatimaPackagePrice(Double v){ this.yatimaPackagePrice = v; }
+public void setYatimaPackagePrice(Long v){ this.yatimaPackagePrice = v.doubleValue(); }
+public void setYatimaPackagePrice(long v){ this.yatimaPackagePrice = (double) v; }
 public String getYatimaPackageStatus(){ return yatimaPackageStatus; }
 public void setYatimaPackageStatus(String v){ this.yatimaPackageStatus = v; }
 public Double getTargetAmount(){ return targetAmount; }
