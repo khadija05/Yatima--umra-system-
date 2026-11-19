@@ -12,6 +12,10 @@ private Long orphanId;
 private String status;
 private Double amount;
 private String plan;
+private String packageName;
+private String jinaPackage;
+private String jinaKifurushi;
+private String kifurushi;
 private String paymentMethod;
 private LocalDateTime createdAt;
 private LocalDateTime bookingDate;
@@ -33,6 +37,14 @@ public void setAmount(Long v){ this.amount = v.doubleValue(); }
 public void setAmount(long v){ this.amount = (double) v; }
 public String getPlan(){ return plan; }
 public void setPlan(String v){ this.plan = v; }
+public String getPackageName(){ return packageName; }
+public void setPackageName(String v){ this.packageName = v; }
+public String getJinaPackage(){ return jinaPackage != null ? jinaPackage : packageName; }
+public void setJinaPackage(String v){ this.jinaPackage = v; }
+public String getJinaKifurushi(){ return jinaKifurushi != null ? jinaKifurushi : packageName; }
+public void setJinaKifurushi(String v){ this.jinaKifurushi = v; }
+public String getKifurushi(){ return kifurushi != null ? kifurushi : packageName; }
+public void setKifurushi(String v){ this.kifurushi = v; }
 public String getPaymentMethod(){ return paymentMethod; }
 public void setPaymentMethod(String v){ this.paymentMethod = v; }
 public LocalDateTime getCreatedAt(){ return createdAt; }
