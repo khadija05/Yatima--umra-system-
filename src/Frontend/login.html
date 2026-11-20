@@ -10,7 +10,8 @@ h2{text-align:center;color:#065E60}input,select{width:100%;padding:13px;border:1
 <div class="box"><h2>🕋 YATIMA UMRA</h2><p style="text-align:center;font-size:13px;color:#777">Zanzibar • Umra • Yatima</p>
 <div class="tabs"><button id="tLogin" class="active" onclick="show('login')">Ingia</button><button id="tReg" onclick="show('reg')">Jisajili</button></div>
 <div id="pLogin"><input id="lUser" placeholder="Username au Simu - 0712345678"><input id="lPass" type="password" placeholder="Password"><button id="loginBtn" class="btn btn-teal" onclick="login()">Ingia →</button>
-<button onclick="logout()" style="background:none;border:none;color:#888;font-size:12px;width:100%;margin-top:8px;cursor:pointer">Toka / Futa Akaunti iliyohifadhiwa</button>
+<button onclick="testBackend()" style="background:none;border:none;color:#0A7A7C;font-size:12px;width:100%;margin-top:10px;cursor:pointer;font-weight:700">🔍 Pima kama Backend iko hai →</button>
+<button onclick="logout()" style="background:none;border:none;color:#888;font-size:12px;width:100%;margin-top:4px;cursor:pointer">Toka / Futa Akaunti iliyohifadhiwa</button>
 <div id="payBoxLogin" style="display:none;background:#FFF8E1;padding:12px;border-radius:12px;margin-top:10px;text-align:center"><b>⏰ Muda umeisha!</b><br><span style="font-size:12px">Lipa ili ufunguliwe</span><br><br><input id="payPhoneLogin" placeholder="Namba yako"><input id="payTxnLogin" placeholder="Namba ya Muamala"><button class="btn btn-orange" onclick="payLogin()">TUMA MALIPO →</button></div></div>
 <div id="pReg" style="display:none">
 <input id="rFull" placeholder="Jina Kamili"><input id="rUser" placeholder="Username"><input id="rEmail" placeholder="Email"><input id="rPhone" placeholder="Simu 077..."><input id="rPass" type="password" placeholder="Password">
@@ -28,11 +29,10 @@ h2{text-align:center;color:#065E60}input,select{width:100%;padding:13px;border:1
 <p style="font-size:11px;color:#888;text-align:center;margin-top:8px">Baada ya kujisajili, Mmiliki atakuthibitisha. Kama ni JARIBIO unapata siku 3 bure.</p></div>
 <p style="text-align:center;font-size:12px;margin-top:12px"><a href="index.html">← Rudi Homepage</a></p></div>
 
-<!-- POPUP -->
 <div class="modal" id="popupModal"><div class="modal-box">
 <div id="popupIcon" style="font-size:55px">✅</div>
 <h3 id="popupTitle" style="margin:8px 0">Karibu!</h3>
-<p id="popupMsg" style="font-size:14px;color:#555;line-height:1.6"></p>
+<p id="popupMsg" style="font-size:14px;color:#555;line-height:1.6;white-space:pre-line"></p>
 <div id="popupAction" style="margin-top:14px"></div>
 <button class="btn btn-teal" style="width:100%;margin-top:10px" onclick="closePopup()">SAWA ✓</button>
 </div></div>
@@ -59,8 +59,21 @@ function closePopup(){ document.getElementById('popupModal').classList.remove('s
 function logout(){ localStorage.removeItem('token'); localStorage.removeItem('user'); document.getElementById('lUser').value=''; document.getElementById('lPass').value=''; showPopup('Umetoka','Umetoka. Ingia upya.','ok'); }
 function show(t){ document.getElementById('pLogin').style.display=t==='login'?'block':'none'; document.getElementById('pReg').style.display=t==='reg'?'block':'none'; document.getElementById('tLogin').classList.toggle('active',t==='login'); document.getElementById('tReg').classList.toggle('active',t==='reg'); }
 function selectPlan(p,el){ selectedPlan=p; document.getElementById('rPlan').value=p; document.querySelectorAll('.plan').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
-fetch(API_URL+'/api/stats').catch(()=>{});
-async function fetchWithTimeout(url, options, ms=20000){
+async function testBackend(){
+  showPopup('⏳ Inapima...','Inajaribu kuongea na Backend:\n'+API_URL,'wait');
+  // Jaribu endpoints zilizopo kweli - sio /api/stats pekee
+  let urls=[API_URL+'/api/auth/all', API_URL+'/api/orphans', API_URL+'/api/stats', API_URL+'/api/health'];
+  for(let url of urls){
+    try{
+      let c=new AbortController(); setTimeout(()=>c.abort(), 15000);
+      let r=await fetch(url,{signal:c.signal});
+      let t=await r.text();
+      if(r.ok){ showPopup('✅ Backend Iko Hai!','Endpoint iliyofanya kazi:\n'+url+'\nStatus: '+r.status+'\n\nSasa bonyeza Ingia tena.','ok'); return; }
+    }catch(e){}
+  }
+  showPopup('❌ Backend Haijapatikana','Nimejaribu endpoints zote, hakuna iliyojibu.\n\nAPI: '+API_URL+'\n\nNenda Render -> Logs uangalie kama Backend ime-crash.','err');
+}
+async function fetchWithTimeout(url, options, ms=30000){
   let c=new AbortController(); let t=setTimeout(()=>c.abort(), ms);
   try{ let r=await fetch(url,{...options, signal:c.signal}); clearTimeout(t); return r; }catch(e){ clearTimeout(t); throw e; }
 }
@@ -70,27 +83,28 @@ async function login(){
  if(isLoggingIn) return;
  let u=document.getElementById('lUser').value.trim(); let p=document.getElementById('lPass').value;
  if(!u||!p){ clearLoginForm(); showPopup('Jaza Taarifa','Jaza username na password kwanza.','err'); return; }
- let btn=document.getElementById('loginBtn'); isLoggingIn=true; btn.disabled=true; btn.textContent='⏳ Inaingia...';
+ let btn=document.getElementById('loginBtn'); isLoggingIn=true; btn.disabled=true; btn.textContent='⏳ Inaingia... (sekunde 30)';
  clearLoginForm();
  localStorage.removeItem('token'); localStorage.removeItem('user');
  let isPhone=/^[0-9+]+$/.test(u); let b=isPhone?{phone:u,password:p}:{username:u,password:p,phone:u};
  try{
-  let r=await fetchWithTimeout(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}, 20000); let d=await r.json();
+  let r=await fetchWithTimeout(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}, 30000);
+  let txt=await r.text(); let d={}; try{ d=JSON.parse(txt); }catch(e){ showPopup('❌ Backend Inarudisha Kosa','Backend imerudisha si JSON.\nStatus: '+r.status+'\nJibu: '+txt.substring(0,200)+'\n\nHii ina maana Backend ime-crash. Nenda Render -> Logs.','err'); return; }
   if(d.success){ localStorage.setItem('token','logged-in-'+Date.now()); localStorage.setItem('user',JSON.stringify(d)); showPopup('Karibu '+(d.name||d.username)+'!','Umeingia vizuri. Karibu kwenye mfumo wa Yatima Umra.','ok','<button class="btn btn-teal" style="width:100%" onclick="location.href=\'index.html\'">Nenda Homepage →</button>'); return; }
   if(d.error==='EXPIRED'){ showPopup('⏰ Muda Umeisha!','Mwezi wako umeisha bila kulipa. Mfumo umejifunga. Lipa ili ufunguliwe tena.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();document.getElementById(\'payBoxLogin\').style.display=\'block\'">💳 Lipa Sasa →</button>'); }
   else if(d.error==='LOCKED'){ showPopup('🔒 Akaunti Imefungwa','Akaunti yako imefungwa. Lipa ili ufunguliwe.','lock'); }
   else if(d.error==='NOT_APPROVED'){ showPopup('⏳ Subiri Kuthibitishwa','Bado haijathibitishwa na Mmiliki. Subiri kidogo.','wait'); }
   else if(d.error==='NOT_FOUND'){ showPopup('Akaunti Haipo','Akaunti haipo. Jisajili kwanza.','err','<button class="btn btn-teal" style="width:100%" onclick="closePopup();show(\'reg\')">🎁 Jisajili Sasa →</button>'); }
   else if(d.error==='WRONG_PASSWORD'){ showPopup('Password Si Sahihi','Password uliyoingiza si sahihi. Jaribu tena.','err'); }
-  else showPopup('Imeshindikana', d.message||'Login imeshindikana.','err');
+  else showPopup('Imeshindikana', (d.message||'Login imeshindikana.')+'\nStatus: '+r.status,'err');
  }catch(e){
-  if(e.name==='AbortError') showPopup('Mfumo Unachelewa','Mfumo unachelewa kuamka. Subiri sekunde 10 kisha bonyeza Ingia tena.','err');
-  else showPopup('Hitilafu','Backend haijapatikana. Jaribu tena.','err');
+  if(e.name==='AbortError') showPopup('⏳ Backend Imelala','Backend imelala (Render Free).\n\n1. Bonyeza hapa chini kufungua Backend\n2. Subiri sekunde 60 iiamke\n3. Bonyeza Ingia tena','wait','<button class="btn btn-teal" style="width:100%" onclick="window.open(\''+API_URL+'/api/auth/all\',\'_blank\')">🌐 Amsha Backend Sasa →</button>');
+  else showPopup('❌ Backend Haijapatikana','Haiwezi kuongea na Backend.\n\nAPI: '+API_URL+'\nKosa: '+e.message+'\n\nBonyeza hapa chini kupima.','err','<button class="btn btn-teal" style="width:100%" onclick="closePopup();testBackend()">🔍 Pima Backend →</button>');
  } finally { isLoggingIn=false; btn.disabled=false; btn.textContent='Ingia →'; }
 }
 async function payLogin(){
  let ph=document.getElementById('payPhoneLogin').value.trim(); if(!ph){ showPopup('Jaza Namba','Jaza namba kwanza.','err'); return; }
- try{ let r=await fetchWithTimeout(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph,plan:'KIDOGO',reference:document.getElementById('payTxnLogin').value})}, 15000); let d=await r.json(); if(d.success) showPopup('✅ Malipo Yamepokelewa!','Malipo yamepokelewa. Subiri Mmiliki athibitishe.','ok'); else showPopup('Imeshindikana',d.message||'Imeshindikana','err'); }catch(e){ showPopup('Mfumo Unachelewa','Mfumo unachelewa, jaribu tena','err'); }
+ try{ let r=await fetchWithTimeout(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph,plan:'KIDOGO',reference:document.getElementById('payTxnLogin').value})}, 20000); let d=await r.json(); if(d.success) showPopup('✅ Malipo Yamepokelewa!','Malipo yamepokelewa. Subiri Mmiliki athibitishe.','ok'); else showPopup('Imeshindikana',d.message||'Imeshindikana','err'); }catch(e){ showPopup('Backend Haijapatikana','Backend haijapatikana. Bonyeza Pima Backend hapo juu.','err'); }
 }
 async function register(){
  let btn=document.getElementById('regBtn'); btn.disabled=true; btn.textContent='⏳ Inajisajili...';
@@ -99,14 +113,15 @@ async function register(){
  if(!b.phone){ clearRegForm(); showPopup('Jaza Namba','Jaza namba ya simu kwanza.','err'); btn.disabled=false; btn.textContent='Jisajili →'; return; }
  clearRegForm();
  try{
-  let r=await fetchWithTimeout(API_URL+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}, 20000); let d=await r.json();
+  let r=await fetchWithTimeout(API_URL+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}, 30000); let d=await r.json().catch(()=>({}));
   if(d.success || d.id){ if(b.plan==='JARIBIO') showPopup('🎁 Umejisajili!','Umejisajili vizuri! Unapata siku 3 bure. Subiri Mmiliki akuthibitishe.','ok'); else showPopup('✅ Umejisajili!','Umejisajili vizuri kwa kifurushi '+b.plan+'. Subiri Mmiliki akuthibitishe.','ok'); setTimeout(()=>show('login'),2000); }
   else {
     if(d.message && d.message.includes('imeshajisajiliwa')) showPopup('Namba Imeshajisajiliwa','Namba hii imeshajisajiliwa. INGIA tu.','err');
     else if(d.message && d.message.includes('Username')) showPopup('Username Imechaguliwa','Username hii imeshachukuliwa. Chagua nyingine.','err');
     else showPopup('Imeshindikana', d.message||'Kujisajili kumeshindikana','err');
   }
- }catch(e){ showPopup('Mfumo Unachelewa','Mfumo unachelewa kuamka, jaribu tena baada ya sekunde 10','err'); }
+ }catch(e){ showPopup('❌ Backend Haijapatikana','Backend haijapatikana.\nKosa: '+e.message+'\n\nBonyeza Pima Backend.','err','<button class="btn btn-teal" style="width:100%" onclick="closePopup();testBackend()">🔍 Pima Backend →</button>'); }
  btn.disabled=false; btn.textContent='Jisajili →';
 }
+fetch(API_URL+'/api/auth/all').catch(()=>{});
 </script></body></html>
