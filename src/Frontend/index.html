@@ -18,6 +18,8 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 .hidden{display:none}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:99;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:420px;padding:22px;border-radius:22px;text-align:center}
 .pay-info{background:#FFF8E1;padding:14px;border-radius:14px;text-align:left;font-size:14px;line-height:1.7;margin:12px 0}
+/* POPUP YA UJUMBE */
+#popupModal{z-index:200}.popup-icon{font-size:55px}.popup-ok{background:#dcfce7;color:#166534}.popup-err{background:#fee2e2;color:#991b1b}.popup-warn{background:#fef9c3;color:#854d0e}
 @media(max-width:700px){.grid3{grid-template-columns:1fr}.hero h1{font-size:22px}}
 </style></head><body>
 
@@ -30,7 +32,6 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <div class="stat"><b id="sOrphans">0</b><br>Mayatima</div><div class="stat"><b id="sDon">0</b><br>Michango</div><div class="stat"><b id="sUmra">0</b><br>Walioenda Umra</div><div class="stat"><b id="sTotal">0</b><br>Jumla TZS</div></div></div>
 
 <div class="section" id="login"><h2>🔐 <span>Ingia / Jisajili - Kodi Mfumo</span></h2><p class="sub">Jaribu bure siku 3. Mmiliki akithibitisha unaingia. Mwezi ukiisha bila kulipa, mfumo unajifunga.</p>
-<div id="msgBox" style="display:none;padding:12px;border-radius:12px;margin:8px 0;font-weight:700"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 <div><h3 style="font-size:14px">🔑 Ingia</h3><input id="username" placeholder="👤 Username au 0712345678"><input id="password" type="password" placeholder="🔒 Password"><button id="loginBtn" class="btn btn-teal" style="width:100%" onclick="doLogin()">INGIA →</button><p id="loginExp" style="font-size:12px;color:#777;margin-top:6px"></p></div>
 <div><h3 style="font-size:14px">🎁 Jisajili Bure Siku 3</h3><input id="regName" placeholder="✍️ Jina Kamili"><input id="regUser" placeholder="👤 Username"><input id="regPhone" placeholder="📱 Namba - 0712345678"><input id="regPass" type="password" placeholder="🔒 Password"><select id="regPlan"><option value="JARIBIO">🎁 JARIBIO - 0 TZS (Siku 3)</option><option value="KIDOGO">👑 KIDOGO - 50,000 TZS</option><option value="KUBWA">🏛️ KUBWA - 200,000 TZS (Taasisi Kubwa)</option></select><button id="regBtn" class="btn btn-orange" style="width:100%" onclick="doRegister()">JISAJILI →</button></div>
@@ -89,25 +90,53 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <button class="btn btn-white" style="width:100%;margin-top:8px;border:1px solid #ddd" onclick="closeWa()">Funga</button></div>
 </div></div>
 
+<!-- POPUP YA UJUMBE - INAKUJA BAADA YA INGIA / JISAJILI -->
+<div class="modal" id="popupModal"><div class="modal-box">
+<div id="popupIcon" class="popup-icon">✅</div>
+<h3 id="popupTitle" style="margin:8px 0">Karibu!</h3>
+<p id="popupMsg" style="font-size:14px;color:#555;line-height:1.6"></p>
+<div id="popupAction" style="margin-top:14px"></div>
+<button class="btn btn-teal" style="width:100%;margin-top:10px" onclick="closePopup()">SAWA ✓</button>
+</div></div>
+
 <script>
 const API_URL = 'https://yatima-umra-system.onrender.com';
 const BANK_NAME='PBZ', BANK_ACC='0887387001', BANK_OWNER='KHADIJA DENGE', ADMIN_WA='255887387001';
 let orphans=[], allFeedback=[], allBookings=[], selType={name:'KAMILI',amount:250000}, curPlan='KIDOGO', curPkg='', isLoggingIn=false;
 const PLANS={ JARIBIO:{price:'0 TZS',days:3}, KIDOGO:{price:'50,000 TZS',days:30}, KUBWA:{price:'200,000 TZS',days:30} };
+
+// ===== POPUP FUNCTION =====
+function showPopup(title, msg, type='ok', actionHtml=''){
+  let m=document.getElementById('popupModal');
+  document.getElementById('popupTitle').textContent=title;
+  document.getElementById('popupMsg').textContent=msg;
+  document.getElementById('popupIcon').textContent = type==='ok' ? '✅' : type==='err' ? '❌' : type==='lock' ? '🔒' : type==='wait' ? '⏳' : '💬';
+  document.getElementById('popupAction').innerHTML=actionHtml;
+  m.classList.add('show');
+}
+function closePopup(){ document.getElementById('popupModal').classList.remove('show'); }
+
+// ===== Futa token iliyo-expire =====
 (function clearStale(){
   try{
     let u = JSON.parse(localStorage.getItem('user')||'{}');
-    if(u && u.expiresAt && new Date(u.expiresAt) < new Date()){ localStorage.removeItem('token'); localStorage.removeItem('user'); }
+    if(u && u.expiresAt && new Date(u.expiresAt) < new Date()){
+      localStorage.removeItem('token'); localStorage.removeItem('user');
+      // Mwezi umeisha bila kulipa -> mfumo umejifunga - onyesha popup
+      setTimeout(()=>showPopup('⏰ Muda Umeisha','Mwezi wako umeisha bila kulipa. Mfumo umejifunga. Lipa ili ufunguliwe tena.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\'KIDOGO\',\'\')">💳 Lipa Sasa →</button>'),500);
+    }
     if(u && (u.status==='locked' || u.status==='expired')){ localStorage.removeItem('token'); localStorage.removeItem('user'); }
   }catch(e){ localStorage.removeItem('token'); localStorage.removeItem('user'); }
 })();
 function logoutAll(){ localStorage.removeItem('token'); localStorage.removeItem('user'); localStorage.removeItem('waPhone'); localStorage.removeItem('waName'); location.reload(); }
-// Amsha Backend kimya kimya - hakuna message inaonekana
 fetch(API_URL+'/api/stats').catch(()=>{});
 async function fetchWithTimeout(url, options, ms=20000){
   let c=new AbortController(); let t=setTimeout(()=>c.abort(), ms);
   try{ let r=await fetch(url,{...options, signal:c.signal}); clearTimeout(t); return r; }catch(e){ clearTimeout(t); throw e; }
 }
+function clearLoginForm(){ document.getElementById('username').value=''; document.getElementById('password').value=''; }
+function clearRegForm(){ document.getElementById('regName').value=''; document.getElementById('regUser').value=''; document.getElementById('regPhone').value=''; document.getElementById('regPass').value=''; }
+
 const TYPES=[{name:'KAMILI',amount:250000,desc:'Elimu+Chakula+Afya'},{name:'SEHEMU',amount:50000,desc:'Msaada wa sehemu'},{name:'ELIMU',amount:80000,desc:'Elimu pekee'},{name:'CHAKULA',amount:60000,desc:'Chakula'},{name:'AFYA',amount:40000,desc:'Afya'},{name:'UMRA',amount:4500000,desc:'Umra kamili'}];
 document.getElementById('sponTypes').innerHTML=TYPES.map(t=>`<div class="stat" onclick="selType={name:'${t.name}',amount:${t.amount}};calcSpon();document.querySelectorAll('#sponTypes .stat').forEach(e=>e.style.border='');this.style.border='2px solid #FF9A1F'" style="cursor:pointer"><b>${t.name}</b><br>${t.amount.toLocaleString()} TZS<br><span style="font-size:11px">${t.desc}</span></div>`).join('');
 function calcSpon(){ document.getElementById('spTotal').textContent=(selType.amount*(parseInt(document.getElementById('spMonths').value)||1)).toLocaleString(); }
@@ -118,7 +147,7 @@ function choosePlan(p){ if(p==='JARIBIO'){ document.getElementById('regPlan').va
 function choosePkg(n){ openWa('KIDOGO', n); }
 function sendWaInfo(){
   let phone=document.getElementById('waPhone').value.trim(); let name=document.getElementById('waName').value.trim()||'Mteja';
-  if(!phone) return alert('Ingiza namba ya WhatsApp kwanza');
+  if(!phone){ showPopup('Ingiza Namba','Ingiza namba ya WhatsApp kwanza.','err'); return; }
   let price = PLANS[curPlan] ? PLANS[curPlan].price : curPlan;
   let label = curPkg && curPkg!==curPlan ? curPkg : curPlan+' - '+price;
   document.getElementById('waPlanInfo').textContent=label;
@@ -130,37 +159,69 @@ function sendWaInfo(){
 }
 async function confirmPay(){
   let txn=document.getElementById('waTxn').value.trim(); let phone=localStorage.getItem('waPhone')||document.getElementById('waPhone').value.trim();
-  if(!txn) return alert('Ingiza Namba ya Muamala baada ya kulipa');
-  try{ await fetchWithTimeout(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,plan:curPlan,reference:txn})},15000); alert('✅ Asante! Malipo yamepokelewa. Mmiliki atakuthibitisha.'); closeWa(); }catch(e){ alert('Mfumo unachelewa, jaribu tena'); }
+  if(!txn){ showPopup('Ingiza Muamala','Ingiza Namba ya Muamala baada ya kulipa.','err'); return; }
+  try{ await fetchWithTimeout(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,plan:curPlan,reference:txn})},15000); closeWa(); document.getElementById('waTxn').value=''; showPopup('Asante!','Malipo yamepokelewa. Mmiliki atakuthibitisha hivi karibuni.','ok'); }catch(e){ showPopup('Mfumo Unachelewa','Mfumo unachelewa, jaribu tena.','err'); }
 }
-function showMsg(m,err){ let el=document.getElementById('msgBox'); el.style.display='block'; el.style.background=err?'#fee2e2':'#dcfce7'; el.style.color=err?'#991b1b':'#166534'; el.textContent=m; }
 function getUser(){ try{ return JSON.parse(localStorage.getItem('user')||'{}') }catch(e){ return {} } }
 function setUserBadge(){ let u=getUser(); if(u.username){ let e=document.getElementById('loginExp'); if(e && u.expiresAt) e.textContent='⏰ Mfumo unaisha: '+new Date(u.expiresAt).toLocaleDateString()+' • '+(u.plan||''); if(u.role==='ADMIN'||u.role==='OWNER'){ document.getElementById('adminBox').classList.remove('hidden'); loadUsers(); } } }
+
+// ===== INGIA - Data inafutika + Popup =====
 async function doLogin(){
   if(isLoggingIn) return;
   let u=document.getElementById('username').value.trim(); let p=document.getElementById('password').value;
-  if(!u||!p) return showMsg('Jaza username na password',true);
-  let btn=document.getElementById('loginBtn'); isLoggingIn=true; btn.disabled=true; btn.textContent='⏳ Inaingia... Subiri...';
+  if(!u||!p){ clearLoginForm(); showPopup('Jaza Taarifa','Jaza username na password kwanza.','err'); return; }
+  let btn=document.getElementById('loginBtn'); isLoggingIn=true; btn.disabled=true; btn.textContent='⏳ Inaingia...';
+  // FUTA DATA ALIYOINGIZA MARA MOJA
+  clearLoginForm();
   localStorage.removeItem('token'); localStorage.removeItem('user');
   let isPhone=/^[0-9+]+$/.test(u); let body=isPhone?{phone:u,password:p}:{username:u,password:p,phone:u};
   try{
     let r=await fetchWithTimeout(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)},20000); let d=await r.json();
-    if(d.success){ localStorage.setItem('token','logged-in-'+Date.now()); localStorage.setItem('user',JSON.stringify(d)); setUserBadge(); showMsg('Karibu '+(d.name||d.username)+'! ✅',false); }
-    else { showMsg(d.message||'Login imeshindikana',true); if(d.error==='EXPIRED'||d.error==='LOCKED'){ openWa('KIDOGO',''); } }
+    if(d.success){
+      localStorage.setItem('token','logged-in-'+Date.now()); localStorage.setItem('user',JSON.stringify(d)); setUserBadge();
+      showPopup('Karibu '+(d.name||d.username)+'!','Umeingia vizuri. Karibu kwenye mfumo wa Yatima Umra.','ok');
+    }
+    else {
+      // Mwezi umeisha bila kulipa -> mfumo umejifunga
+      if(d.error==='EXPIRED'){
+        showPopup('⏰ Muda Umeisha!','Mwezi wako umeisha bila kulipa. Mfumo umejifunga. Lipa ili ufunguliwe tena.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\'KIDOGO\',\'\')">💳 Lipa Sasa →</button>');
+      } else if(d.error==='LOCKED'){
+        showPopup('🔒 Akaunti Imefungwa','Akaunti yako imefungwa. Lipa ili ufunguliwe.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\'KIDOGO\',\'\')">💳 Lipa Sasa →</button>');
+      } else if(d.error==='NOT_APPROVED'){
+        showPopup('⏳ Subiri Kuthibitishwa','Bado haijathibitishwa na Mmiliki. Subiri kidogo, utathibitishwa hivi karibuni.','wait');
+      } else if(d.error==='NOT_FOUND'){
+        showPopup('Akaunti Haipo','Akaunti haipo. Jisajili kwanza ili uingie.','err','<button class="btn btn-teal" style="width:100%" onclick="closePopup();document.getElementById(\'login\').scrollIntoView({behavior:\'smooth\'})">🎁 Jisajili Sasa →</button>');
+      } else if(d.error==='WRONG_PASSWORD'){
+        showPopup('Password Si Sahihi','Password uliyoingiza si sahihi. Jaribu tena.','err');
+      } else {
+        showPopup('Imeshindikana', d.message||'Login imeshindikana. Jaribu tena.','err');
+      }
+    }
   }catch(e){
-    if(e.name==='AbortError') showMsg('⏳ Mfumo unachelewa kuamka. Subiri sekunde 10 kisha bonyeza Ingia tena.',true);
-    else showMsg('Backend haijapatikana. Jaribu tena.',true);
+    if(e.name==='AbortError') showPopup('Mfumo Unachelewa','Mfumo unachelewa kuamka. Subiri sekunde 10 kisha bonyeza Ingia tena.','err');
+    else showPopup('Hitilafu','Backend haijapatikana. Jaribu tena.','err');
   } finally { isLoggingIn=false; btn.disabled=false; btn.textContent='INGIA →'; }
 }
+
+// ===== JISAJILI - Data inafutika + Popup =====
 async function doRegister(){
   let btn=document.getElementById('regBtn'); btn.disabled=true; btn.textContent='⏳ Inajisajili...';
   let f=document.getElementById('regName').value.trim(); let u=document.getElementById('regUser').value.trim(); let ph=document.getElementById('regPhone').value.trim(); let p=document.getElementById('regPass').value; let plan=document.getElementById('regPlan').value;
-  if(!u||!p){ showMsg('Jaza username na password',true); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
-  if(!ph){ showMsg('Jaza namba ya simu',true); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
+  if(!u||!p){ clearRegForm(); showPopup('Jaza Taarifa','Jaza username na password kwanza.','err'); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
+  if(!ph){ clearRegForm(); showPopup('Jaza Namba','Jaza namba ya simu kwanza.','err'); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
+  // FUTA DATA ALIYOINGIZA
+  clearRegForm();
   try{
     let r=await fetchWithTimeout(API_URL+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f||u,username:u,phone:ph,password:p,role:'Mthamini',plan:plan})},20000); let d=await r.json();
-    if(d.success) showMsg('✅ Umejisajili! Subiri Mmiliki akuthibitishe.',false); else showMsg(d.message||'Kujisajili kumeshindikana',true);
-  }catch(e){ showMsg('Mfumo unachelewa kuamka, jaribu tena baada ya sekunde 10',true); }
+    if(d.success){
+      if(plan==='JARIBIO') showPopup('🎁 Umejisajili!','Umejisajili vizuri! Unapata siku 3 bure. Subiri Mmiliki akuthibitishe, kisha utaingia.','ok');
+      else showPopup('✅ Umejisajili!','Umejisajili vizuri kwa kifurushi '+plan+'. Subiri Mmiliki akuthibitishe. Ukishalipa utathibitishwa haraka.','ok','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\''+plan+'\',\'\')">💳 Lipa Sasa →</button>');
+    } else {
+      if(d.message && d.message.includes('imeshajisajiliwa')) showPopup('Namba Imeshajisajiliwa','Namba hii imeshajisajiliwa. INGIA tu, usijisajili tena.','err');
+      else if(d.message && d.message.includes('Username')) showPopup('Username Imechaguliwa','Username hii imeshachukuliwa. Chagua nyingine.','err');
+      else showPopup('Imeshindikana', d.message||'Kujisajili kumeshindikana. Jaribu tena.','err');
+    }
+  }catch(e){ showPopup('Mfumo Unachelewa','Mfumo unachelewa kuamka, jaribu tena baada ya sekunde 10.','err'); }
   btn.disabled=false; btn.textContent='JISAJILI →';
 }
 async function loadUsers(){
@@ -168,8 +229,8 @@ async function loadUsers(){
   try{ let r=await fetchWithTimeout(API_URL+'/api/auth/all',{},15000); let list=await r.json(); if(!Array.isArray(list)) return;
   el.innerHTML=list.map(u=>{ let pill=u.status==='active'?'<span class="pill active">ACTIVE</span>':u.status==='waiting-payment'?'<span class="pill waiting">⏳ ANALIPA</span>':u.status==='expired'?'<span class="pill expired">⏰ MUDA UMEISHA</span>':u.status==='locked'?'<span class="pill locked">🔒 LOCKED</span>':'<span class="pill pending">PENDING</span>'; return `<div style="background:#F2F7F7;padding:10px;border-radius:12px;margin:6px 0;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><div><b>${u.name||u.username}</b> (${u.phone||''})<br><span style="font-size:12px">${u.plan||''} • Inaisha: ${u.expiresAt?new Date(u.expiresAt).toLocaleDateString():'-'}</span> ${pill}</div><div><button class="btn btn-teal" onclick="approveUser(${u.id})">✅ Approve</button> <button class="btn btn-orange" onclick="lockUser(${u.id})">🔒 Lock</button></div></div>`; }).join('')||'Hakuna watumiaji'; }catch(e){}
 }
-async function approveUser(id){ await fetch(API_URL+'/api/auth/approve/'+id,{method:'PUT'}); alert('✅ Amethibitishwa'); loadUsers(); }
-async function lockUser(id){ await fetch(API_URL+'/api/auth/lock/'+id,{method:'PUT'}); alert('🔒 Amefungwa'); loadUsers(); }
+async function approveUser(id){ await fetch(API_URL+'/api/auth/approve/'+id,{method:'PUT'}); showPopup('Amethibitishwa','Mtumiaji amethibitishwa - siku 30 zimeongezwa.','ok'); loadUsers(); }
+async function lockUser(id){ await fetch(API_URL+'/api/auth/lock/'+id,{method:'PUT'}); showPopup('Amefungwa','Mtumiaji amefungwa. Mwezi ukiisha bila kulipa mfumo unajifunga.','lock'); loadUsers(); }
 async function loadAll(){
  try{ let r=await fetch(API_URL+'/api/stats'); if(r.ok){ let s=await r.json(); document.getElementById('sOrphans').textContent=s.orphans; document.getElementById('sDon').textContent=s.donations; document.getElementById('sUmra').textContent=s.umra; document.getElementById('sTotal').textContent=(s.totalDonations+s.totalSponsorship).toLocaleString(); } }catch(e){}
  try{ let r=await fetch(API_URL+'/api/orphans'); if(r.ok) orphans=await r.json(); renderOrphans(); }catch(e){}
@@ -180,26 +241,29 @@ function renderOrphans(){
  let list=orphans.filter(o=>(o.name||'').toLowerCase().includes(q));
  document.getElementById('orphanGrid').innerHTML=list.map(o=>`<div class="card">${o.photoBase64?`<img src="${o.photoBase64}">`:`<div style="height:180px;background:#065E60;color:#fff;display:flex;align-items:center;justify-content:center;font-size:50px">👧</div>`}<div class="pad"><span class="chip">${o.needs||'Elimu'} • ${o.location}</span><h3>${o.name} • ${o.age} Miaka</h3><p style="font-size:12px;color:#777">${o.dream||''}</p><p style="font-size:12px">${o.isSponsored?'✅ Ameshadhaminiwa na '+o.sponsorName:'🟢 Anahitaji Mdhamini'}</p><button class="btn btn-teal" style="width:100%;margin-top:6px" onclick="pickOrphan(${o.id},'${o.name}')">💚 Mdhamini Huyu</button><button class="btn btn-orange" style="width:100%;margin-top:6px" onclick="pickDonate(${o.id},'${o.name}')">💰 Changia Huyu</button></div></div>`).join('')||'Hakuna yatima.';
 }
-function pickOrphan(id,name){ document.getElementById('spOrphanId').value=id; document.getElementById('mdhamini').scrollIntoView({behavior:'smooth'}); alert('Umemchagua '+name+' (ID '+id+')'); }
+function pickOrphan(id,name){ document.getElementById('spOrphanId').value=id; document.getElementById('mdhamini').scrollIntoView({behavior:'smooth'}); showPopup('Umemchagua '+name,'Umemchagua '+name+' (ID '+id+'). Jaza taarifa zako hapo chini ili umdhamini.','ok'); }
 function pickDonate(id,name){ document.getElementById('dOrphanId').value=id; document.getElementById('changia').scrollIntoView({behavior:'smooth'}); }
 async function doSponsor(){
- let o=orphans.find(x=>x.id==parseInt(document.getElementById('spOrphanId').value)); if(!o) return alert('Chagua yatima kwanza');
+ let o=orphans.find(x=>x.id==parseInt(document.getElementById('spOrphanId').value)); if(!o){ showPopup('Chagua Yatima','Chagua yatima kwanza.','err'); return; }
  let body={orphanId:o.id,orphanName:o.name,sponsorName:document.getElementById('spName').value,sponsorPhone:document.getElementById('spPhone').value,type:selType.name,amount:selType.amount,months:parseInt(document.getElementById('spMonths').value)||12,totalAmount:selType.amount*(parseInt(document.getElementById('spMonths').value)||12)};
  await fetch(API_URL+'/api/sponsorships',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ document.getElementById('spName').value=''; document.getElementById('spPhone').value=''; document.getElementById('spOrphanId').value='';
+ showPopup('✅ Uthamini Umehifadhiwa','Asante! Uthamini wako wa '+o.name+' umehifadhiwa. Utatumiwa taarifa za malipo WhatsApp.','ok');
  window.open('https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent('Habari! Mimi '+body.sponsorName+' ('+body.sponsorPhone+') nataka nimdhamini '+o.name+' - '+selType.name+' '+body.totalAmount+' TZS kwa miezi '+body.months+'. Nitumie taarifa za malipo.'),'_blank');
- alert('✅ Uthamini umehifadhiwa! Utatumiwa taarifa za malipo WhatsApp.'); location.reload();
 }
 async function doDonate(){
  let body={orphanId:parseInt(document.getElementById('dOrphanId').value)||0,orphanName:'Yatima',donorName:document.getElementById('dName').value,donorPhone:document.getElementById('dPhone').value,amount:parseFloat(document.getElementById('dAmount').value)||0,method:document.getElementById('dMethod').value};
  await fetch(API_URL+'/api/donations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ document.getElementById('dName').value=''; document.getElementById('dPhone').value=''; document.getElementById('dAmount').value=''; document.getElementById('dOrphanId').value='';
+ showPopup('✅ Asante kwa Mchango!','Mchango wako wa '+body.amount+' TZS umehifadhiwa. Utatumiwa taarifa za malipo WhatsApp.','ok');
  window.open('https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent('Habari! Mimi '+body.donorName+' ('+body.donorPhone+') nataka kuchangia '+body.amount+' TZS. Nitumie taarifa za malipo.'),'_blank');
- alert('✅ Asante! Utatumiwa taarifa za malipo WhatsApp.'); location.reload();
 }
 async function doBook(){
  let body={customerName:document.getElementById('bName').value,phone:document.getElementById('bPhone').value,packageName:document.getElementById('bPack').value,description:document.getElementById('bPack').value+' - '+document.getElementById('bName').value};
  await fetch(API_URL+'/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ document.getElementById('bName').value=''; document.getElementById('bPhone').value='';
+ showPopup('✅ Booking Imehifadhiwa!','Booking yako ya '+body.packageName+' imehifadhiwa. Utatumiwa taarifa za malipo WhatsApp.','ok');
  window.open('https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent('Habari! Mimi '+body.customerName+' ('+body.phone+') nime-book '+body.packageName+'. Nitumie taarifa za malipo.'),'_blank');
- alert('✅ Booking imehifadhiwa! Utatumiwa taarifa za malipo WhatsApp.'); location.reload();
 }
 async function loadBookingsHome(){
  try{ let r=await fetch(API_URL+'/api/bookings'); if(r.ok) allBookings=await r.json(); }catch(e){}
