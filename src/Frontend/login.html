@@ -6,12 +6,10 @@ h2{text-align:center;color:#065E60}input,select{width:100%;padding:13px;border:1
 .tabs{display:flex;gap:8px;margin:14px 0}.tabs button{flex:1;padding:11px;border-radius:50px;border:1px solid #ddd;background:#fff;cursor:pointer;font-weight:700}.tabs button.active{background:#065E60;color:#fff}
 #msgBox{display:none;padding:12px;border-radius:12px;margin:10px 0;font-weight:700;font-size:13px;text-align:center}
 .plan-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0}.plan{border:2px solid #eee;border-radius:14px;padding:10px;text-align:center;cursor:pointer;font-size:12px}.plan.sel{border-color:#FF9A1F;background:#FFF9EC}.plan b{display:block;font-size:14px}
-#backendStatus{font-size:12px;text-align:center;color:#888;margin-top:6px}
 </style></head><body>
 <div class="box"><h2>🕋 YATIMA UMRA</h2><p style="text-align:center;font-size:13px;color:#777">Zanzibar • Umra • Yatima</p>
 <div class="tabs"><button id="tLogin" class="active" onclick="show('login')">Ingia</button><button id="tReg" onclick="show('reg')">Jisajili</button></div>
 <div id="msgBox"></div>
-<div id="backendStatus">⏳ Inajiandaa...</div>
 <div id="pLogin"><input id="lUser" placeholder="Username au Simu - 0712345678"><input id="lPass" type="password" placeholder="Password"><button id="loginBtn" class="btn btn-teal" onclick="login()">Ingia →</button>
 <button onclick="logout()" style="background:none;border:none;color:#888;font-size:12px;width:100%;margin-top:8px;cursor:pointer">Toka / Futa Akaunti iliyohifadhiwa</button>
 <div id="payBoxLogin" style="display:none;background:#FFF8E1;padding:12px;border-radius:12px;margin-top:10px;text-align:center"><b>⏰ Muda umeisha!</b><br><span style="font-size:12px">Lipa ili ufunguliwe</span><br><br><input id="payPhoneLogin" placeholder="Namba yako"><input id="payTxnLogin" placeholder="Namba ya Muamala"><button class="btn btn-orange" onclick="payLogin()">TUMA MALIPO →</button></div></div>
@@ -45,12 +43,8 @@ function logout(){ localStorage.removeItem('token'); localStorage.removeItem('us
 function showMsg(m,err){ let e=document.getElementById('msgBox'); e.style.display='block'; e.style.background=err?'#fee2e2':'#dcfce7'; e.style.color=err?'#991b1b':'#166534'; e.textContent=m; }
 function show(t){ document.getElementById('pLogin').style.display=t==='login'?'block':'none'; document.getElementById('pReg').style.display=t==='reg'?'block':'none'; document.getElementById('tLogin').classList.toggle('active',t==='login'); document.getElementById('tReg').classList.toggle('active',t==='reg'); }
 function selectPlan(p,el){ selectedPlan=p; document.getElementById('rPlan').value=p; document.querySelectorAll('.plan').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
-async function wakeBackend(){
-  let st=document.getElementById('backendStatus'); st.textContent='⏳ Inaamsha mfumo... (sekunde chache)';
-  try{ let c=new AbortController(); setTimeout(()=>c.abort(), 8000); await fetch(API_URL+'/api/stats',{signal:c.signal}).catch(()=>{}); st.textContent='✅ Mfumo uko tayari'; }
-  catch(e){ st.textContent='⚠️ Mfumo bado unaamka, subiri kidogo...'; }
-}
-wakeBackend();
+// Amsha Backend kimya kimya - hakuna message inaonekana
+fetch(API_URL+'/api/stats').catch(()=>{});
 async function fetchWithTimeout(url, options, ms=20000){
   let c=new AbortController(); let t=setTimeout(()=>c.abort(), ms);
   try{ let r=await fetch(url,{...options, signal:c.signal}); clearTimeout(t); return r; }catch(e){ clearTimeout(t); throw e; }
@@ -68,9 +62,8 @@ async function login(){
   showMsg(d.message||'Login imeshindikana',true);
   if(d.error==='EXPIRED'||d.error==='LOCKED'){ document.getElementById('payBoxLogin').style.display='block'; document.getElementById('payPhoneLogin').value=u; }
  }catch(e){
-  if(e.name==='AbortError') showMsg('⏳ Mfumo unachelewa kuamka (Render imelala). Subiri sekunde 10 kisha bonyeza Ingia tena.',true);
+  if(e.name==='AbortError') showMsg('⏳ Mfumo unachelewa kuamka. Subiri sekunde 10 kisha bonyeza Ingia tena.',true);
   else showMsg('Backend haijapatikana. Jaribu tena.',true);
-  wakeBackend();
  } finally { isLoggingIn=false; btn.disabled=false; btn.textContent='Ingia →'; }
 }
 async function payLogin(){
