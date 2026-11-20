@@ -5,11 +5,11 @@
 .top{background:#065E60;color:#fff;padding:10px 14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .top b{font-size:15px}.top span{font-size:12px;color:#CFF}
 .btn{padding:10px 16px;border:none;border-radius:50px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
-.btn-teal{background:#0A7A7C;color:#fff}.btn-orange{background:#FF9A1F;color:#fff}.btn-white{background:#fff;color:#065E60}.btn-green{background:#25D366;color:#fff}
+.btn-teal{background:#0A7A7C;color:#fff}.btn-orange{background:#FF9A1F;color:#fff}.btn-white{background:#fff;color:#065E60}.btn-green{background:#25D366;color:#fff}.btn-dark{background:#062e1a;color:#fff}
 .hero{background:linear-gradient(135deg,#065E60,#0A7A7C);color:#fff;padding:22px;border-radius:22px;margin:12px 0;text-align:center}
 .hero h1{font-size:28px;line-height:1.2}.hero p{font-size:14px;color:#D9F0F0;margin:10px 0}
 .section{background:#fff;border-radius:22px;padding:16px;margin:12px 0}.section h2{font-size:18px}.section h2 span{color:#FF9A1F}.sub{font-size:13px;color:#777;margin:6px 0 12px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card{background:#fff;border:1px solid #eee;border-radius:16px;overflow:hidden}.card img{width:100%;height:180px;object-fit:cover}.pad{padding:12px}.pad h3{font-size:15px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:#fff;border:1px solid #eee;border-radius:16px;overflow:hidden}.card img{width:100%;height:180px;object-fit:cover}.pad{padding:12px}.pad h3{font-size:15px}
 .chip{display:inline-block;background:#FFF3E0;color:#E67E00;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700}
 input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:12px;margin:6px 0;font-size:14px}
 .stat{background:#EAF7F7;padding:14px;border-radius:14px;text-align:center}.stat b{font-size:20px;color:#0A7A7C}
@@ -17,7 +17,7 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 .hidden{display:none}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:99;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:420px;padding:22px;border-radius:22px;text-align:center}
 .pay-info{background:#FFF8E1;padding:14px;border-radius:14px;text-align:left;font-size:14px;line-height:1.7;margin:12px 0}
-@media(max-width:700px){.grid3{grid-template-columns:1fr 1fr}.hero h1{font-size:22px}}
+@media(max-width:700px){.grid3{grid-template-columns:1fr}.hero h1{font-size:22px}}
 </style></head><body>
 
 <div class="top"><div><b>🕋 YATIMA UMRA</b><br><span>Zanzibar • Umra • Yatima</span></div><a href="#login" class="btn btn-white">Ingia / Jisajili →</a></div>
@@ -28,20 +28,18 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <div class="section"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
 <div class="stat"><b id="sOrphans">0</b><br>Mayatima</div><div class="stat"><b id="sDon">0</b><br>Michango</div><div class="stat"><b id="sUmra">0</b><br>Walioenda Umra</div><div class="stat"><b id="sTotal">0</b><br>Jumla TZS</div></div></div>
 
-<!-- 🔐 LOGIN / REGISTER -->
 <div class="section" id="login"><h2>🔐 <span>Ingia / Jisajili - Kodi Mfumo</span></h2><p class="sub">Jaribu bure siku 3. Mmiliki akithibitisha unaingia. Mwezi ukiisha bila kulipa, mfumo unajifunga.</p>
 <div id="msgBox" style="display:none;padding:12px;border-radius:12px;margin:8px 0;font-weight:700"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
 <div><h3 style="font-size:14px">🔑 Ingia</h3><input id="username" placeholder="👤 Username au 0712345678"><input id="password" type="password" placeholder="🔒 Password"><button class="btn btn-teal" style="width:100%" onclick="doLogin()">INGIA →</button><p id="loginExp" style="font-size:12px;color:#777;margin-top:6px"></p></div>
-<div><h3 style="font-size:14px">🎁 Jisajili Bure Siku 3</h3><input id="regName" placeholder="✍️ Jina Kamili"><input id="regUser" placeholder="👤 Username"><input id="regPhone" placeholder="📱 Namba - 0712345678"><input id="regPass" type="password" placeholder="🔒 Password"><select id="regPlan"><option value="JARIBIO">🎁 JARIBIO - 0 TZS (Siku 3)</option><option value="KIDOGO">👑 KIDOGO - 50,000 TZS (Siku 30)</option><option value="KHADIJA_SPECIAL">🌟 KHADIJA SPECIAL - 150,000 TZS</option></select><button class="btn btn-orange" style="width:100%" onclick="doRegister()">JISAJILI →</button></div>
+<div><h3 style="font-size:14px">🎁 Jisajili Bure Siku 3</h3><input id="regName" placeholder="✍️ Jina Kamili"><input id="regUser" placeholder="👤 Username"><input id="regPhone" placeholder="📱 Namba - 0712345678"><input id="regPass" type="password" placeholder="🔒 Password"><select id="regPlan"><option value="JARIBIO">🎁 JARIBIO - 0 TZS (Siku 3)</option><option value="KIDOGO">👑 KIDOGO - 50,000 TZS</option><option value="KUBWA">🏛️ KUBWA - 200,000 TZS (Taasisi Kubwa)</option></select><button class="btn btn-orange" style="width:100%" onclick="doRegister()">JISAJILI →</button></div>
 </div></div>
 
-<!-- 💰 VIFURUSHI 3 - KODI MFUMO -->
 <div class="section" id="kodi"><h2>💰 <span>Kodi Mfumo - Vifurushi 3</span></h2><p class="sub">Chagua kifurushi. Utaingiza namba yako ya WhatsApp, tutakutumia taarifa za malipo.</p>
 <div class="grid3">
 <div class="card" style="text-align:center;border:2px solid #eee"><div style="background:#065E60;color:#fff;padding:18px"><div style="font-size:40px">🎁</div><h3 style="margin:6px 0">JARIBIO</h3><div style="font-size:24px;font-weight:800">0 TZS</div><span style="font-size:12px;color:#CFF">Siku 3 Bure</span></div><div class="pad" style="text-align:left;font-size:13px;line-height:1.8">✅ Siku 3 • Mfumo wote<br>✅ Mayatima • Malipo • Bookings<br>✅ Dashboard</div><div class="pad"><button class="btn btn-teal" style="width:100%" onclick="choosePlan('JARIBIO')">Jisajili Bure →</button></div></div>
-<div class="card" style="text-align:center;border:2px solid #FF9A1F;box-shadow:0 10px 24px #FF9A1F22"><div style="background:linear-gradient(135deg,#FF9A1F,#FF7A00);color:#fff;padding:18px"><span class="chip" style="background:#fff;color:#E67E00">🔥 MARUFU SANA</span><div style="font-size:40px;margin-top:6px">👑</div><h3 style="margin:6px 0">KIDOGO</h3><div style="font-size:24px;font-weight:800">50,000 TZS</div><span style="font-size:12px">/ Mwezi • Siku 30</span></div><div class="pad" style="text-align:left;font-size:13px;line-height:1.8">✅ Siku 30 • Mfumo wote<br>✅ Support ya Mmiliki<br>✅ Mayatima wasio na kikomo</div><div class="pad"><button class="btn btn-orange" style="width:100%" onclick="choosePlan('KIDOGO')">Chagua KIDOGO →</button></div></div>
-<div class="card" style="text-align:center;border:2px solid #065E60"><div style="background:linear-gradient(135deg,#065E60,#0A7A7C);color:#fff;padding:18px"><div style="font-size:40px">🌟</div><h3 style="margin:6px 0">KHADIJA SPECIAL</h3><div style="font-size:24px;font-weight:800">150,000 TZS</div><span style="font-size:12px;color:#CFF">/ Mwezi • Siku 30 • VIP</span></div><div class="pad" style="text-align:left;font-size:13px;line-height:1.8">✅ Kila kitu cha KIDOGO<br>✅ WhatsApp Priority<br>✅ Mafunzo ya Mfumo</div><div class="pad"><button class="btn btn-teal" style="width:100%" onclick="choosePlan('KHADIJA_SPECIAL')">Chagua SPECIAL →</button></div></div>
+<div class="card" style="text-align:center;border:2px solid #FF9A1F;box-shadow:0 10px 24px #FF9A1F22"><div style="background:linear-gradient(135deg,#FF9A1F,#FF7A00);color:#fff;padding:18px"><span class="chip" style="background:#fff;color:#E67E00">🔥 MARUFU SANA</span><div style="font-size:40px;margin-top:6px">👑</div><h3 style="margin:6px 0">KIDOGO</h3><div style="font-size:24px;font-weight:800">50,000 TZS</div><span style="font-size:12px">/ Mwezi • Siku 30</span></div><div class="pad" style="text-align:left;font-size:13px;line-height:1.8">✅ Siku 30 • Mfumo wote<br>✅ Support ya Mmiliki<br>✅ Mayatima wasio na kikomo<br>✅ Kwa mtu mmoja / kikundi kidogo</div><div class="pad"><button class="btn btn-orange" style="width:100%" onclick="choosePlan('KIDOGO')">Chagua KIDOGO →</button></div></div>
+<div class="card" style="text-align:center;border:2px solid #062e1a;box-shadow:0 10px 24px #062e1a22"><div style="background:linear-gradient(135deg,#062e1a,#0b6b3a);color:#fff;padding:18px"><span class="chip" style="background:#FFE27A;color:#222">🏛️ TAASISI KUBWA</span><div style="font-size:40px;margin-top:6px">🏛️</div><h3 style="margin:6px 0">KUBWA</h3><div style="font-size:24px;font-weight:800">200,000 TZS</div><span style="font-size:12px;color:#CFF">/ Mwezi • Siku 30 • Bila Kikomo</span></div><div class="pad" style="text-align:left;font-size:13px;line-height:1.8">✅ Kila kitu cha KIDOGO<br>✅ <b>Mayatima bila kikomo</b><br>✅ <b>Admin wengi (watumi 5+)</b><br>✅ <b>Ripoti za Taasisi</b><br>✅ Kwa Misikiti / NGO / Taasisi Kubwa</div><div class="pad"><button class="btn btn-dark" style="width:100%" onclick="choosePlan('KUBWA')">Chagua KUBWA →</button></div></div>
 </div>
 <div id="adminBox" class="hidden" style="margin-top:12px"><h3>👑 Admin - Watumiaji</h3><div id="userList"></div></div>
 </div>
@@ -50,7 +48,6 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <input id="search" placeholder="🔍 Tafuta yatima..." oninput="renderOrphans()">
 <div class="grid3" id="orphanGrid"><p>Inapakia...</p></div></div>
 
-<!-- 🌟 VIFURUSHI MAALUM -->
 <div class="section" id="maalum" style="background:linear-gradient(180deg,#FFF9EC,#fff);border:2px solid #FF9A1F"><h2>🌟 Vifurushi <span>Maalum</span></h2><p class="sub">Vifurushi vilivyotengenezwa maalum kwa ajili yako</p>
 <div class="grid3">
 <div class="card"><div style="height:160px;background:linear-gradient(135deg,#065E60,#FF9A1F);color:#fff;display:flex;align-items:center;justify-content:center;font-size:60px">🕋🌙</div><div class="pad"><span class="chip">🔥 MAALUM</span><h3>Umra + Zanzibar Tour</h3><p style="font-size:12px;color:#777">Siku 14 Umra + Siku 2 Zanzibar Tour • Hoteli 5*</p><p style="font-weight:800;color:#0A7A7C;margin:6px 0">6,800,000 TZS</p><button class="btn btn-orange" style="width:100%" onclick="choosePkg('Umra + Zanzibar Tour')">Book Hiki →</button></div></div>
@@ -59,33 +56,28 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <div class="card"><div style="height:160px;background:linear-gradient(135deg,#004e5a,#00c2a8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:60px">✈️</div><div class="pad"><span class="chip">⚡ HARAKA</span><h3>Umra Express (Siku 7)</h3><p style="font-size:12px;color:#777">Siku 7 tu • Ndege direct • Hoteli karibu na Haram</p><p style="font-weight:800;color:#0A7A7C;margin:6px 0">4,200,000 TZS</p><button class="btn btn-orange" style="width:100%" onclick="choosePkg('Umra Express')">Book Express →</button></div></div>
 </div></div>
 
-<!-- ⭐ FEEDBACK -->
 <div class="section" id="feedback"><h2>⭐ Walioenda Umra <span>Wanasema Nini?</span></h2><p class="sub" id="feedbackTotal">Inapakia...</p>
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;text-align:center"><div class="stat"><b id="fbTotal">0</b><br>Walioenda</div><div class="stat"><b id="fbAvg">0 ⭐</b><br>Wastani</div><div class="stat"><b id="fbHappy">0</b><br>Wameridhika</div><div class="stat"><b id="fbIssues">0</b><br>Wenye Masuala</div></div>
 <div style="margin-bottom:12px"><button onclick="filterFeedback('all')" class="btn btn-white" style="border:1px solid #ddd">Wote</button> <button onclick="filterFeedback('good')" class="btn btn-white" style="border:1px solid #ddd">⭐ 4-5 Nzuri</button> <button onclick="filterFeedback('issues')" class="btn btn-white" style="border:1px solid #ddd">⚠️ Masuala</button></div>
 <div class="grid3" id="feedbackGrid"><p>Inapakia feedback...</p></div></div>
 
-<!-- 💚 MDHAMINI -->
 <div class="section" id="mdhamini"><h2>💚 <span>Mdhamini Yatima</span></h2><p class="sub">Chagua aina ya uthamini.</p>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="sponTypes"></div>
 <label>Jina Lako</label><input id="spName" placeholder="Jina lako"><label>Simu / WhatsApp</label><input id="spPhone" placeholder="077..."><label>Miezi Mingapi?</label><input id="spMonths" type="number" value="12"><label>Yatima Uliyemchagua (ID)</label><input id="spOrphanId" placeholder="Bonyeza 'Mdhamini' kwenye yatima hapo juu">
 <p style="font-weight:700;margin:8px 0">Jumla: <span id="spTotal" style="color:#0A7A7C">0</span> TZS</p>
 <button class="btn btn-teal" style="width:100%" onclick="doSponsor()">✅ Thibitisha Uthamini</button></div>
 
-<!-- 💰 CHANGIA -->
 <div class="section" id="changia"><h2>💰 <span>Changia Yatima</span></h2><label>Jina Lako</label><input id="dName" placeholder="Jina lako"><label>Simu / WhatsApp</label><input id="dPhone" placeholder="077..."><label>Kiasi TZS</label><input id="dAmount" type="number" placeholder="10000"><label>Yatima (ID)</label><input id="dOrphanId" placeholder="ID ya yatima"><label>Njia</label><select id="dMethod"><option>Bank</option><option>M-Pesa</option><option>Tigo Pesa</option><option>Airtel Money</option></select><button class="btn btn-orange" style="width:100%" onclick="doDonate()">💰 Changia Sasa</button></div>
 
-<!-- 🕋 BOOK -->
 <div class="section" id="book"><h2>🕋 <span>Book Umra + Wanaoenda</span></h2><p class="sub">Wale wame-book wanaoenda Umra: <b id="bookCount">0</b></p>
 <label>Jina</label><input id="bName" placeholder="Jina lako"><label>Simu / WhatsApp</label><input id="bPhone" placeholder="077..."><label>Kifurushi</label><select id="bPack"><option>Umra Standard - 4.5M</option><option>Umra VIP - 7.5M</option><option>Umra Familia - 16M</option><option>Umra + Zanzibar Tour - 6.8M</option><option>Mdhamini Yatima Mmoja - 3.5M</option><option>Umra Express - 4.2M</option></select><button class="btn btn-green" style="width:100%" onclick="doBook()">🕋 Book Umra Sasa</button>
 <div id="bookList" style="margin-top:14px"></div></div>
 
 <div style="text-align:center;padding:14px;font-size:12px;color:#888">© 2026 Yatima Umra • Zanzibar</div>
 
-<!-- MODAL: WHATSAPP + MALIPO - PBZ INAONEKANA HAPA TU -->
 <div class="modal" id="waModal"><div class="modal-box">
 <div id="waStep1"><div style="font-size:50px">💬</div><h3 id="waTitle">Kifurushi KIDOGO</h3><p style="font-size:13px;color:#777">Ingiza namba yako ya WhatsApp, tutakutumia taarifa za malipo.</p>
-<input id="waPhone" placeholder="📱 Namba ya WhatsApp - 077..."><input id="waName" placeholder="✍️ Jina lako">
+<input id="waPhone" placeholder="📱 Namba ya WhatsApp - 077..."><input id="waName" placeholder="✍️ Jina lako / Jina la Taasisi">
 <button class="btn btn-green" style="width:100%" onclick="sendWaInfo()">📩 Nitumie Taarifa za Malipo →</button>
 <button class="btn btn-white" style="width:100%;margin-top:8px;border:1px solid #ddd" onclick="closeWa()">Ghairi</button></div>
 <div id="waStep2" class="hidden"><div style="font-size:50px">✅</div><h3>Taarifa za Malipo</h3><p style="font-size:13px;color:#777">Tumekutumia WhatsApp. Hizi hapa pia:</p>
@@ -98,35 +90,27 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 
 <script>
 const API_URL = 'https://yatima-umra-system.onrender.com';
-// PBZ INFO - IMEFICHWA KWENYE JS TU, HAIONEKANI MBELE
 const BANK_NAME='PBZ', BANK_ACC='0887387001', BANK_OWNER='KHADIJA DENGE', ADMIN_WA='255887387001';
 let orphans=[], allFeedback=[], allBookings=[], selType={name:'KAMILI',amount:250000}, curPlan='KIDOGO', curPkg='';
+const PLANS={ JARIBIO:{price:'0 TZS',days:3}, KIDOGO:{price:'50,000 TZS',days:30}, KUBWA:{price:'200,000 TZS',days:30} };
 const TYPES=[{name:'KAMILI',amount:250000,desc:'Elimu+Chakula+Afya'},{name:'SEHEMU',amount:50000,desc:'Msaada wa sehemu'},{name:'ELIMU',amount:80000,desc:'Elimu pekee'},{name:'CHAKULA',amount:60000,desc:'Chakula'},{name:'AFYA',amount:40000,desc:'Afya'},{name:'UMRA',amount:4500000,desc:'Umra kamili'}];
 document.getElementById('sponTypes').innerHTML=TYPES.map(t=>`<div class="stat" onclick="selType={name:'${t.name}',amount:${t.amount}};calcSpon();document.querySelectorAll('#sponTypes .stat').forEach(e=>e.style.border='');this.style.border='2px solid #FF9A1F'" style="cursor:pointer"><b>${t.name}</b><br>${t.amount.toLocaleString()} TZS<br><span style="font-size:11px">${t.desc}</span></div>`).join('');
 function calcSpon(){ document.getElementById('spTotal').textContent=(selType.amount*(parseInt(document.getElementById('spMonths').value)||1)).toLocaleString(); }
 document.getElementById('spMonths').oninput=calcSpon; calcSpon();
-
-// --- MODAL: WHATSAPP -> BANK INFO ---
-function openWa(plan, pkg){ curPlan=plan||'KIDOGO'; curPkg=pkg||plan; document.getElementById('waTitle').textContent = pkg ? 'Kifurushi: '+pkg : 'Kifurushi: '+plan; document.getElementById('waStep1').classList.remove('hidden'); document.getElementById('waStep2').classList.add('hidden'); document.getElementById('waModal').classList.add('show'); let u=getUser(); if(u.phone) document.getElementById('waPhone').value=u.phone; if(u.name) document.getElementById('waName').value=u.name; }
+function openWa(plan, pkg){ curPlan=plan||'KIDOGO'; curPkg=pkg||plan; document.getElementById('waTitle').textContent = pkg && pkg!==plan ? 'Kifurushi: '+pkg : 'Kifurushi: '+plan+' - '+(PLANS[plan]?PLANS[plan].price:''); document.getElementById('waStep1').classList.remove('hidden'); document.getElementById('waStep2').classList.add('hidden'); document.getElementById('waModal').classList.add('show'); let u=getUser(); if(u.phone) document.getElementById('waPhone').value=u.phone; if(u.name) document.getElementById('waName').value=u.name; }
 function closeWa(){ document.getElementById('waModal').classList.remove('show'); }
 function choosePlan(p){ if(p==='JARIBIO'){ document.getElementById('regPlan').value='JARIBIO'; document.getElementById('login').scrollIntoView({behavior:'smooth'}); return; } openWa(p,''); }
 function choosePkg(n){ openWa('KIDOGO', n); }
 function sendWaInfo(){
   let phone=document.getElementById('waPhone').value.trim(); let name=document.getElementById('waName').value.trim()||'Mteja';
   if(!phone) return alert('Ingiza namba ya WhatsApp kwanza');
-  let price = curPlan==='KIDOGO' ? '50,000 TZS' : curPlan==='KHADIJA_SPECIAL' ? '150,000 TZS' : curPlan;
+  let price = PLANS[curPlan] ? PLANS[curPlan].price : curPlan;
   let label = curPkg && curPkg!==curPlan ? curPkg : curPlan+' - '+price;
   document.getElementById('waPlanInfo').textContent=label;
   document.getElementById('waStep1').classList.add('hidden'); document.getElementById('waStep2').classList.remove('hidden');
-  // Tuma WhatsApp kwa Admin + kwa Mteja (fungua WhatsApp)
   let msgAdmin='Habari! Mimi '+name+' ('+phone+') nataka kifurushi '+label+'. Nimtumie taarifa za malipo.';
-  let msgUser='Habari '+name+'! Karibu Yatima Umra. Kifurushi chako: '+label+'. Lipa hivi: Bank: '+BANK_NAME+' | Account: '+BANK_ACC+' | Jina: '+BANK_OWNER+' | Reference: '+name+' + '+label+'. Baada ya kulipa tuma Muamala hapa.';
-  // Fungua WhatsApp kwa Admin - Admin atamtumia mteja Bank Info
   document.getElementById('waLink').href='https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent(msgAdmin);
-  // Pia tuma SMS ya moja kwa moja kwenye WhatsApp ya mteja - kwa kutumia wa.me ya namba yake (mteja anabofya link)
-  // Hifadhi namba kwa ajili ya confirmPay
   localStorage.setItem('waPhone', phone); localStorage.setItem('waName', name);
-  // Tuma kwenye backend ili Khadija aone
   fetch(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,plan:curPlan,reference:'WHATSAPP-'+phone})}).catch(e=>{});
 }
 async function confirmPay(){
@@ -135,8 +119,6 @@ async function confirmPay(){
   await fetch(API_URL+'/api/auth/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,plan:curPlan,reference:txn})});
   alert('✅ Asante! Malipo yamepokelewa. Mmiliki atakuthibitisha.'); closeWa();
 }
-
-// --- AUTH ---
 function showMsg(m,err){ let el=document.getElementById('msgBox'); el.style.display='block'; el.style.background=err?'#fee2e2':'#dcfce7'; el.style.color=err?'#991b1b':'#166534'; el.textContent=m; }
 function getUser(){ try{ return JSON.parse(localStorage.getItem('user')||'{}') }catch(e){ return {} } }
 function setUserBadge(){ let u=getUser(); if(u.username){ let e=document.getElementById('loginExp'); if(e && u.expiresAt) e.textContent='⏰ Mfumo unaisha: '+new Date(u.expiresAt).toLocaleDateString()+' • '+(u.plan||''); if(u.role==='ADMIN'||u.role==='OWNER'){ document.getElementById('adminBox').classList.remove('hidden'); loadUsers(); } } }
@@ -161,7 +143,6 @@ async function loadUsers(){
 }
 async function approveUser(id){ await fetch(API_URL+'/api/auth/approve/'+id,{method:'PUT'}); alert('✅ Amethibitishwa'); loadUsers(); }
 async function lockUser(id){ await fetch(API_URL+'/api/auth/lock/'+id,{method:'PUT'}); alert('🔒 Amefungwa'); loadUsers(); }
-
 async function loadAll(){
  try{ let r=await fetch(API_URL+'/api/stats'); if(r.ok){ let s=await r.json(); document.getElementById('sOrphans').textContent=s.orphans; document.getElementById('sDon').textContent=s.donations; document.getElementById('sUmra').textContent=s.umra; document.getElementById('sTotal').textContent=(s.totalDonations+s.totalSponsorship).toLocaleString(); } }catch(e){}
  try{ let r=await fetch(API_URL+'/api/orphans'); if(r.ok) orphans=await r.json(); renderOrphans(); }catch(e){}
@@ -178,7 +159,6 @@ async function doSponsor(){
  let o=orphans.find(x=>x.id==parseInt(document.getElementById('spOrphanId').value)); if(!o) return alert('Chagua yatima kwanza');
  let body={orphanId:o.id,orphanName:o.name,sponsorName:document.getElementById('spName').value,sponsorPhone:document.getElementById('spPhone').value,type:selType.name,amount:selType.amount,months:parseInt(document.getElementById('spMonths').value)||12,totalAmount:selType.amount*(parseInt(document.getElementById('spMonths').value)||12)};
  await fetch(API_URL+'/api/sponsorships',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
- // WhatsApp - bila kuonyesha Bank mbele, tunamtumia baada ya click
  window.open('https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent('Habari! Mimi '+body.sponsorName+' ('+body.sponsorPhone+') nataka nimdhamini '+o.name+' - '+selType.name+' '+body.totalAmount+' TZS kwa miezi '+body.months+'. Nitumie taarifa za malipo.'),'_blank');
  alert('✅ Uthamini umehifadhiwa! Utatumiwa taarifa za malipo WhatsApp.'); location.reload();
 }
