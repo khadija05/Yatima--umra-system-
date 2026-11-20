@@ -18,7 +18,6 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 .hidden{display:none}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:99;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:100%;max-width:420px;padding:22px;border-radius:22px;text-align:center}
 .pay-info{background:#FFF8E1;padding:14px;border-radius:14px;text-align:left;font-size:14px;line-height:1.7;margin:12px 0}
-/* POPUP YA UJUMBE */
 #popupModal{z-index:200}.popup-icon{font-size:55px}.popup-ok{background:#dcfce7;color:#166534}.popup-err{background:#fee2e2;color:#991b1b}.popup-warn{background:#fef9c3;color:#854d0e}
 @media(max-width:700px){.grid3{grid-template-columns:1fr}.hero h1{font-size:22px}}
 </style></head><body>
@@ -90,7 +89,6 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 <button class="btn btn-white" style="width:100%;margin-top:8px;border:1px solid #ddd" onclick="closeWa()">Funga</button></div>
 </div></div>
 
-<!-- POPUP YA UJUMBE - INAKUJA BAADA YA INGIA / JISAJILI -->
 <div class="modal" id="popupModal"><div class="modal-box">
 <div id="popupIcon" class="popup-icon">✅</div>
 <h3 id="popupTitle" style="margin:8px 0">Karibu!</h3>
@@ -105,7 +103,6 @@ const BANK_NAME='PBZ', BANK_ACC='0887387001', BANK_OWNER='KHADIJA DENGE', ADMIN_
 let orphans=[], allFeedback=[], allBookings=[], selType={name:'KAMILI',amount:250000}, curPlan='KIDOGO', curPkg='', isLoggingIn=false;
 const PLANS={ JARIBIO:{price:'0 TZS',days:3}, KIDOGO:{price:'50,000 TZS',days:30}, KUBWA:{price:'200,000 TZS',days:30} };
 
-// ===== POPUP FUNCTION =====
 function showPopup(title, msg, type='ok', actionHtml=''){
   let m=document.getElementById('popupModal');
   document.getElementById('popupTitle').textContent=title;
@@ -116,13 +113,11 @@ function showPopup(title, msg, type='ok', actionHtml=''){
 }
 function closePopup(){ document.getElementById('popupModal').classList.remove('show'); }
 
-// ===== Futa token iliyo-expire =====
 (function clearStale(){
   try{
     let u = JSON.parse(localStorage.getItem('user')||'{}');
     if(u && u.expiresAt && new Date(u.expiresAt) < new Date()){
       localStorage.removeItem('token'); localStorage.removeItem('user');
-      // Mwezi umeisha bila kulipa -> mfumo umejifunga - onyesha popup
       setTimeout(()=>showPopup('⏰ Muda Umeisha','Mwezi wako umeisha bila kulipa. Mfumo umejifunga. Lipa ili ufunguliwe tena.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\'KIDOGO\',\'\')">💳 Lipa Sasa →</button>'),500);
     }
     if(u && (u.status==='locked' || u.status==='expired')){ localStorage.removeItem('token'); localStorage.removeItem('user'); }
@@ -165,13 +160,11 @@ async function confirmPay(){
 function getUser(){ try{ return JSON.parse(localStorage.getItem('user')||'{}') }catch(e){ return {} } }
 function setUserBadge(){ let u=getUser(); if(u.username){ let e=document.getElementById('loginExp'); if(e && u.expiresAt) e.textContent='⏰ Mfumo unaisha: '+new Date(u.expiresAt).toLocaleDateString()+' • '+(u.plan||''); if(u.role==='ADMIN'||u.role==='OWNER'){ document.getElementById('adminBox').classList.remove('hidden'); loadUsers(); } } }
 
-// ===== INGIA - Data inafutika + Popup =====
 async function doLogin(){
   if(isLoggingIn) return;
   let u=document.getElementById('username').value.trim(); let p=document.getElementById('password').value;
   if(!u||!p){ clearLoginForm(); showPopup('Jaza Taarifa','Jaza username na password kwanza.','err'); return; }
   let btn=document.getElementById('loginBtn'); isLoggingIn=true; btn.disabled=true; btn.textContent='⏳ Inaingia...';
-  // FUTA DATA ALIYOINGIZA MARA MOJA
   clearLoginForm();
   localStorage.removeItem('token'); localStorage.removeItem('user');
   let isPhone=/^[0-9+]+$/.test(u); let body=isPhone?{phone:u,password:p}:{username:u,password:p,phone:u};
@@ -179,10 +172,25 @@ async function doLogin(){
     let r=await fetchWithTimeout(API_URL+'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)},20000); let d=await r.json();
     if(d.success){
       localStorage.setItem('token','logged-in-'+Date.now()); localStorage.setItem('user',JSON.stringify(d)); setUserBadge();
-      showPopup('Karibu '+(d.name||d.username)+'!','Umeingia vizuri. Karibu kwenye mfumo wa Yatima Umra.','ok');
+      if(d.role==='OWNER' || d.role==='ADMIN'){
+        showPopup('Karibu '+(d.name||d.username)+'!','Umeingia kama '+d.role+'. Bonyeza SAWA uone Dashboard yako ya Admin.','ok');
+        let oldClose = window.closePopup;
+        window.closePopup = function(){
+          document.getElementById('popupModal').classList.remove('show');
+          document.getElementById('kodi').scrollIntoView({behavior:'smooth'});
+          window.closePopup = oldClose;
+        };
+      } else {
+        showPopup('Karibu '+(d.name||d.username)+'!','Umeingia vizuri. Karibu kwenye mfumo wa Yatima Umra.','ok');
+        let oldClose2 = window.closePopup;
+        window.closePopup = function(){
+          document.getElementById('popupModal').classList.remove('show');
+          document.getElementById('mayatima').scrollIntoView({behavior:'smooth'});
+          window.closePopup = oldClose2;
+        };
+      }
     }
     else {
-      // Mwezi umeisha bila kulipa -> mfumo umejifunga
       if(d.error==='EXPIRED'){
         showPopup('⏰ Muda Umeisha!','Mwezi wako umeisha bila kulipa. Mfumo umejifunga. Lipa ili ufunguliwe tena.','lock','<button class="btn btn-orange" style="width:100%" onclick="closePopup();openWa(\'KIDOGO\',\'\')">💳 Lipa Sasa →</button>');
       } else if(d.error==='LOCKED'){
@@ -203,13 +211,11 @@ async function doLogin(){
   } finally { isLoggingIn=false; btn.disabled=false; btn.textContent='INGIA →'; }
 }
 
-// ===== JISAJILI - Data inafutika + Popup =====
 async function doRegister(){
   let btn=document.getElementById('regBtn'); btn.disabled=true; btn.textContent='⏳ Inajisajili...';
   let f=document.getElementById('regName').value.trim(); let u=document.getElementById('regUser').value.trim(); let ph=document.getElementById('regPhone').value.trim(); let p=document.getElementById('regPass').value; let plan=document.getElementById('regPlan').value;
   if(!u||!p){ clearRegForm(); showPopup('Jaza Taarifa','Jaza username na password kwanza.','err'); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
   if(!ph){ clearRegForm(); showPopup('Jaza Namba','Jaza namba ya simu kwanza.','err'); btn.disabled=false; btn.textContent='JISAJILI →'; return; }
-  // FUTA DATA ALIYOINGIZA
   clearRegForm();
   try{
     let r=await fetchWithTimeout(API_URL+'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f||u,username:u,phone:ph,password:p,role:'Mthamini',plan:plan})},20000); let d=await r.json();
