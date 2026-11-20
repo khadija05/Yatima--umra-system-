@@ -21,7 +21,7 @@ input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radiu
 @media(max-width:700px){.grid3{grid-template-columns:1fr}.hero h1{font-size:22px}}
 </style></head><body>
 
-<div class="top"><div><b>🕋 YATIMA UMRA</b><br><span>Zanzibar • Umra • Yatima</span></div><div style="display:flex;gap:6px;align-items:center"><span id="backendStatus" style="font-size:11px;color:#CFF">⏳ Inaamsha...</span><a href="#login" class="btn btn-white">Ingia / Jisajili →</a><button onclick="logoutAll()" style="background:#FF9A1F;color:#fff;border:none;padding:10px 14px;border-radius:50px;font-weight:700;cursor:pointer;font-size:12px">Toka</button></div></div>
+<div class="top"><div><b>🕋 YATIMA UMRA</b><br><span>Zanzibar • Umra • Yatima</span></div><div style="display:flex;gap:6px;align-items:center"><a href="#login" class="btn btn-white">Ingia / Jisajili →</a><button onclick="logoutAll()" style="background:#FF9A1F;color:#fff;border:none;padding:10px 14px;border-radius:50px;font-weight:700;cursor:pointer;font-size:12px">Toka</button></div></div>
 
 <div class="hero"><h1>Msahada Yatima<br>Amfikie Umra 🤲</h1><p>Elimu • Chakula • Afya • Umra - Kila shilingi inamfikia yatima.</p>
 <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><a href="#mdhamini" class="btn btn-orange">💚 Mdhamini Yatima</a><a href="#changia" class="btn btn-white">💰 Changia</a><a href="#book" class="btn btn-green">🕋 Book Umra</a><a href="#kodi" class="btn btn-white">🎁 Jaribu Mfumo Bure Siku 3</a></div></div>
@@ -94,8 +94,6 @@ const API_URL = 'https://yatima-umra-system.onrender.com';
 const BANK_NAME='PBZ', BANK_ACC='0887387001', BANK_OWNER='KHADIJA DENGE', ADMIN_WA='255887387001';
 let orphans=[], allFeedback=[], allBookings=[], selType={name:'KAMILI',amount:250000}, curPlan='KIDOGO', curPkg='', isLoggingIn=false;
 const PLANS={ JARIBIO:{price:'0 TZS',days:3}, KIDOGO:{price:'50,000 TZS',days:30}, KUBWA:{price:'200,000 TZS',days:30} };
-
-// ===== FIX 1: Futa token ya zamani / iliyo-expire mara page inapofunguka =====
 (function clearStale(){
   try{
     let u = JSON.parse(localStorage.getItem('user')||'{}');
@@ -104,21 +102,12 @@ const PLANS={ JARIBIO:{price:'0 TZS',days:3}, KIDOGO:{price:'50,000 TZS',days:30
   }catch(e){ localStorage.removeItem('token'); localStorage.removeItem('user'); }
 })();
 function logoutAll(){ localStorage.removeItem('token'); localStorage.removeItem('user'); localStorage.removeItem('waPhone'); localStorage.removeItem('waName'); location.reload(); }
-
-// ===== FIX 2: Amsha Backend ukifungua page - ili Ingia isichelewe =====
-async function wakeBackend(){
-  let st=document.getElementById('backendStatus'); if(st) st.textContent='⏳ Inaamsha mfumo...';
-  try{ let c=new AbortController(); setTimeout(()=>c.abort(), 8000); await fetch(API_URL+'/api/stats',{signal:c.signal}).catch(()=>{}); if(st) st.textContent='✅ Mfumo uko tayari'; }
-  catch(e){ if(st) st.textContent='⚠️ Mfumo bado unaamka...'; }
-}
-wakeBackend();
-
-// ===== FIX 3: Fetch na Timeout 20s =====
+// Amsha Backend kimya kimya - hakuna message inaonekana
+fetch(API_URL+'/api/stats').catch(()=>{});
 async function fetchWithTimeout(url, options, ms=20000){
   let c=new AbortController(); let t=setTimeout(()=>c.abort(), ms);
   try{ let r=await fetch(url,{...options, signal:c.signal}); clearTimeout(t); return r; }catch(e){ clearTimeout(t); throw e; }
 }
-
 const TYPES=[{name:'KAMILI',amount:250000,desc:'Elimu+Chakula+Afya'},{name:'SEHEMU',amount:50000,desc:'Msaada wa sehemu'},{name:'ELIMU',amount:80000,desc:'Elimu pekee'},{name:'CHAKULA',amount:60000,desc:'Chakula'},{name:'AFYA',amount:40000,desc:'Afya'},{name:'UMRA',amount:4500000,desc:'Umra kamili'}];
 document.getElementById('sponTypes').innerHTML=TYPES.map(t=>`<div class="stat" onclick="selType={name:'${t.name}',amount:${t.amount}};calcSpon();document.querySelectorAll('#sponTypes .stat').forEach(e=>e.style.border='');this.style.border='2px solid #FF9A1F'" style="cursor:pointer"><b>${t.name}</b><br>${t.amount.toLocaleString()} TZS<br><span style="font-size:11px">${t.desc}</span></div>`).join('');
 function calcSpon(){ document.getElementById('spTotal').textContent=(selType.amount*(parseInt(document.getElementById('spMonths').value)||1)).toLocaleString(); }
@@ -159,9 +148,8 @@ async function doLogin(){
     if(d.success){ localStorage.setItem('token','logged-in-'+Date.now()); localStorage.setItem('user',JSON.stringify(d)); setUserBadge(); showMsg('Karibu '+(d.name||d.username)+'! ✅',false); }
     else { showMsg(d.message||'Login imeshindikana',true); if(d.error==='EXPIRED'||d.error==='LOCKED'){ openWa('KIDOGO',''); } }
   }catch(e){
-    if(e.name==='AbortError') showMsg('⏳ Mfumo unachelewa kuamka (Render imelala). Subiri sekunde 10 kisha bonyeza Ingia tena.',true);
+    if(e.name==='AbortError') showMsg('⏳ Mfumo unachelewa kuamka. Subiri sekunde 10 kisha bonyeza Ingia tena.',true);
     else showMsg('Backend haijapatikana. Jaribu tena.',true);
-    wakeBackend();
   } finally { isLoggingIn=false; btn.disabled=false; btn.textContent='INGIA →'; }
 }
 async function doRegister(){
