@@ -23,9 +23,10 @@ public class AuthController {
     Optional<User> opt=(ph!=null?users.findByPhone(ph):Optional.<User>empty()).or(()->un!=null?users.findByUsername(un):Optional.empty());
     if(opt.isEmpty()) return Map.of("error","NOT_FOUND","message","Akaunti haipo. Jisajili kwanza.");
     User user=opt.get(); if(!user.getPassword().equals(pw)) return Map.of("error","WRONG_PASSWORD","message","Password si sahihi.");
-    if(Boolean.TRUE.equals(user.getLocked())) return Map.of("error","LOCKED","message","🔒 Akaunti imefungwa. Lipa ili ufunguliwe.");
-    if(!Boolean.TRUE.equals(user.getApprovedByKhadija())) return Map.of("error","NOT_APPROVED","message","⏳ Bado haijathibitishwa na Mmiliki. Subiri kidogo.");
-    if(user.getExpiresAt()!=null && LocalDateTime.now().isAfter(user.getExpiresAt())){ user.setStatus("expired"); user.setLocked(true); users.save(user); return Map.of("error","EXPIRED","message","⏰ Muda wako umeisha! Lipa ili uendelee."); }
+    if(Boolean.TRUE.equals(user.getLocked())) return Map.of("error","LOCKED","message","Akaunti imefungwa. Lipa ili ufunguliwe.");
+    if(!Boolean.TRUE.equals(user.getApprovedByKhadija())) return Map.of("error","NOT_APPROVED","message","Bado haijathibitishwa na Mmiliki. Subiri kidogo.");
+    // MWEZI UKIISHA BILA KULIPA -> MFUMO UNAJIFUNGA
+    if(user.getExpiresAt()!=null && LocalDateTime.now().isAfter(user.getExpiresAt())){ user.setStatus("expired"); user.setLocked(true); users.save(user); return Map.of("error","EXPIRED","message","Muda wako umeisha! Lipa ili uendelee."); }
     if(!"active".equals(user.getStatus())) return Map.of("error","NOT_ACTIVE","message","Akaunti si active. Lipa kwanza.");
     return Map.of("success",true,"id",user.getId(),"username",user.getUsername(),"name",user.getName(),"phone",user.getPhone(),"role",user.getRole(),"plan",user.getPlan(),"status",user.getStatus(),"approvedByKhadija",true,"expiresAt",user.getExpiresAt()==null?"":user.getExpiresAt().toString());
   }
